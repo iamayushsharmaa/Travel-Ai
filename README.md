@@ -44,21 +44,24 @@ TripTide is your go-to travel companion, designed to craft unforgettable journey
 
 
 
-Frontend: React Native (cross-platform mobile) or React (web) for a smooth, responsive UI.
+Frontend: Flutter, Dart responsive UI.
 
 
 
-Backend: Node.js + Express for robust server-side logic.
+Backend: Firebase.
 
 
 
-Database: MongoDB for scalable storage of user data and itineraries.
+Database: Firestore.
 
 
 
 APIs:
 
 
+
+
+Gemini Api for trip itinerary.
 
 
 
@@ -80,7 +83,7 @@ Authentication: Firebase or JWT for secure user management.
 
 
 
-Sign Up/Login 🔑: Create an account or log in to access your personalized dashboard.
+Sign Up/Login 🔑: Create an account or log in to access your personalized screen.
 
 
 
@@ -92,15 +95,7 @@ Build Your Itinerary 📋: Add activities, hotels, and dining options to your ti
 
 
 
-Collaborate 👥: Invite friends to view or edit your plans in real-time.
-
-
-
-Track Spending 💸: Log expenses to keep your budget on track.
-
-
-
-Go Offline 📴: Save your itinerary for offline access during your travels.
+Go Offline 📴: Save your itinerary for offline access during your travels pdf.
 
 
 
