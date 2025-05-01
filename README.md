@@ -71,3 +71,63 @@ OpenWeather API 🌞 for real-time weather data.
 
 
 Authentication: Firebase or JWT for secure user management.
+
+
+
+## 📱 How to Use
+
+
+
+
+
+Sign Up/Login 🔑: Create an account or log in to access your personalized dashboard.
+
+
+
+Plan a Trip ✈️: Enter your destination, travel dates, and budget to start a new adventure.
+
+
+
+Build Your Itinerary 📋: Add activities, hotels, and dining options to your timeline with ease.
+
+
+
+Collaborate 👥: Invite friends to view or edit your plans in real-time.
+
+
+
+Track Spending 💸: Log expenses to keep your budget on track.
+
+
+
+Go Offline 📴: Save your itinerary for offline access during your travels.
+
+
+
+## 📜 License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+
+
+## 📬 Contact
+
+Got questions, feedback, or ideas? Reach out!
+
+
+
+
+
+Email: your.email@example.com
+
+
+
+GitHub: yourusername
+
+
+
+Twitter: @yourusername
+
+
+
+🌟 Happy Travels with TripTide! 🌟
