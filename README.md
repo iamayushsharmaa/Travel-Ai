@@ -2,13 +2,13 @@
 
 
 
-##🚀 Overview
+## 🚀 Overview
 
 TripTide is your go-to travel companion, designed to craft unforgettable journeys with ease. Whether you're a solo explorer or planning a group getaway, TripTide transforms travel planning into a seamless, stress-free experience. From building detailed itineraries to tracking budgets and discovering hidden gems, TripTide has you covered! 🌴✈️
 
 
 
-##✨ Key Features
+## ✨ Key Features
 
 
 
