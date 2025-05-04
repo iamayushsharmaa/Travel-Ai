@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:triptide/Home.dart';
+import 'package:triptide/screens/home/Home.dart';
 
 void main(){
   runApp(const MyApp());
