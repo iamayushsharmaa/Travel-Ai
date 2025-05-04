@@ -1,13 +1,13 @@
 
-class Auth{
+class User{
   final String name;
   final String email;
   final String password;
 
-  Auth(this.name, this.email, this.password);
+  User(this.name, this.email, this.password);
 
-  factory Auth.fromJson(Map<String, dynamic> json){
-    return Auth(
+  factory User.fromJson(Map<String, dynamic> json){
+    return User(
       json['name'],
       json['email'],
       json['password']
