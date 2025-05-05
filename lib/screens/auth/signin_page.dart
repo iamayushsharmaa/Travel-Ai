@@ -10,7 +10,15 @@ class SigninPage extends StatefulWidget {
 class _SigninPageState extends State<SigninPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Center(
+        child: Column(
+          children: [
+
+          ],
+        ),
+      ),
+    );
   }
 }
 
