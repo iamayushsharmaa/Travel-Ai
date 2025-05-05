@@ -5,11 +5,11 @@ import 'package:triptide/di/di.dart';
 import 'package:triptide/screens/auth/onboarding_page.dart';
 
 
-void main()async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  setUpLocator();
-  runApp(ProviderScope(child: MyApp()));
+void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+  // setUpLocator();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
