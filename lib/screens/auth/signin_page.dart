@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SigninPage extends StatefulWidget {
@@ -11,6 +12,9 @@ class _SigninPageState extends State<SigninPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  IconData iconPassword = CupertinoIcons.eye_fill;
+  bool obscurePassword = true;
+  String? _errorMsg;
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +52,15 @@ class _SigninPageState extends State<SigninPage> {
                   decoration: InputDecoration(
                     hintText: 'Email',
                     labelText: 'Email',
+                    errorText: '',
+                    prefixIcon: const Icon(CupertinoIcons.mail_solid),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onEditingComplete: () {
-
-                  },
+                  onEditingComplete: () {},
                   validator: (value) {
-                    if(value == null || value.isEmpty){
+                    if (value == null || value.isEmpty) {
                       return 'Email is required';
                     }
                     if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
@@ -76,6 +80,19 @@ class _SigninPageState extends State<SigninPage> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          obscurePassword = !obscurePassword;
+                          if (obscurePassword) {
+                            iconPassword = CupertinoIcons.eye_fill;
+                          } else {
+                            iconPassword = CupertinoIcons.eye_slash_fill;
+                          }
+                        });
+                      },
+                      icon: Icon(iconPassword),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.length < 6) {
@@ -83,6 +100,26 @@ class _SigninPageState extends State<SigninPage> {
                     }
                     return null;
                   },
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      'Sign in',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
