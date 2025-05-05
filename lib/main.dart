@@ -2,7 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:triptide/di/di.dart';
-import 'package:triptide/screens/home/home.dart';
+import 'package:triptide/screens/auth/onboarding_page.dart';
+
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,10 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-
-      ),
-      home: Home(),
+      home: OnBoardingPage(),
     );
   }
 }
