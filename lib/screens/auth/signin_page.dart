@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:triptide/screens/auth/signup_page.dart';
+
+import '../home/home.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -34,7 +38,7 @@ class _SigninPageState extends State<SigninPage> {
                     'Sign in.',
                     textAlign: TextAlign.right,
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 30,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
@@ -51,7 +55,7 @@ class _SigninPageState extends State<SigninPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
 
                 TextFormField(
                   controller: emailController,
@@ -126,7 +130,12 @@ class _SigninPageState extends State<SigninPage> {
                   height: 50,
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Home()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white,
@@ -165,11 +174,37 @@ class _SigninPageState extends State<SigninPage> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Brand(Brands.google, size: 28),
+                        SizedBox(width: 6),
+                        Text(
+                          'Sign in with google',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpPage()),
+                      );
+                    },
                     child: Text(
-                      'Sign in with google',
+                      'Don\'t have an account? Sign up!',
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ),

@@ -5,6 +5,13 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('TripTide'),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(),
+    );
   }
 }
