@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:triptide/screens/auth/signup_page.dart';
 
+import 'signin_page.dart';
+
 class OnBoardingPage extends StatelessWidget {
   const OnBoardingPage({super.key});
 
@@ -18,7 +20,7 @@ class OnBoardingPage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SignUpPage()),
+                MaterialPageRoute(builder: (context) => SigninPage()),
               );
             },
           ),

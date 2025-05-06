@@ -25,24 +25,30 @@ class _SigninPageState extends State<SigninPage> {
           child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Spacer(flex: 2),
-                Text(
-                  'Sign in.',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Sign in.',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'Please enter all the information to sign in.',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.normal,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Please enter all the information to sign in.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -52,13 +58,19 @@ class _SigninPageState extends State<SigninPage> {
                   decoration: InputDecoration(
                     hintText: 'Email',
                     labelText: 'Email',
-                    errorText: '',
-                    prefixIcon: const Icon(CupertinoIcons.mail_solid),
+                    labelStyle: TextStyle(color: Colors.black),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.black, width: 2),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.black, // Red when focused
+                        width: 2,
+                      ),
                     ),
                   ),
-                  onEditingComplete: () {},
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Email is required';
@@ -69,16 +81,24 @@ class _SigninPageState extends State<SigninPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 TextFormField(
-                  controller: emailController,
-                  obscureText: true,
-
+                  controller: passwordController,
+                  obscureText: obscurePassword,
                   decoration: InputDecoration(
                     hintText: 'Password',
                     labelText: 'Password',
+                    labelStyle: TextStyle(color: Colors.black),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.black, width: 2),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.black, // Red when focused
+                        width: 2,
+                      ),
                     ),
                     suffixIcon: IconButton(
                       onPressed: () {
@@ -101,7 +121,9 @@ class _SigninPageState extends State<SigninPage> {
                     return null;
                   },
                 ),
+                SizedBox(height: 25),
                 SizedBox(
+                  height: 50,
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {},
@@ -115,7 +137,38 @@ class _SigninPageState extends State<SigninPage> {
                     child: Text(
                       'Sign in',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'or continue with',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                SizedBox(height: 10),
+                SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      'Sign in with google',
+                      style: TextStyle(
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
