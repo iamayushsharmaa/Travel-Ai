@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:triptide/screens/auth/signup_page.dart';
+import 'package:triptide/screens/home/widget_tree.dart';
 
 import '../home/home.dart';
 
@@ -133,7 +134,7 @@ class _SigninPageState extends State<SigninPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Home()),
+                        MaterialPageRoute(builder: (context) => WidgetTree()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
