@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:triptide/screens/auth/signup_page.dart';
 
 import 'signin_page.dart';
 

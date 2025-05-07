@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:triptide/screens/auth/signin_page.dart';
 import 'package:triptide/screens/home/home.dart';
 import 'package:triptide/screens/home/widget_tree.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class SignUpPage extends ConsumerStatefulWidget  {
   const SignUpPage({super.key});

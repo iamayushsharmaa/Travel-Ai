@@ -1,49 +1,51 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:triptide/data/firebase_auth/repository/firebase_repository.dart';
+
+import '../repository/firebase_repository.dart';
 
 part 'auth_providers.g.dart';
 
+// Provider for FirebaseAuth instance
 @riverpod
-FirebaseAuth firebaseAuth(Ref ref){
+FirebaseAuth firebaseAuth(FirebaseAuthRef ref) {
   return FirebaseAuth.instance;
 }
 
+// Provider for AuthRepository
 @riverpod
-AuthRepository authRepository(Ref ref){
+AuthRepository authRepository(AuthRepositoryRef ref) {
   return AuthRepository(firebaseAuth: ref.watch(firebaseAuthProvider));
 }
 
+// Provider for auth state changes
 @riverpod
-Stream<User?> authState(Ref ref){
+Stream<User?> authState(AuthStateRef ref) {
   return ref.watch(authRepositoryProvider).authStateChanges;
 }
 
 @riverpod
-class AuthStateNotifier extends $AuthStateNotifier{
-
+class AuthStateNotifier extends _$AuthStateNotifier {
   @override
-  AsyncValue<User?> build(){
+  AsyncValue<User?> build() {
     return const AsyncValue.data(null);
   }
 
-  Future<void> signUp (String email, String password) async{
+  Future<void> signUp(String email, String name, String password) async {
     state = const AsyncValue.loading();
-    try{
-      final user = await ref.read(authRepositoryProvider).signUp(email, password);
+    try {
+      final user = await ref.read(authRepositoryProvider).signup(email, name, password);
       state = AsyncValue.data(user);
-    }catch(e, stackTrace){
+    } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
   }
 
-  Future<void> signIn (String email, String password)async{
+  Future<void> signIn(String email, String password) async {
     state = const AsyncValue.loading();
-    try{
-      final user = await ref.read(authRepositoryProvider).signIn(email, password);
+    try {
+      final user = await ref.read(authRepositoryProvider).signin(email, password);
       state = AsyncValue.data(user);
-    }catch(e, stackTrace){
+    } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
   }
@@ -57,5 +59,4 @@ class AuthStateNotifier extends $AuthStateNotifier{
       state = AsyncValue.error(e, stackTrace);
     }
   }
-
 }

@@ -1,19 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:triptide/screens/auth/signup_page.dart';
 import 'package:triptide/screens/home/widget_tree.dart';
 
 import '../home/home.dart';
 
-class SigninPage extends StatefulWidget {
+class SigninPage extends ConsumerStatefulWidget {
   const SigninPage({super.key});
 
   @override
-  State<SigninPage> createState() => _SigninPageState();
+  ConsumerState<SigninPage> createState() => _SigninPageState();
 }
 
-class _SigninPageState extends State<SigninPage> {
+class _SigninPageState extends ConsumerState<SigninPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
