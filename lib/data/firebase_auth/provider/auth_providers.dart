@@ -28,5 +28,34 @@ class AuthStateNotifier extends $AuthStateNotifier{
     return const AsyncValue.data(null);
   }
 
+  Future<void> signUp (String email, String password) async{
+    state = const AsyncValue.loading();
+    try{
+      final user = await ref.read(authRepositoryProvider).signUp(email, password);
+      state = AsyncValue.data(user);
+    }catch(e, stackTrace){
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
+
+  Future<void> signIn (String email, String password)async{
+    state = const AsyncValue.loading();
+    try{
+      final user = await ref.read(authRepositoryProvider).signIn(email, password);
+      state = AsyncValue.data(user);
+    }catch(e, stackTrace){
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
+
+  Future<void> signOut() async {
+    state = const AsyncValue.loading();
+    try {
+      await ref.read(authRepositoryProvider).signout();
+      state = const AsyncValue.data(null);
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
 
 }
