@@ -1,8 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:triptide/screens/auth/onboarding_page.dart';
+import 'package:triptide/screens/auth/auth_wrapper.dart';
 
 import 'di/di.dart';
 import 'firebase_options.dart';
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnBoardingPage(),
+      home: AuthWrapper(),
     );
   }
 }
