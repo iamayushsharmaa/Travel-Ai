@@ -1,14 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:triptide/data/api/models/gemini_response.dart';
 
 class GeminiApiService {
   final Dio dio = Dio(
     BaseOptions(
-      baseUrl: 'https://generativelanguage.googleapis.com/v1beta/models/',
+      baseUrl: '${dotenv.env["BASE_URL"]}',
     ),
   );
 
-  final String _apiKey = '';
+  final String _apiKey = '${dotenv.env["API_KEY"]}';
 
   Future<GeminiResponse> getGeminiComplete(String prompt) async {
     try {
