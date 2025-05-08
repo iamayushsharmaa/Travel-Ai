@@ -5,16 +5,11 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:triptide/screens/auth/signup_page.dart';
 import 'package:triptide/screens/home/widget_tree.dart';
 
+import '../../data/firebase_auth/models/password_provider.dart';
+import '../../data/firebase_auth/provider/auth_providers.dart';
 import '../home/home.dart';
 
-class SigninPage extends ConsumerStatefulWidget {
-  const SigninPage({super.key});
-
-  @override
-  ConsumerState<SigninPage> createState() => _SigninPageState();
-}
-
-class _SigninPageState extends ConsumerState<SigninPage> {
+class SigninPage extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -22,8 +17,15 @@ class _SigninPageState extends ConsumerState<SigninPage> {
   bool obscurePassword = true;
   String? _errorMsg;
 
+  SigninPage({Key? key}) : super(key: key);
+
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateNotifierProvider);
+    final password_visibility = ref.watch(passwordVisibilityProvider);
+    final password_notifier = ref.read(passwordVisibilityProvider.notifier);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -108,14 +110,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                     ),
                     suffixIcon: IconButton(
                       onPressed: () {
-                        setState(() {
-                          obscurePassword = !obscurePassword;
-                          if (obscurePassword) {
-                            iconPassword = CupertinoIcons.eye_fill;
-                          } else {
-                            iconPassword = CupertinoIcons.eye_slash_fill;
-                          }
-                        });
+                        password_notifier.togglePasswordVisibility();
                       },
                       icon: Icon(iconPassword),
                     ),
@@ -128,14 +123,22 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                   },
                 ),
                 SizedBox(height: 25),
-                SizedBox(
+                authState.isLoading
+                    ? SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: CircularProgressIndicator(),
+                )
+                    : SizedBox(
                   height: 50,
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => WidgetTree()),
+                    onPressed: () async {
+                      await ref
+                          .read(authStateNotifierProvider.notifier)
+                          .signIn(
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -146,7 +149,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                       ),
                     ),
                     child: Text(
-                      'Sign in',
+                      'Sign up',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:triptide/data/firebase_auth/models/password_provider.dart';
 import 'package:triptide/screens/auth/signin_page.dart';
-import 'package:triptide/screens/home/widget_tree.dart';
 
 import '../../data/firebase_auth/provider/auth_providers.dart';
 
@@ -130,11 +129,13 @@ class SignUpPage extends ConsumerWidget {
                       height: 50,
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () async{
-                          await ref.read(authStateNotifierProvider.notifier).signUp(
-                            emailController.text.trim(),
-                            passwordController.text.trim()
-                          );
+                        onPressed: () async {
+                          await ref
+                              .read(authStateNotifierProvider.notifier)
+                              .signUp(
+                                emailController.text.trim(),
+                                passwordController.text.trim(),
+                              );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
