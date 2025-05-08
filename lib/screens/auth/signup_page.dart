@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:triptide/data/firebase_auth/models/password_provider.dart';
 import 'package:triptide/screens/auth/signin_page.dart';
 import 'package:triptide/screens/home/widget_tree.dart';
 
@@ -19,6 +20,8 @@ class SignUpPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authStateNotifierProvider);
+    final password_visibility = ref.watch(passwordVisibilityProvider);
+    final password_notifier = ref.read(passwordVisibilityProvider.notifier);
 
     return Scaffold(
       body: SafeArea(
@@ -104,7 +107,7 @@ class SignUpPage extends ConsumerWidget {
                     ),
                     suffixIcon: IconButton(
                       onPressed: () {
-
+                        password_notifier.togglePasswordVisibility();
                       },
                       icon: Icon(iconPassword),
                     ),
