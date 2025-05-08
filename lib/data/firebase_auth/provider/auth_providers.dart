@@ -5,19 +5,16 @@ import '../repository/firebase_repository.dart';
 
 part 'auth_providers.g.dart';
 
-// Provider for FirebaseAuth instance
 @riverpod
 FirebaseAuth firebaseAuth(FirebaseAuthRef ref) {
   return FirebaseAuth.instance;
 }
 
-// Provider for AuthRepository
 @riverpod
 AuthRepository authRepository(AuthRepositoryRef ref) {
   return AuthRepository(firebaseAuth: ref.watch(firebaseAuthProvider));
 }
 
-// Provider for auth state changes
 @riverpod
 Stream<User?> authState(AuthStateRef ref) {
   return ref.watch(authRepositoryProvider).authStateChanges;
@@ -30,10 +27,10 @@ class AuthStateNotifier extends _$AuthStateNotifier {
     return const AsyncValue.data(null);
   }
 
-  Future<void> signUp(String email, String name, String password) async {
+  Future<void> signUp(String email, String password) async {
     state = const AsyncValue.loading();
     try {
-      final user = await ref.read(authRepositoryProvider).signup(email, name, password);
+      final user = await ref.read(authRepositoryProvider).signup(email, password);
       state = AsyncValue.data(user);
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);

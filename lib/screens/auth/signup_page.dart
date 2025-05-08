@@ -2,18 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:triptide/screens/auth/signin_page.dart';
-import 'package:triptide/screens/home/home.dart';
 import 'package:triptide/screens/home/widget_tree.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class SignUpPage extends ConsumerStatefulWidget  {
-  const SignUpPage({super.key});
+import '../../data/firebase_auth/provider/auth_providers.dart';
 
-  @override
-  ConsumerState<SignUpPage> createState() => _SignUpPageState();
-}
-
-class _SignUpPageState extends ConsumerState<SignUpPage> {
+class SignUpPage extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -21,8 +14,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   bool obscurePassword = true;
   String? _errorMsg;
 
+  SignUpPage({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateNotifierProvider);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -107,14 +104,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     ),
                     suffixIcon: IconButton(
                       onPressed: () {
-                        setState(() {
-                          obscurePassword = !obscurePassword;
-                          if (obscurePassword) {
-                            iconPassword = CupertinoIcons.eye_fill;
-                          } else {
-                            iconPassword = CupertinoIcons.eye_slash_fill;
-                          }
-                        });
+
                       },
                       icon: Icon(iconPassword),
                     ),
@@ -127,32 +117,38 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   },
                 ),
                 SizedBox(height: 25),
-                SizedBox(
-                  height: 50,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => WidgetTree()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                authState.isLoading
+                    ? SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: CircularProgressIndicator(),
+                    )
+                    : SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async{
+                          await ref.read(authStateNotifierProvider.notifier).signUp(
+                            emailController.text.trim(),
+                            passwordController.text.trim()
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          'Sign up',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                    child: Text(
-                      'Sign up',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: TextButton(
