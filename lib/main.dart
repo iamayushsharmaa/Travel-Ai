@@ -1,20 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:triptide/screens/auth/auth_wrapper.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:triptide/screens/auth/onboarding_page.dart';
 
-import 'di/di.dart';
 import 'firebase_options.dart';
 
-
-void main() async{
-  await dotenv.load(fileName: ".env");
-   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  setUpLocator();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  //await dotenv.load(fileName: ".env");
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -23,9 +17,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: AuthWrapper(),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: OnBoardingPage());
   }
 }
