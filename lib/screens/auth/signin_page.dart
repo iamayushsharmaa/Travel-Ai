@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:triptide/core/common/signin_button.dart';
 import 'package:triptide/screens/auth/signup_page.dart';
-import 'package:triptide/screens/home/widget_tree.dart';
 
 import '../../data/firebase_auth/models/password_provider.dart';
 import '../../data/firebase_auth/provider/auth_providers.dart';
-import '../home/home.dart';
 
 class SigninPage extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
@@ -18,7 +16,6 @@ class SigninPage extends ConsumerWidget {
   String? _errorMsg;
 
   SigninPage({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -125,38 +122,38 @@ class SigninPage extends ConsumerWidget {
                 SizedBox(height: 25),
                 authState.isLoading
                     ? SizedBox(
-                  height: 50,
-                  width: double.infinity,
-                  child: CircularProgressIndicator(),
-                )
+                      height: 50,
+                      width: double.infinity,
+                      child: CircularProgressIndicator(),
+                    )
                     : SizedBox(
-                  height: 50,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      await ref
-                          .read(authStateNotifierProvider.notifier)
-                          .signIn(
-                        emailController.text.trim(),
-                        passwordController.text.trim(),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      height: 50,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          await ref
+                              .read(authStateNotifierProvider.notifier)
+                              .signIn(
+                                emailController.text.trim(),
+                                passwordController.text.trim(),
+                              );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          'Sign up',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                    child: Text(
-                      'Sign up',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
                 SizedBox(height: 10),
                 Text(
                   'or continue with',
@@ -167,34 +164,7 @@ class SigninPage extends ConsumerWidget {
                   ),
                 ),
                 SizedBox(height: 10),
-                SizedBox(
-                  height: 50,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Brand(Brands.google, size: 28),
-                        SizedBox(width: 6),
-                        Text(
-                          'Sign in with google',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                SignInButton(),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: TextButton(

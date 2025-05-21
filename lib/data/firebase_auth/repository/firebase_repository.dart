@@ -6,6 +6,7 @@ class AuthRepository{
   final FirebaseAuth firebaseAuth;
   AuthRepository({required this.firebaseAuth});
 
+
   Future<User?> signup(String email, String password) async{
     final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
