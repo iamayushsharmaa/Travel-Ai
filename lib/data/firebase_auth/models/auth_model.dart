@@ -1,14 +1,12 @@
 
-class User{
-  final String name;
+class UserModel{
   final String email;
   final String password;
 
-  User(this.name, this.email, this.password);
+  UserModel(this.email, this.password);
 
-  factory User.fromJson(Map<String, dynamic> json){
-    return User(
-      json['name'],
+  factory UserModel.fromJson(Map<String, dynamic> json){
+    return UserModel(
       json['email'],
       json['password']
     );
@@ -16,7 +14,6 @@ class User{
 
   Map<String, dynamic> toJson(){
     return {
-      'name': name,
       'email': email,
       'password': password
     };

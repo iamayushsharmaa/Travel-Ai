@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../repository/firebase_repository.dart';
@@ -11,8 +13,22 @@ FirebaseAuth firebaseAuth(FirebaseAuthRef ref) {
 }
 
 @riverpod
+FirebaseFirestore firebaseFirestore(FirebaseFirestoreRef ref) {
+  return FirebaseFirestore.instance;
+}
+
+@riverpod
+GoogleSignIn googleSignIn(GoogleSignInRef ref) {
+  return GoogleSignIn();
+}
+
+@riverpod
 AuthRepository authRepository(AuthRepositoryRef ref) {
-  return AuthRepository(firebaseAuth: ref.watch(firebaseAuthProvider));
+  return AuthRepository(
+    firestore: ref.watch(firebaseFirestoreProvider),
+    auth: ref.watch(firebaseAuthProvider),
+    googleSignIn: ref.watch(googleSignInProvider),
+  );
 }
 
 @riverpod
@@ -30,7 +46,9 @@ class AuthStateNotifier extends _$AuthStateNotifier {
   Future<void> signUp(String email, String password) async {
     state = const AsyncValue.loading();
     try {
-      final user = await ref.read(authRepositoryProvider).signup(email, password);
+      final user = await ref
+          .read(authRepositoryProvider)
+          .signup(email, password);
       state = AsyncValue.data(user);
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
@@ -40,7 +58,9 @@ class AuthStateNotifier extends _$AuthStateNotifier {
   Future<void> signIn(String email, String password) async {
     state = const AsyncValue.loading();
     try {
-      final user = await ref.read(authRepositoryProvider).signin(email, password);
+      final user = await ref
+          .read(authRepositoryProvider)
+          .signin(email, password);
       state = AsyncValue.data(user);
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
