@@ -2,10 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:triptide/data/firebase_auth/models/user_model.dart';
 
 import '../repository/firebase_repository.dart';
 
 part 'auth_providers.g.dart';
+
+@riverpod
+class UserInfo extends _$UserInfo {
+  @override
+  UserModel? build() => null; // Initial state is null
+
+  // Optional: Add a method to update the state
+  void updateUser(UserModel? userModel) {
+    state = userModel;
+  }
+}
 
 @riverpod
 FirebaseAuth firebaseAuth(FirebaseAuthRef ref) {
@@ -39,17 +51,23 @@ Stream<User?> authState(AuthStateRef ref) {
 @riverpod
 class AuthStateNotifier extends _$AuthStateNotifier {
   @override
-  AsyncValue<User?> build() {
-    return const AsyncValue.data(null);
-  }
+  AsyncValue<UserModel?> build() => const AsyncValue.data(null);
 
-  Future<void> signUp(String email, String password) async {
+  Stream<User?> get authStateChange =>
+      ref.watch(authRepositoryProvider).authStateChange;
+
+  Future<void> signInWithGoogle() async {
     state = const AsyncValue.loading();
     try {
-      final user = await ref
-          .read(authRepositoryProvider)
-          .signup(email, password);
-      state = AsyncValue.data(user);
+      final result = await ref.read(authRepositoryProvider).signInWithGoogle();
+
+      result.fold(
+        (failure) {
+          state = AsyncValue.error(failure.message, StackTrace.current);
+        },
+        (userModel) =>
+            ref.read(userInfoProvider.notifier).updateUser(userModel),
+      );
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
@@ -58,22 +76,48 @@ class AuthStateNotifier extends _$AuthStateNotifier {
   Future<void> signIn(String email, String password) async {
     state = const AsyncValue.loading();
     try {
-      final user = await ref
+      final result = await ref
           .read(authRepositoryProvider)
           .signin(email, password);
-      state = AsyncValue.data(user);
+
+      result.fold(
+        (failure) {
+          state = AsyncValue.error(failure.message, StackTrace.current);
+        },
+        (user) {
+          state = AsyncValue.data(user);
+        },
+      );
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> signUp(String email, String password) async {
     state = const AsyncValue.loading();
     try {
-      await ref.read(authRepositoryProvider).signout();
-      state = const AsyncValue.data(null);
+      final result = await ref
+          .read(authRepositoryProvider)
+          .signup(email, password);
+
+      result.fold(
+        (failure) {
+          state = AsyncValue.error(failure.message, StackTrace.current);
+        },
+        (user) {
+          state = AsyncValue.data(user);
+        },
+      );
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
+  }
+
+  Stream<UserModel> getUserData(String uid) {
+    return ref.read(authRepositoryProvider).getUserData(uid);
+  }
+
+  void signOut() async {
+    ref.read(authRepositoryProvider).signout();
   }
 }
