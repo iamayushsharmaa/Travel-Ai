@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:triptide/core/common/loader.dart';
+import 'package:triptide/core/common/signin_button.dart';
 
-import 'signin_page.dart';
+import '../../data/firebase_auth/provider/auth_providers.dart';
 
-class OnBoardingPage extends StatelessWidget {
+class OnBoardingPage extends ConsumerWidget {
   const OnBoardingPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateNotifierProvider);
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Spacer(flex: 2),
-          const CenterText(),
-          const Spacer(flex: 2),
-          GetStartedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SigninPage()),
-              );
-            },
-          ),
-          SizedBox(height: 10,)
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child:
+            authState.isLoading
+                ? const Loader()
+                : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Spacer(flex: 2),
+                    const CenterText(),
+                    const Spacer(flex: 2),
+                    SignInButton(),
+                    continueWithEmailButton(
+                      onPressed: () => context.go('/signin'),
+                    ),
+                    SizedBox(height: 10),
+                  ],
+                ),
       ),
     );
   }
@@ -37,7 +44,7 @@ class CenterText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        'Go plan with TripTide!',
+        'Go plan with Travel AI.',
         style: TextStyle(
           fontSize: 24,
           color: Colors.black,
@@ -48,15 +55,15 @@ class CenterText extends StatelessWidget {
   }
 }
 
-class GetStartedButton extends StatelessWidget {
+class continueWithEmailButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const GetStartedButton({super.key, required this.onPressed});
+  const continueWithEmailButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       child: SizedBox(
         height: 56,
         width: double.infinity,
@@ -69,9 +76,20 @@ class GetStartedButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          child: const Text(
-            'Get Started',
-            style: TextStyle(fontSize: 20, color: Colors.white),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.email, color: Colors.white, size: 27),
+              SizedBox(width: 8),
+              const Text(
+                'Continue with email',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
       ),

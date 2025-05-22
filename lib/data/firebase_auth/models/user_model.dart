@@ -1,7 +1,7 @@
 class UserModel {
   final String uid;
   final String email;
-  final String password;
+  final String? password;
   final String? name;
   final String? profilePic;
   final bool isAuthenticated;

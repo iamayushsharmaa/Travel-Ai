@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/data/firebase_auth/models/user_model.dart';
@@ -13,9 +15,23 @@ class UserInfo extends _$UserInfo {
   @override
   UserModel? build() => null; // Initial state is null
 
-  // Optional: Add a method to update the state
   void updateUser(UserModel? userModel) {
     state = userModel;
+  }
+}
+
+final authStateChangeNotifierProvider = Provider<AuthStateChangeNotifier>((
+    ref,
+    ) {
+  return AuthStateChangeNotifier(ref);
+});
+
+class AuthStateChangeNotifier extends ChangeNotifier {
+  AuthStateChangeNotifier(Ref ref) {
+    // Subscribe to authState stream
+    ref.listen<AsyncValue<User?>>(authStateProvider, (_, next) {
+      notifyListeners();
+    });
   }
 }
 
@@ -65,8 +81,11 @@ class AuthStateNotifier extends _$AuthStateNotifier {
         (failure) {
           state = AsyncValue.error(failure.message, StackTrace.current);
         },
-        (userModel) =>
-            ref.read(userInfoProvider.notifier).updateUser(userModel),
+        (userModel) {
+          ref.read(userInfoProvider.notifier).updateUser(userModel);
+          print(userModel);
+          state = AsyncValue.data(userModel);
+        },
       );
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
@@ -85,6 +104,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
           state = AsyncValue.error(failure.message, StackTrace.current);
         },
         (user) {
+          ref.read(userInfoProvider.notifier).updateUser(user);
           state = AsyncValue.data(user);
         },
       );
@@ -105,6 +125,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
           state = AsyncValue.error(failure.message, StackTrace.current);
         },
         (user) {
+          ref.read(userInfoProvider.notifier).updateUser(user);
           state = AsyncValue.data(user);
         },
       );

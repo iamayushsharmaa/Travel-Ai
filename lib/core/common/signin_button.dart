@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:triptide/data/firebase_auth/provider/auth_providers.dart';
 
-class SignInButton extends StatelessWidget {
+class SignInButton extends ConsumerWidget {
   const SignInButton({super.key});
 
+  void googleSignIn(BuildContext context, WidgetRef ref){
+    ref.read(authStateNotifierProvider.notifier).signInWithGoogle();
+  }
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        height: 50,
+        height: 56,
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () => googleSignIn(context, ref),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.black,
             foregroundColor: Colors.white,

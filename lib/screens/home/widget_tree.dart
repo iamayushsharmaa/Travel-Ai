@@ -23,7 +23,7 @@ class _WidgetTreeState extends State<WidgetTree> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Text('Triptide'),
+          title: Text('Travel AI'),
           centerTitle: true,
           automaticallyImplyLeading: false,
           actions: [

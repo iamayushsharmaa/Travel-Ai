@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:triptide/core/failure.dart';
@@ -26,32 +27,40 @@ class AuthRepository {
 
   Stream<User?> get authStateChange => _auth.authStateChanges();
 
-  FutureEither<UserModel?> signInWithGoogle() async {
+  FutureEither<UserModel> signInWithGoogle() async {
     try {
       UserCredential userCredential;
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      final googleAuth = await googleUser?.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
+      if (kIsWeb) {
+        GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
+        googleAuthProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+        userCredential = await _auth.signInWithPopup(googleAuthProvider);
+      } else{
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+        final googleAuth = await googleUser?.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
 
-      userCredential = await _auth.signInWithCredential(credential);
+        userCredential = await _auth.signInWithCredential(credential);
+
+      }
 
       UserModel userModel;
       if (userCredential.additionalUserInfo!.isNewUser) {
         userModel = UserModel(
           name: userCredential.user!.displayName ?? 'No Name',
+          email: userCredential.user!.email!,
+          password: null,
           profilePic: userCredential.user!.photoURL ?? '',
-          email: userCredential.user!.email ?? 'No email',
           uid: userCredential.user!.uid,
-          password: '',
           isAuthenticated: true,
         );
         await _users.doc(userCredential.user!.uid).set(userModel.toMap());
       } else {
         userModel = await getUserData(userCredential.user!.uid).first;
       }
+      print("User repo: $userModel");
       return right(userModel);
     } on FirebaseException catch (e) {
       throw e.message!;
@@ -82,8 +91,7 @@ class AuthRepository {
         password: password,
       );
 
-      UserModel userModel;
-      userModel = UserModel(
+      UserModel userModel = UserModel(
         uid: userCredential.user!.uid,
         email: email,
         password: password,
