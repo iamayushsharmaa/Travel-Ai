@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/data/firebase_auth/models/user_model.dart';
@@ -10,13 +8,22 @@ import '../repository/firebase_repository.dart';
 
 part 'auth_providers.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class UserInfo extends _$UserInfo {
   @override
-  UserModel? build() => null; // Initial state is null
+  UserModel? build() {
+    ref.listen(authStateNotifierProvider, (previous, next) {
+      state = next.value;
+    });
+    return null; // Initial state is null (no user logged in)
+  }
 
-  void updateUser(UserModel? userModel) {
-    state = userModel;
+  void updateUser(UserModel? user) {
+    state = user;
+  }
+
+  void clearUser() {
+    state = null;
   }
 }
 
@@ -45,17 +52,30 @@ AuthRepository authRepository(AuthRepositoryRef ref) {
 }
 
 @riverpod
-Stream<User?> authState(AuthStateRef ref) {
-  return ref.watch(authRepositoryProvider).authStateChanges;
-}
-
-@riverpod
 class AuthStateNotifier extends _$AuthStateNotifier {
   @override
-  AsyncValue<UserModel?> build() => const AsyncValue.data(null);
+  AsyncValue<UserModel?> build() {
+    final authStateChange = ref.watch(authRepositoryProvider).authStateChange;
 
-  Stream<User?> get authStateChange =>
-      ref.watch(authRepositoryProvider).authStateChange;
+    ref.listenSelf((previous, next) {
+      authStateChange.listen((firebaseUser) async {
+        if (firebaseUser == null) {
+          state = const AsyncValue.data(null);
+          ref.read(userInfoProvider.notifier).clearUser();
+        } else {
+          final userData =
+              await ref
+                  .read(authRepositoryProvider)
+                  .getUserData(firebaseUser.uid)
+                  .first;
+          state = AsyncValue.data(userData);
+          ref.read(userInfoProvider.notifier).updateUser(userData);
+        }
+      });
+    });
+
+    return const AsyncValue.data(null);
+  }
 
   Future<void> signInWithGoogle() async {
     state = const AsyncValue.loading();
@@ -67,9 +87,8 @@ class AuthStateNotifier extends _$AuthStateNotifier {
           state = AsyncValue.error(failure.message, StackTrace.current);
         },
         (userModel) {
-          ref.read(userInfoProvider.notifier).updateUser(userModel);
-          print(userModel);
           state = AsyncValue.data(userModel);
+          ref.read(userInfoProvider.notifier).updateUser(userModel);
         },
       );
     } catch (e, stackTrace) {
@@ -89,8 +108,8 @@ class AuthStateNotifier extends _$AuthStateNotifier {
           state = AsyncValue.error(failure.message, StackTrace.current);
         },
         (user) {
-          ref.read(userInfoProvider.notifier).updateUser(user);
           state = AsyncValue.data(user);
+          ref.read(userInfoProvider.notifier).updateUser(user);
         },
       );
     } catch (e, stackTrace) {
@@ -110,8 +129,8 @@ class AuthStateNotifier extends _$AuthStateNotifier {
           state = AsyncValue.error(failure.message, StackTrace.current);
         },
         (user) {
-          ref.read(userInfoProvider.notifier).updateUser(user);
           state = AsyncValue.data(user);
+          ref.read(userInfoProvider.notifier).updateUser(user);
         },
       );
     } catch (e, stackTrace) {
