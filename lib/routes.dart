@@ -8,31 +8,22 @@ import 'package:triptide/screens/auth/signup_page.dart';
 import 'package:triptide/screens/home/widget_tree.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final authStateChangeNotifier = ref.watch(authStateChangeNotifierProvider);
-
   return GoRouter(
     debugLogDiagnostics: true,
     initialLocation: '/onBoarding',
     routes: [
       GoRoute(
         path: '/onBoarding',
-        pageBuilder:
-            (context, state) => const MaterialPage(child: OnBoardingPage()),
+        builder: (context, state) => OnBoardingPage(),
       ),
       GoRoute(
         path: '/signin',
-        pageBuilder: (context, state) {
-          return MaterialPage(child: SigninPage());
+        builder: (context, state) {
+          return SigninPage();
         },
       ),
-      GoRoute(
-        path: '/signup',
-        pageBuilder: (context, state) => MaterialPage(child: SignUpPage()),
-      ),
-      GoRoute(
-        path: '/home',
-        pageBuilder: (context, state) => MaterialPage(child: WidgetTree()),
-      ),
+      GoRoute(path: '/signup', builder: (context, state) => SignUpPage()),
+      GoRoute(path: '/home', builder: (context, state) => WidgetTree()),
     ],
     redirect: (context, state) {
       final user = ref.read(userInfoProvider);
@@ -53,6 +44,6 @@ final routerProvider = Provider<GoRouter>((ref) {
     errorBuilder:
         (context, state) =>
             Scaffold(body: Center(child: Text('Page not found: ${state.uri}'))),
-    refreshListenable: authStateChangeNotifier,
+    refreshListenable: ,
   );
 });

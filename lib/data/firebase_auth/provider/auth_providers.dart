@@ -20,21 +20,6 @@ class UserInfo extends _$UserInfo {
   }
 }
 
-final authStateChangeNotifierProvider = Provider<AuthStateChangeNotifier>((
-    ref,
-    ) {
-  return AuthStateChangeNotifier(ref);
-});
-
-class AuthStateChangeNotifier extends ChangeNotifier {
-  AuthStateChangeNotifier(Ref ref) {
-    // Subscribe to authState stream
-    ref.listen<AsyncValue<User?>>(authStateProvider, (_, next) {
-      notifyListeners();
-    });
-  }
-}
-
 @riverpod
 FirebaseAuth firebaseAuth(FirebaseAuthRef ref) {
   return FirebaseAuth.instance;
