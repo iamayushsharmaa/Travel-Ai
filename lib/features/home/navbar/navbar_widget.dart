@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:triptide/screens/navbar/notifier.dart';
+
+import 'notifier.dart';
 
 class NavbarWidget extends StatelessWidget {
   const NavbarWidget({super.key});

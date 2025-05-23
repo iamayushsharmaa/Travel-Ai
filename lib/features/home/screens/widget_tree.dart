@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:triptide/screens/home/add_trip.dart';
-
 import '../navbar/navbar_widget.dart';
 import '../navbar/notifier.dart';
+import 'add_trip.dart';
 import 'home.dart';
 
 List<Widget> pages = [HomePage(), AddTrip()];

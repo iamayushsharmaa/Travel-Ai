@@ -34,7 +34,7 @@ class AuthRepository {
       UserCredential userCredential;
       if (kIsWeb) {
         GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
-        googleAuthProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+        googleAuthProvider.addScope('https://www.googleapis.com/screens/contacts.readonly');
         userCredential = await _auth.signInWithPopup(googleAuthProvider);
       } else{
         final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();

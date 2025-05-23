@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:triptide/data/firebase_auth/provider/auth_providers.dart';
-import 'package:triptide/screens/auth/onboarding_page.dart';
-import 'package:triptide/screens/auth/signin_page.dart';
-import 'package:triptide/screens/auth/signup_page.dart';
-import 'package:triptide/screens/home/widget_tree.dart';
+
+import 'features/auth/provider/auth_providers.dart';
+import 'features/auth/screens/onboarding_page.dart';
+import 'features/auth/screens/signin_page.dart';
+import 'features/auth/screens/signup_page.dart';
+import 'features/home/screens/widget_tree.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final listenable = ValueNotifier<bool>(false);

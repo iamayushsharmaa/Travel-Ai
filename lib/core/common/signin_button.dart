@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:triptide/data/firebase_auth/provider/auth_providers.dart';
+
+import '../../features/auth/provider/auth_providers.dart';
 
 class SignInButton extends ConsumerWidget {
   const SignInButton({super.key});

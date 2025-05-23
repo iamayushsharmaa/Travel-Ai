@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/common/signin_button.dart';
 
-import '../../data/firebase_auth/provider/auth_providers.dart';
+import '../provider/auth_providers.dart';
+
 
 class OnBoardingPage extends ConsumerWidget {
   const OnBoardingPage({super.key});

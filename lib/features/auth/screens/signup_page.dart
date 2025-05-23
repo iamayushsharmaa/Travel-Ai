@@ -4,25 +4,39 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:triptide/core/common/loader.dart';
 
-import '../../data/firebase_auth/provider/auth_providers.dart';
+import '../provider/auth_providers.dart';
 
-class SigninPage extends ConsumerStatefulWidget {
-  SigninPage({Key? key}) : super(key: key);
+
+class SignUpPage extends ConsumerStatefulWidget {
+  SignUpPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<SigninPage> createState() => _SigninPageState();
+  ConsumerState<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SigninPageState extends ConsumerState<SigninPage> {
+class _SignUpPageState extends ConsumerState<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  IconData iconPassword = CupertinoIcons.eye_fill;
   bool obscurePassword = true;
   String? _errorMsg;
 
-  void googleSignIn(WidgetRef ref) {
-    ref.read(authStateNotifierProvider.notifier);
+  void signUpClicked(WidgetRef ref) {
+    if (_formKey.currentState!.validate()) {
+      try {
+        ref
+            .read(authStateNotifierProvider.notifier)
+            .signUp(
+              emailController.text.trim(),
+              passwordController.text.trim(),
+            );
+        context.go('home');
+      } catch (e) {
+        setState(() {
+          _errorMsg = e.toString();
+        });
+      }
+    }
   }
 
   @override
@@ -52,7 +66,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Sign in.',
+                            'Sign up.',
                             textAlign: TextAlign.right,
                             style: TextStyle(
                               fontSize: 34,
@@ -64,7 +78,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Please enter all the information to sign in.',
+                            'Please enter all the information to sign up.',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.black54,
@@ -73,6 +87,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                           ),
                         ),
                         const SizedBox(height: 25),
+
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
@@ -150,14 +165,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                           height: 50,
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () async {
-                              await ref
-                                  .read(authStateNotifierProvider.notifier)
-                                  .signIn(
-                                    emailController.text.trim(),
-                                    passwordController.text.trim(),
-                                  );
-                            },
+                            onPressed: () => signUpClicked(ref),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
                               foregroundColor: Colors.white,
@@ -166,7 +174,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                               ),
                             ),
                             child: Text(
-                              'Sign in',
+                              'Sign up',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -174,13 +182,12 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: TextButton(
-                            onPressed: () => context.go('/signup'),
+                            onPressed: () => context.go('/signin'),
                             child: Text(
-                              'Don\'t have an account? Sign up!',
+                              'Already have an account? Sign in!',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,

@@ -2,41 +2,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:triptide/core/common/error_text.dart';
 import 'package:triptide/core/common/loader.dart';
 
-import '../../data/firebase_auth/provider/auth_providers.dart';
+import '../provider/auth_providers.dart';
 
-class SignUpPage extends ConsumerStatefulWidget {
-  SignUpPage({Key? key}) : super(key: key);
+
+class SigninPage extends ConsumerStatefulWidget {
+  SigninPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<SignUpPage> createState() => _SignUpPageState();
+  ConsumerState<SigninPage> createState() => _SigninPageState();
 }
 
-class _SignUpPageState extends ConsumerState<SignUpPage> {
+class _SigninPageState extends ConsumerState<SigninPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  IconData iconPassword = CupertinoIcons.eye_fill;
   bool obscurePassword = true;
   String? _errorMsg;
 
-  void signUpClicked(WidgetRef ref) {
-    if (_formKey.currentState!.validate()) {
-      try {
-        ref
-            .read(authStateNotifierProvider.notifier)
-            .signUp(
-              emailController.text.trim(),
-              passwordController.text.trim(),
-            );
-        context.go('home');
-      } catch (e) {
-        setState(() {
-          _errorMsg = e.toString();
-        });
-      }
-    }
+  void googleSignIn(WidgetRef ref) {
+    ref.read(authStateNotifierProvider.notifier);
   }
 
   @override
@@ -66,7 +53,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Sign up.',
+                            'Sign in.',
                             textAlign: TextAlign.right,
                             style: TextStyle(
                               fontSize: 34,
@@ -78,7 +65,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Please enter all the information to sign up.',
+                            'Please enter all the information to sign in.',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.black54,
@@ -87,7 +74,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           ),
                         ),
                         const SizedBox(height: 25),
-
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
@@ -165,7 +151,14 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           height: 50,
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () => signUpClicked(ref),
+                            onPressed: () async {
+                              await ref
+                                  .read(authStateNotifierProvider.notifier)
+                                  .signIn(
+                                    emailController.text.trim(),
+                                    passwordController.text.trim(),
+                                  );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
                               foregroundColor: Colors.white,
@@ -174,7 +167,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                               ),
                             ),
                             child: Text(
-                              'Sign up',
+                              'Sign in',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -182,12 +175,13 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: TextButton(
-                            onPressed: () => context.go('/signin'),
+                            onPressed: () => context.go('/signup'),
                             child: Text(
-                              'Already have an account? Sign in!',
+                              'Don\'t have an account? Sign up!',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,

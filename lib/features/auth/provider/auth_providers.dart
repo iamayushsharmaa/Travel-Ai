@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:triptide/data/firebase_auth/models/user_model.dart';
 
-import '../repository/firebase_repository.dart';
+import '../../../features/auth/repository/firebase_repository.dart';
+import '../models/user_model.dart';
 
 part 'auth_providers.g.dart';
 
@@ -15,7 +15,7 @@ class UserInfo extends _$UserInfo {
     ref.listen(authStateNotifierProvider, (previous, next) {
       state = next.value;
     });
-    return null; // Initial state is null (no user logged in)
+    return null;
   }
 
   void updateUser(UserModel? user) {
