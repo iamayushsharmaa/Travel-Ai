@@ -11,7 +11,7 @@ class NavbarWidget extends StatelessWidget {
       valueListenable: selectedPageNotifier,
       builder: (context, selectedIndex, child) {
         return NavigationBar(
-          height: 70,
+          height: 60,
           backgroundColor: Colors.white,
           indicatorColor: Colors.transparent,
           labelTextStyle: MaterialStateProperty.all(
@@ -27,7 +27,7 @@ class NavbarWidget extends StatelessWidget {
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           destinations: [
             NavigationDestination(
-              icon: Icon(Icons.home_outlined),
+              icon: Icon(Icons.home),
               label: 'Home',
             ),
             NavigationDestination(icon: Icon(Icons.add), label: 'Add'),

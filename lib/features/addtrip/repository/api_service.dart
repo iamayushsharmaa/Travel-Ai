@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:triptide/data/api/models/gemini_response_model.dart';
-import 'package:triptide/data/api/models/travel_gemini_model.dart';
+import 'package:triptide/features/addtrip/models/gemini_response_model.dart';
+import 'package:triptide/features/addtrip/models/travel_gemini_model.dart';
 
 class GeminiApiService {
   final Dio dio = Dio(BaseOptions(baseUrl: '${dotenv.env["BASE_URL"]}'));

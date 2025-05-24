@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triptide/features/addtrip/screens/add_trip.dart';
+import 'package:triptide/features/home/screens/home.dart';
 
 import 'features/auth/provider/auth_providers.dart';
 import 'features/auth/screens/onboarding_page.dart';
 import 'features/auth/screens/signin_page.dart';
 import 'features/auth/screens/signup_page.dart';
-import 'features/home/screens/widget_tree.dart';
+import 'features/nav/widget_tree.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final listenable = ValueNotifier<bool>(false);
@@ -28,7 +30,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/signin', builder: (context, state) => SigninPage()),
       GoRoute(path: '/signup', builder: (context, state) => SignUpPage()),
-      GoRoute(path: '/', builder: (context, state) => const WidgetTree()),
+      GoRoute(path: '/', builder: (context, state) =>  WidgetTree()),
+      GoRoute(path: '/home', builder: (context, state) => HomePage()),
+      GoRoute(path: '/addtrip', builder: (context, state) => AddTripPage()),
     ],
     redirect: (BuildContext context, GoRouterState state) async {
       final user = ref.read(userInfoProvider);

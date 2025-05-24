@@ -37,6 +37,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateNotifierProvider);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

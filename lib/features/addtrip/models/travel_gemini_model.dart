@@ -1,5 +1,3 @@
-
-
 class TravelGeminiResponse {
   final String travelId;
   final String destination;
