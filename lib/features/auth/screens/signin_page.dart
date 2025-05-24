@@ -22,8 +22,8 @@ class _SigninPageState extends ConsumerState<SigninPage> {
   bool obscurePassword = true;
   String? _errorMsg;
 
-  void googleSignIn(WidgetRef ref) {
-    ref.read(authStateNotifierProvider.notifier);
+  void signInButtonClicked(){
+
   }
 
   @override
@@ -36,7 +36,6 @@ class _SigninPageState extends ConsumerState<SigninPage> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateNotifierProvider);
-
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -48,7 +47,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                     ? const Loader()
                     : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
@@ -74,11 +73,12 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                           ),
                         ),
                         const SizedBox(height: 25),
+                        Text('Email', style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.normal),),
+                        const SizedBox(height: 6),
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
                             hintText: 'Email',
-                            labelText: 'Email',
                             labelStyle: TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -106,12 +106,13 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                           },
                         ),
                         SizedBox(height: 16),
+                        Text('Password', style: TextStyle(fontSize: 15, color: Colors.black),),
+                        SizedBox(height: 6),
                         TextFormField(
                           controller: passwordController,
                           obscureText: obscurePassword,
                           decoration: InputDecoration(
                             hintText: 'Password',
-                            labelText: 'Password',
                             labelStyle: TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -175,7 +176,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 5),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: TextButton(

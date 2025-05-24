@@ -14,10 +14,12 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen(userInfoProvider, (previous, next) {
     listenable.value = !listenable.value;
   });
+  final initialLocation =
+      ref.read(firebaseAuthProvider).currentUser != null ? '/' : '/onBoarding';
 
   return GoRouter(
     debugLogDiagnostics: true,
-    initialLocation: '/onBoarding',
+    initialLocation: initialLocation,
     refreshListenable: listenable,
     routes: [
       GoRoute(
@@ -36,7 +38,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         '/signin',
         '/signup',
       ].contains(currentPath);
-
+      final firebaseUser = ref.read(firebaseAuthProvider).currentUser;
+      if (firebaseUser != null && user == null) {
+        return null;
+      }
       if (user != null && isPublicRoute) {
         return '/';
       }

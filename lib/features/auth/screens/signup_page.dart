@@ -6,7 +6,6 @@ import 'package:triptide/core/common/loader.dart';
 
 import '../provider/auth_providers.dart';
 
-
 class SignUpPage extends ConsumerStatefulWidget {
   SignUpPage({Key? key}) : super(key: key);
 
@@ -30,7 +29,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               emailController.text.trim(),
               passwordController.text.trim(),
             );
-        context.go('home');
       } catch (e) {
         setState(() {
           _errorMsg = e.toString();
@@ -61,7 +59,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     ? const Loader()
                     : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
@@ -87,7 +85,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           ),
                         ),
                         const SizedBox(height: 25),
-
+                        Text(
+                          'Email',
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        SizedBox(height: 6),
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
@@ -120,6 +122,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           },
                         ),
                         SizedBox(height: 16),
+                        Text(
+                          'Password',
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        SizedBox(height: 6),
                         TextFormField(
                           controller: passwordController,
                           obscureText: obscurePassword,

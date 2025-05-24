@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -7,6 +9,8 @@ import '../../../features/auth/repository/firebase_repository.dart';
 import '../models/user_model.dart';
 
 part 'auth_providers.g.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 @Riverpod(keepAlive: true)
 class UserInfo extends _$UserInfo {
@@ -89,6 +93,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
         (userModel) {
           state = AsyncValue.data(userModel);
           ref.read(userInfoProvider.notifier).updateUser(userModel);
+          GoRouter.of(navigatorKey.currentContext!).go('/');
         },
       );
     } catch (e, stackTrace) {
@@ -110,6 +115,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
         (user) {
           state = AsyncValue.data(user);
           ref.read(userInfoProvider.notifier).updateUser(user);
+          GoRouter.of(navigatorKey.currentContext!).go('/');
         },
       );
     } catch (e, stackTrace) {
@@ -131,6 +137,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
         (user) {
           state = AsyncValue.data(user);
           ref.read(userInfoProvider.notifier).updateUser(user);
+          GoRouter.of(navigatorKey.currentContext!).go('/');
         },
       );
     } catch (e, stackTrace) {
