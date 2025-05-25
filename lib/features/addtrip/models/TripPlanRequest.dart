@@ -2,21 +2,20 @@ class TripPlanRequest {
   final String destination;
   final DateTime startDate;
   final DateTime endDate;
-  final String tripType; // e.g., Vacation, Honeymoon, Business
-  final double budget; // in USD or local currency
-  final String budgetType; // e.g., "total", "per_day"
+  final String tripType;
+  final double budget;
+  final String budgetType;
   final List<String> interests;
   final String companions;
   final String accommodationType; // e.g., "budget hotel", "airbnb"
   final String transportPreferences;
+  final String pace;
+  final String food;
 
   @override
   String toString() {
     return 'TripPlanRequest{destination: $destination, startDate: $startDate, endDate: $endDate, tripType: $tripType, budget: $budget, budgetType: $budgetType, interests: $interests, companions: $companions, accommodationType: $accommodationType, transportPreferences: $transportPreferences, pace: $pace, food: $food}';
   }
-
-  final String pace;
-  final String food;
 
   TripPlanRequest({
     required this.destination,

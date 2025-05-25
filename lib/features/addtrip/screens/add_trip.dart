@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:triptide/core/enums/trip_type.dart';
+import 'package:triptide/features/addtrip/screens/input_widget/personal_exp_step.dart';
+import 'package:triptide/features/addtrip/screens/input_widget/travel_prep_step.dart';
 
+import '../../../core/enums/budget_type.dart';
 import '../../../core/enums/currency.dart';
 
 class AddTripPage extends StatefulWidget {
@@ -13,17 +16,62 @@ class AddTripPage extends StatefulWidget {
 
 class _AddTripPageState extends State<AddTripPage> {
   final PageController _pageController = PageController();
-  int _currentStep = 1;
-  final int _totalSteps = 4;
+  int _currentStep = 0;
+  final int _totalSteps = 6;
 
   final TextEditingController destinationController = TextEditingController();
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
+  final TextEditingController budgetController = TextEditingController();
+  final TextEditingController budgetTypeController = TextEditingController();
   TripType? selectedTripType;
   DateTime? startDate;
   DateTime? endDate;
-  final TextEditingController budgetController = TextEditingController();
   Currency selectedCurrency = Currency.usd;
+  BudgetType selectedBudgetType = BudgetType.total;
+
+  List<String> selectedInterest = [];
+  String selectedCompanion = '';
+  String accommodation = '';
+  String transport = '';
+  String pace = '';
+  String food = '';
+
+  void onInterestsChanged(List<String> interest) {
+    setState(() {
+      selectedInterest = interest;
+    });
+  }
+
+  void onCompaionChanged(String companion) {
+    setState(() {
+      selectedCompanion = companion;
+    });
+  }
+
+  void onAccommodationChanged(String value) {
+    setState(() {
+      accommodation = value;
+    });
+  }
+
+  void onTransportChanged(String value) {
+    setState(() {
+      transport = value;
+    });
+  }
+
+  void onPaceChanged(String value) {
+    setState(() {
+      pace = value;
+    });
+  }
+
+  void onFoodChanged(String value) {
+    setState(() {
+      food = value;
+    });
+  }
 
   void _nextStep() {
     if (_currentStep < _totalSteps - 1) {
@@ -92,8 +140,22 @@ class _AddTripPageState extends State<AddTripPage> {
                 children: [
                   _stepDestination(),
                   _stepDates(),
-                  _stepBudget(),
-                  _stepInterest(),
+                  PersonalPreferencesStep(
+                    selectedInterests: selectedInterest,
+                    onInterestsChanged: (value) => onInterestsChanged(value),
+                    selectedCompanion: selectedCompanion,
+                    onCompanionChanged: (value) => onCompaionChanged(value),
+                  ),
+                  TravelPreferencesStep(
+                    accommodation: accommodation,
+                    onAccommodationChanged: onAccommodationChanged,
+                    transport: transport,
+                    onTransportChanged: onTransportChanged,
+                    pace: pace,
+                    onPaceChanged: onPaceChanged,
+                    food: food,
+                    onFoodChanged: onFoodChanged,
+                  ),
                 ],
               ),
             ),
@@ -318,30 +380,27 @@ class _AddTripPageState extends State<AddTripPage> {
             ),
             maxLines: 1,
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _stepBudget() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("What's your budget?", style: TextStyle(fontSize: 18)),
-        ],
-      ),
-    );
-  }
-
-  Widget _stepInterest() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("What's your budget?", style: TextStyle(fontSize: 18)),
+          const SizedBox(height: 20),
+          Text(
+            'Budget type',
+            style: TextStyle(fontSize: 18, color: Colors.black),
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 10,
+            children:
+                BudgetType.values.map((value) {
+                  final isSelected = selectedBudgetType == value;
+                  return ChoiceChip(
+                    label: Text(value.label),
+                    selected: isSelected,
+                    selectedColor: Colors.blueAccent,
+                    onSelected: (_) {
+                      setState(() => selectedBudgetType = value);
+                    },
+                  );
+                }).toList(),
+          ),
         ],
       ),
     );
