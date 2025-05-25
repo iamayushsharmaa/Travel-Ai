@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:triptide/core/enums/trip_type.dart';
+
+import '../../../core/enums/currency.dart';
 
 class AddTripPage extends StatefulWidget {
   const AddTripPage({super.key});
@@ -14,10 +17,13 @@ class _AddTripPageState extends State<AddTripPage> {
   final int _totalSteps = 4;
 
   final TextEditingController destinationController = TextEditingController();
+  final TextEditingController startDateController = TextEditingController();
+  final TextEditingController endDateController = TextEditingController();
   TripType? selectedTripType;
   DateTime? startDate;
   DateTime? endDate;
   final TextEditingController budgetController = TextEditingController();
+  Currency selectedCurrency = Currency.usd;
 
   void _nextStep() {
     if (_currentStep < _totalSteps - 1) {
@@ -83,7 +89,12 @@ class _AddTripPageState extends State<AddTripPage> {
               child: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: [_stepDestination(), _stepDates(), _stepBudget()],
+                children: [
+                  _stepDestination(),
+                  _stepDates(),
+                  _stepBudget(),
+                  _stepInterest(),
+                ],
               ),
             ),
             const SizedBox(height: 16),
@@ -100,8 +111,8 @@ class _AddTripPageState extends State<AddTripPage> {
                           borderRadius: BorderRadius.circular(12),
                           side: BorderSide.none,
                         ),
-                        backgroundColor: Colors.blueAccent,
-                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.white.withOpacity(0.8),
+                        foregroundColor: Colors.blueAccent,
                       ),
                       child: const Text('Back'),
                     ),
@@ -197,37 +208,115 @@ class _AddTripPageState extends State<AddTripPage> {
             style: TextStyle(fontSize: 18),
           ),
           const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () async {
+          TextField(
+            controller: startDateController,
+            readOnly: true,
+            onTap: () async {
               final date = await showDatePicker(
                 context: context,
-                initialDate: DateTime.now(),
                 firstDate: DateTime.now(),
                 lastDate: DateTime(2100),
               );
-              if (date != null) setState(() => startDate = date);
+              if (date != null) {
+                setState(() {
+                  startDate = date;
+                  startDateController.text =
+                      "${DateFormat.yMMMd().format(date)}";
+                });
+              }
             },
-            child: Text(
-              startDate == null
-                  ? "Select Start Date"
-                  : "Start: \${startDate!.toLocal()}",
+            decoration: InputDecoration(
+              hintText: "Start Date",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.blueAccent, width: 2),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Colors.blueAccent, // Red when focused
+                  width: 2,
+                ),
+              ),
+              suffixIcon: Icon(Icons.calendar_month),
             ),
           ),
-          ElevatedButton(
-            onPressed: () async {
+          const SizedBox(height: 10),
+          TextField(
+            controller: endDateController,
+            readOnly: true,
+            onTap: () async {
               final date = await showDatePicker(
                 context: context,
-                initialDate: startDate ?? DateTime.now(),
-                firstDate: startDate ?? DateTime.now(),
+                firstDate: DateTime.now(),
                 lastDate: DateTime(2100),
               );
-              if (date != null) setState(() => endDate = date);
+              if (date != null) {
+                setState(() {
+                  endDate = date;
+                  endDateController.text = "${DateFormat.yMMMd().format(date)}";
+                });
+              }
             },
-            child: Text(
-              endDate == null
-                  ? "Select End Date"
-                  : "End: \${endDate!.toLocal()}",
+            decoration: InputDecoration(
+              hintText: "End Date",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.blueAccent, width: 2),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Colors.blueAccent, // Red when focused
+                  width: 2,
+                ),
+              ),
+              suffixIcon: Icon(Icons.calendar_month),
             ),
+          ),
+          const SizedBox(height: 20),
+          Text('What\'s your budget?', style: TextStyle(fontSize: 18)),
+          const SizedBox(height: 10),
+          TextField(
+            controller: budgetController,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              hintText: "Budget",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.blueAccent, width: 2),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Colors.blueAccent, // Red when focused
+                  width: 2,
+                ),
+              ),
+              suffixIcon: PopupMenuButton<Currency>(
+                icon: Text(
+                  selectedCurrency.symbol,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onSelected: (Currency currency) {
+                  setState(() {
+                    selectedCurrency = currency;
+                  });
+                },
+                itemBuilder: (context) {
+                  return Currency.values.map((Currency currency) {
+                    return PopupMenuItem<Currency>(
+                      value: currency,
+                      child: Text("${currency.label} (${currency.symbol})"),
+                    );
+                  }).toList();
+                },
+              ),
+            ),
+            maxLines: 1,
           ),
         ],
       ),
@@ -241,14 +330,18 @@ class _AddTripPageState extends State<AddTripPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("What's your budget?", style: TextStyle(fontSize: 18)),
-          TextField(
-            controller: budgetController,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: "Budget (USD)",
-              prefixText: '\$',
-            ),
-          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _stepInterest() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text("What's your budget?", style: TextStyle(fontSize: 18)),
         ],
       ),
     );
