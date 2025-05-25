@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:triptide/core/enums/trip_type.dart';
+import 'package:triptide/features/addtrip/screens/input_widget/date_budget_step.dart';
+import 'package:triptide/features/addtrip/screens/input_widget/destination_step.dart';
 import 'package:triptide/features/addtrip/screens/input_widget/personal_exp_step.dart';
 import 'package:triptide/features/addtrip/screens/input_widget/travel_prep_step.dart';
 
@@ -17,13 +18,12 @@ class AddTripPage extends StatefulWidget {
 class _AddTripPageState extends State<AddTripPage> {
   final PageController _pageController = PageController();
   int _currentStep = 0;
-  final int _totalSteps = 6;
+  final int _totalSteps = 4;
 
   final TextEditingController destinationController = TextEditingController();
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController budgetController = TextEditingController();
-  final TextEditingController budgetTypeController = TextEditingController();
   TripType? selectedTripType;
   DateTime? startDate;
   DateTime? endDate;
@@ -36,6 +36,36 @@ class _AddTripPageState extends State<AddTripPage> {
   String transport = '';
   String pace = '';
   String food = '';
+
+  void onTripTypeChanged(TripType type) {
+    setState(() {
+      selectedTripType = type;
+    });
+  }
+
+  void onCurrencyChanged(Currency currency) {
+    setState(() {
+      selectedCurrency = currency;
+    });
+  }
+
+  void onBudgetTypeChanged(BudgetType budgetType) {
+    setState(() {
+      selectedBudgetType = budgetType;
+    });
+  }
+
+  void onStartDateChanged(DateTime date) {
+    setState(() {
+      startDate = date;
+    });
+  }
+
+  void onEndDateChanged(DateTime date) {
+    setState(() {
+      endDate = date;
+    });
+  }
 
   void onInterestsChanged(List<String> interest) {
     setState(() {
@@ -138,8 +168,24 @@ class _AddTripPageState extends State<AddTripPage> {
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  _stepDestination(),
-                  _stepDates(),
+                  DestinationStep(
+                    destinationController: destinationController,
+                    selectedTripType: selectedTripType,
+                    onTripTypeChanged: (value) => onTripTypeChanged(value),
+                  ),
+                  DateBudgetStep(
+                    startDateController: startDateController,
+                    endDateController: endDateController,
+                    budgetController: budgetController,
+                    startDate: startDate,
+                    endDate: endDate,
+                    selectedCurrency: selectedCurrency,
+                    onCurrencyChanged: (value) => onCurrencyChanged(value),
+                    selectedBudgetType: selectedBudgetType,
+                    onBudgetTypeChanged: (value) => onBudgetTypeChanged(value),
+                    onStartDateChanged: (date) => onStartDateChanged(date),
+                    onEndDateChanged: (date) => onEndDateChanged(date),
+                  ),
                   PersonalPreferencesStep(
                     selectedInterests: selectedInterest,
                     onInterestsChanged: (value) => onInterestsChanged(value),
@@ -205,203 +251,6 @@ class _AddTripPageState extends State<AddTripPage> {
             const SizedBox(height: 16),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _stepDestination() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 10),
-          const Text("Where are you going?", style: TextStyle(fontSize: 18)),
-          const SizedBox(height: 10),
-          TextField(
-            controller: destinationController,
-            maxLines: 1,
-            decoration: InputDecoration(
-              hintText: 'City, Country',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.blueAccent, width: 2),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: Colors.blueAccent, // Red when focused
-                  width: 2,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text('What\'s your trip type?', style: TextStyle(fontSize: 18)),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 10,
-            children:
-                TripType.values.map((type) {
-                  final bool isSelected = selectedTripType == type;
-                  return ChoiceChip(
-                    label: Text(type.label),
-                    selected: isSelected,
-                    selectedColor: Colors.blueAccent,
-                    onSelected: (_) {
-                      setState(() => selectedTripType = type);
-                    },
-                  );
-                }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _stepDates() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Select your travel dates",
-            style: TextStyle(fontSize: 18),
-          ),
-          const SizedBox(height: 10),
-          TextField(
-            controller: startDateController,
-            readOnly: true,
-            onTap: () async {
-              final date = await showDatePicker(
-                context: context,
-                firstDate: DateTime.now(),
-                lastDate: DateTime(2100),
-              );
-              if (date != null) {
-                setState(() {
-                  startDate = date;
-                  startDateController.text =
-                      "${DateFormat.yMMMd().format(date)}";
-                });
-              }
-            },
-            decoration: InputDecoration(
-              hintText: "Start Date",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.blueAccent, width: 2),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: Colors.blueAccent, // Red when focused
-                  width: 2,
-                ),
-              ),
-              suffixIcon: Icon(Icons.calendar_month),
-            ),
-          ),
-          const SizedBox(height: 10),
-          TextField(
-            controller: endDateController,
-            readOnly: true,
-            onTap: () async {
-              final date = await showDatePicker(
-                context: context,
-                firstDate: DateTime.now(),
-                lastDate: DateTime(2100),
-              );
-              if (date != null) {
-                setState(() {
-                  endDate = date;
-                  endDateController.text = "${DateFormat.yMMMd().format(date)}";
-                });
-              }
-            },
-            decoration: InputDecoration(
-              hintText: "End Date",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.blueAccent, width: 2),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: Colors.blueAccent, // Red when focused
-                  width: 2,
-                ),
-              ),
-              suffixIcon: Icon(Icons.calendar_month),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text('What\'s your budget?', style: TextStyle(fontSize: 18)),
-          const SizedBox(height: 10),
-          TextField(
-            controller: budgetController,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              hintText: "Budget",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.blueAccent, width: 2),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: Colors.blueAccent, // Red when focused
-                  width: 2,
-                ),
-              ),
-              suffixIcon: PopupMenuButton<Currency>(
-                icon: Text(
-                  selectedCurrency.symbol,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onSelected: (Currency currency) {
-                  setState(() {
-                    selectedCurrency = currency;
-                  });
-                },
-                itemBuilder: (context) {
-                  return Currency.values.map((Currency currency) {
-                    return PopupMenuItem<Currency>(
-                      value: currency,
-                      child: Text("${currency.label} (${currency.symbol})"),
-                    );
-                  }).toList();
-                },
-              ),
-            ),
-            maxLines: 1,
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Budget type',
-            style: TextStyle(fontSize: 18, color: Colors.black),
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 10,
-            children:
-                BudgetType.values.map((value) {
-                  final isSelected = selectedBudgetType == value;
-                  return ChoiceChip(
-                    label: Text(value.label),
-                    selected: isSelected,
-                    selectedColor: Colors.blueAccent,
-                    onSelected: (_) {
-                      setState(() => selectedBudgetType = value);
-                    },
-                  );
-                }).toList(),
-          ),
-        ],
       ),
     );
   }
