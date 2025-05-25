@@ -5,6 +5,6 @@ class AddTripPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [Text('Add Trips')]);
+    return Scaffold(body: Column(children: [Text('Add Trips')]));
   }
 }
