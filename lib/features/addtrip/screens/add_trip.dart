@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptide/core/enums/trip_type.dart';
 
 class AddTripPage extends StatefulWidget {
   const AddTripPage({super.key});
@@ -9,10 +10,11 @@ class AddTripPage extends StatefulWidget {
 
 class _AddTripPageState extends State<AddTripPage> {
   final PageController _pageController = PageController();
-  int _currentStep = 3;
-  final int _totalSteps = 5;
+  int _currentStep = 1;
+  final int _totalSteps = 4;
 
   final TextEditingController destinationController = TextEditingController();
+  TripType? selectedTripType;
   DateTime? startDate;
   DateTime? endDate;
   final TextEditingController budgetController = TextEditingController();
@@ -81,7 +83,7 @@ class _AddTripPageState extends State<AddTripPage> {
               child: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: [],
+                children: [_stepDestination(), _stepDates(), _stepBudget()],
               ),
             ),
             const SizedBox(height: 16),
@@ -130,6 +132,124 @@ class _AddTripPageState extends State<AddTripPage> {
             const SizedBox(height: 16),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _stepDestination() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 10),
+          const Text("Where are you going?", style: TextStyle(fontSize: 18)),
+          const SizedBox(height: 10),
+          TextField(
+            controller: destinationController,
+            maxLines: 1,
+            decoration: InputDecoration(
+              hintText: 'City, Country',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.blueAccent, width: 2),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Colors.blueAccent, // Red when focused
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text('What\'s your trip type?', style: TextStyle(fontSize: 18)),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 10,
+            children:
+                TripType.values.map((type) {
+                  final bool isSelected = selectedTripType == type;
+                  return ChoiceChip(
+                    label: Text(type.label),
+                    selected: isSelected,
+                    selectedColor: Colors.blueAccent,
+                    onSelected: (_) {
+                      setState(() => selectedTripType = type);
+                    },
+                  );
+                }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _stepDates() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Select your travel dates",
+            style: TextStyle(fontSize: 18),
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () async {
+              final date = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime.now(),
+                lastDate: DateTime(2100),
+              );
+              if (date != null) setState(() => startDate = date);
+            },
+            child: Text(
+              startDate == null
+                  ? "Select Start Date"
+                  : "Start: \${startDate!.toLocal()}",
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final date = await showDatePicker(
+                context: context,
+                initialDate: startDate ?? DateTime.now(),
+                firstDate: startDate ?? DateTime.now(),
+                lastDate: DateTime(2100),
+              );
+              if (date != null) setState(() => endDate = date);
+            },
+            child: Text(
+              endDate == null
+                  ? "Select End Date"
+                  : "End: \${endDate!.toLocal()}",
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _stepBudget() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text("What's your budget?", style: TextStyle(fontSize: 18)),
+          TextField(
+            controller: budgetController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              labelText: "Budget (USD)",
+              prefixText: '\$',
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -106,15 +106,14 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text('Password', style: TextStyle(fontSize: 15, color: Colors.black),),
-                        SizedBox(height: 6),
+                        const SizedBox(height: 6),
                         TextFormField(
                           controller: passwordController,
                           obscureText: obscurePassword,
                           decoration: InputDecoration(
                             hintText: 'Enter Password',
-                            labelStyle: TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
