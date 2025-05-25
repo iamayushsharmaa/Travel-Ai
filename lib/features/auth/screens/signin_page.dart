@@ -79,7 +79,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
-                            hintText: 'Email',
+                            hintText: 'Enter Email',
                             labelStyle: TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -113,7 +113,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                           controller: passwordController,
                           obscureText: obscurePassword,
                           decoration: InputDecoration(
-                            hintText: 'Password',
+                            hintText: 'Enter Password',
                             labelStyle: TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -150,7 +150,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                         ),
                         SizedBox(height: 25),
                         SizedBox(
-                          height: 50,
+                          height: 55,
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () async {

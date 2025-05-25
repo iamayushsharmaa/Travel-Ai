@@ -6,22 +6,30 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'All Trips',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Hi Ayush!', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25)),
+        centerTitle: false,
+        backgroundColor: Colors.white,
+      ),
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'All Trips',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
-          ),
-          SizedBox(height: 20),
-          NoTripYet(),
-        ],
+            SizedBox(height: 20),
+            NoTripYet(),
+          ],
+        ),
       ),
     );
   }

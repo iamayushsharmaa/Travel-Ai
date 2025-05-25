@@ -1,10 +1,136 @@
 import 'package:flutter/material.dart';
 
-class AddTripPage extends StatelessWidget {
+class AddTripPage extends StatefulWidget {
   const AddTripPage({super.key});
 
   @override
+  State<AddTripPage> createState() => _AddTripPageState();
+}
+
+class _AddTripPageState extends State<AddTripPage> {
+  final PageController _pageController = PageController();
+  int _currentStep = 3;
+  final int _totalSteps = 5;
+
+  final TextEditingController destinationController = TextEditingController();
+  DateTime? startDate;
+  DateTime? endDate;
+  final TextEditingController budgetController = TextEditingController();
+
+  void _nextStep() {
+    if (_currentStep < _totalSteps - 1) {
+      setState(() {
+        _currentStep++;
+        _pageController.nextPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      });
+    }
+  }
+
+  void _previousStep() {
+    if (_currentStep > 0) {
+      setState(() {
+        _currentStep--;
+        _pageController.previousPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Column(children: [Text('Add Trips')]));
+    double progress = (_currentStep + 1) / _totalSteps;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Plan Your Trip',
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        centerTitle: false,
+      ),
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          children: [
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 17,
+                borderRadius: BorderRadius.circular(10),
+                backgroundColor: Colors.grey[200],
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  Colors.blueAccent,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 55,
+                    child: ElevatedButton(
+                      onPressed: _currentStep > 0 ? _previousStep : null,
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide.none,
+                        ),
+                        backgroundColor: Colors.blueAccent,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Back'),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: SizedBox(
+                    height: 55,
+                    child: ElevatedButton(
+                      onPressed: _nextStep,
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide.none,
+                        ),
+                        backgroundColor: Colors.blueAccent,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: Text(
+                        _currentStep == _totalSteps - 1 ? "Submit" : "Next",
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
   }
 }
