@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/core/constant/firebase_constant.dart';
@@ -47,6 +46,38 @@ class TravelRepository {
 
       await _trips.doc(travelId).set(storeTrip.toMap());
       return right(storeTrip);
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  Stream<List<TravelDbModel>> getUserTrips(String userId) {
+    return _trips
+        .where('userId', isEqualTo: userId)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map(
+            (doc) => TravelDbModel.fromMap(doc.data() as Map<String, dynamic>),
+          )
+          .toList();
+    });
+  }
+
+  FutureEither<TravelDbModel> getTripById(String travelId) async {
+    try {
+      final snapshot =
+          await _trips.where('travelId', isEqualTo: travelId).get();
+      if (snapshot.docs.isNotEmpty) {
+        final trip = snapshot.docs.first;
+        return right(
+          TravelDbModel.fromMap(trip.data() as Map<String, dynamic>),
+        );
+      } else {
+        return left(Failure('Trip not found'));
+      }
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {

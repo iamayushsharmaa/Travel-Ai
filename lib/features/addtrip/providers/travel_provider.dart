@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/core/constant/constant.dart';
 import 'package:triptide/features/addtrip/models/TripPlanRequest.dart';
+import 'package:triptide/features/addtrip/models/travel_db_model.dart';
 import 'package:triptide/features/addtrip/repository/gemini_repository.dart';
 import 'package:uuid/uuid.dart';
 
@@ -44,8 +45,24 @@ Please tailor the plan to the user’s preferences and return only the JSON.
     travelId: travelId,
   );
 
+  return result.fold((l) => throw Exception(l.message), (r) => r.travelId);
+}
+
+@riverpod
+Stream<List<TravelDbModel>> userTrips(UserTripsRef ref) {
+  final userId = ref.read(userInfoProvider)!.uid;
+  final repository = ref.read(travelRepositoryProvider);
+
+  return repository.getUserTrips(userId);
+}
+
+@riverpod
+Future<TravelDbModel> tripById(TripByIdRef ref, String travelId) async {
+  final repository = ref.read(travelRepositoryProvider);
+  final result = await repository.getTripById(travelId);
+
   return result.fold(
           (l) => throw Exception(l.message),
-          (r) => r.travelId
+          (trip) => trip,
   );
 }
