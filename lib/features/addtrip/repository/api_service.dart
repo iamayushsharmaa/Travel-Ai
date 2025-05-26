@@ -9,7 +9,7 @@ class GeminiApiService {
   final Dio dio = Dio(BaseOptions(baseUrl: '${dotenv.env["BASE_URL"]}'));
   final String _apiKey = '${dotenv.env["API_KEY"]}';
 
-  Future<List<TravelGeminiResponse>> getGeminiComplete(String prompt) async {
+  Future<TravelGeminiResponse> getGeminiComplete(String prompt) async {
     try {
       final response = await dio.post(
         'gemini-pro:generateContent?key=$_apiKey',
@@ -17,10 +17,7 @@ class GeminiApiService {
           "content": [
             {
               "parts": [
-                {
-                  "text":
-                      "Suggest a travel plan based on: $prompt. Return a JSON with tripSuggestions containing destination, days, and placesToVisit.",
-                },
+                {"text": "$prompt"},
               ],
             },
           ],
@@ -32,11 +29,9 @@ class GeminiApiService {
           geminiResponse.candidates.first.content.parts.first.text.trim();
 
       final decodedJson = json.decode(rawText);
-      final trips =
-          (decodedJson['tripSuggestions'] as List)
-              .map((e) => TravelGeminiResponse.fromMap(e))
-              .toList();
-
+      final trips = (decodedJson['tripSuggestions']).map(
+        (e) => TravelGeminiResponse.fromJson(e),
+      );
       return trips;
     } on DioException catch (e) {
       throw Exception(

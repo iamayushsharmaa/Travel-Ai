@@ -9,8 +9,6 @@ import 'package:triptide/core/type_def.dart';
 import '../../../core/constant/firebase_constant.dart';
 import '../models/user_model.dart';
 
-
-
 class AuthRepository {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;

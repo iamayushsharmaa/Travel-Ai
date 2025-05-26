@@ -7,15 +7,10 @@ class TripPlanRequest {
   final String budgetType;
   final List<String> interests;
   final String companions;
-  final String accommodationType; // e.g., "budget hotel", "airbnb"
+  final String accommodationType;
   final String transportPreferences;
   final String pace;
   final String food;
-
-  @override
-  String toString() {
-    return 'TripPlanRequest{destination: $destination, startDate: $startDate, endDate: $endDate, tripType: $tripType, budget: $budget, budgetType: $budgetType, interests: $interests, companions: $companions, accommodationType: $accommodationType, transportPreferences: $transportPreferences, pace: $pace, food: $food}';
-  }
 
   TripPlanRequest({
     required this.destination,
@@ -64,6 +59,11 @@ class TripPlanRequest {
       pace: map['pace'] as String,
       food: map['food'] as String,
     );
+  }
+
+  @override
+  String toString() {
+    return 'TripPlanRequest{destination: $destination, startDate: $startDate, endDate: $endDate, tripType: $tripType, budget: $budget, budgetType: $budgetType, interests: $interests, companions: $companions, accommodationType: $accommodationType, transportPreferences: $transportPreferences, pace: $pace, food: $food}';
   }
 
   TripPlanRequest copyWith({
