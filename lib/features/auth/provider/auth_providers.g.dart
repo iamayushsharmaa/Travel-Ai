@@ -89,7 +89,7 @@ final userInfoProvider = NotifierProvider<UserInfo, UserModel?>.internal(
 );
 
 typedef _$UserInfo = Notifier<UserModel?>;
-String _$authStateNotifierHash() => r'4ab61eebda1865810698e1a821245d52b08417fd';
+String _$authStateNotifierHash() => r'b67d59cc5e2330ea72851675eef913b112012330';
 
 /// See also [AuthStateNotifier].
 @ProviderFor(AuthStateNotifier)
