@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:triptide/core/enums/trip_type.dart';
+import 'package:triptide/core/utils.dart';
+import 'package:triptide/features/addtrip/providers/travel_provider.dart';
 import 'package:triptide/features/addtrip/screens/input_widget/date_budget_step.dart';
 import 'package:triptide/features/addtrip/screens/input_widget/destination_step.dart';
 import 'package:triptide/features/addtrip/screens/input_widget/personal_exp_step.dart';
@@ -7,15 +11,16 @@ import 'package:triptide/features/addtrip/screens/input_widget/travel_prep_step.
 
 import '../../../core/enums/budget_type.dart';
 import '../../../core/enums/currency.dart';
+import '../models/TripPlanRequest.dart';
 
-class AddTripPage extends StatefulWidget {
+class AddTripPage extends ConsumerStatefulWidget {
   const AddTripPage({super.key});
 
   @override
-  State<AddTripPage> createState() => _AddTripPageState();
+  ConsumerState createState() => _AddTripPageState();
 }
 
-class _AddTripPageState extends State<AddTripPage> {
+class _AddTripPageState extends ConsumerState<AddTripPage> {
   final PageController _pageController = PageController();
   int _currentStep = 0;
   final int _totalSteps = 4;
@@ -36,6 +41,31 @@ class _AddTripPageState extends State<AddTripPage> {
   String transport = '';
   String pace = '';
   String food = '';
+
+  void onSubmitClick() async {
+    final tripPlanRequest = TripPlanRequest(
+      destination: destinationController.text,
+      startDate: startDate!,
+      endDate: endDate!,
+      tripType: selectedTripType.toString(),
+      budget: double.tryParse(budgetController.text) ?? 0.0,
+      budgetType: selectedBudgetType.toString(),
+      interests: selectedInterest,
+      companions: selectedCompanion,
+      accommodationType: selectedCompanion,
+      transportPreferences: transport,
+      pace: pace,
+      food: food,
+    );
+
+    final result = await ref.watch(
+      generateAndStoreTripProvider(tripPlanRequest).future,
+    );
+
+    result.fold((l) => showSnackBar(context, l.message), (r) {
+      context.goNamed('/trip', pathParameters: {'travelId': r.travelId});
+    });
+  }
 
   void onTripTypeChanged(TripType type) {
     setState(() {
@@ -103,7 +133,34 @@ class _AddTripPageState extends State<AddTripPage> {
     });
   }
 
+  bool _isStepValid() {
+    switch (_currentStep) {
+      case 0:
+        return destinationController.text.isNotEmpty;
+      case 1:
+        return startDateController.text.isNotEmpty &&
+            endDateController.text.isNotEmpty;
+      case 2:
+        return budgetController.text.isNotEmpty && selectedTripType != null;
+      case 3:
+        return selectedInterest.isNotEmpty &&
+            selectedCompanion.isNotEmpty &&
+            accommodation.isNotEmpty &&
+            transport.isNotEmpty &&
+            pace.isNotEmpty &&
+            food.isNotEmpty;
+      default:
+        return false;
+    }
+  }
+
   void _nextStep() {
+    if (!_isStepValid()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill all required fields')),
+      );
+      return;
+    }
     if (_currentStep < _totalSteps - 1) {
       setState(() {
         _currentStep++;
@@ -112,6 +169,8 @@ class _AddTripPageState extends State<AddTripPage> {
           curve: Curves.easeInOut,
         );
       });
+    } else {
+      onSubmitClick();
     }
   }
 
@@ -125,6 +184,16 @@ class _AddTripPageState extends State<AddTripPage> {
         );
       });
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+    destinationController.dispose();
+    startDateController.dispose();
+    endDateController.dispose();
+    budgetController.dispose();
   }
 
   @override
@@ -231,7 +300,7 @@ class _AddTripPageState extends State<AddTripPage> {
                   child: SizedBox(
                     height: 55,
                     child: ElevatedButton(
-                      onPressed: _nextStep,
+                      onPressed: () => _nextStep(),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),

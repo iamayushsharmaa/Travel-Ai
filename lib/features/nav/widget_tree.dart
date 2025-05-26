@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../addtrip/screens/add_trip.dart';
-import '../home/screens/home.dart';
+import '../home/screens/home_page.dart';
 import 'navbar/navbar_widget.dart';
 import 'navbar/notifier.dart';
 
