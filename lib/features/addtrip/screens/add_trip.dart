@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:triptide/core/enums/trip_type.dart';
-import 'package:triptide/core/utils.dart';
 import 'package:triptide/features/addtrip/providers/travel_provider.dart';
 import 'package:triptide/features/addtrip/screens/input_widget/date_budget_step.dart';
 import 'package:triptide/features/addtrip/screens/input_widget/destination_step.dart';
@@ -58,13 +57,11 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
       food: food,
     );
 
-    final result = await ref.watch(
+    final travelId = await ref.watch(
       generateAndStoreTripProvider(tripPlanRequest).future,
     );
 
-    result.fold((l) => showSnackBar(context, l.message), (r) {
-      context.goNamed('/trip', pathParameters: {'travelId': r.travelId});
-    });
+    context.pushNamed('trip', pathParameters: {'travelId': travelId});
   }
 
   void onTripTypeChanged(TripType type) {

@@ -41,7 +41,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           final travelId = state.pathParameters['travelId']!;
           return TripPage(travelId: travelId);
         },
-      )
+      ),
     ],
     redirect: (BuildContext context, GoRouterState state) async {
       final user = ref.read(userInfoProvider);

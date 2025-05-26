@@ -1,25 +1,18 @@
-import 'dart:math';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/core/constant/constant.dart';
-import 'package:triptide/core/failure.dart';
 import 'package:triptide/features/addtrip/models/TripPlanRequest.dart';
 import 'package:triptide/features/addtrip/repository/gemini_repository.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../core/type_def.dart';
 import '../../auth/provider/auth_providers.dart';
-import '../models/travel_db_model.dart';
 
 part 'travel_provider.g.dart';
 
 @riverpod
-Future<Either<Failure, TravelDbModel>> generateAndStoreTrip(
-    GenerateAndStoreTripRef ref,
-    TripPlanRequest tripPlanRequest,
-    ) async {
+Future<String> generateAndStoreTrip(
+  GenerateAndStoreTripRef ref,
+  TripPlanRequest tripPlanRequest,
+) async {
   final travelRepository = ref.read(travelRepositoryProvider);
   final userId = ref.read(userInfoProvider)!.uid;
   final travelId = const Uuid().v4();
@@ -45,9 +38,14 @@ Here are the trip details:
 Please tailor the plan to the user’s preferences and return only the JSON.
 ''';
 
-  return await travelRepository.generateTripAndStore(
+  final result = await travelRepository.generateTripAndStore(
     prompt: prompt,
     userId: userId,
     travelId: travelId,
+  );
+
+  return result.fold(
+          (l) => throw Exception(l.message),
+          (r) => r.travelId
   );
 }

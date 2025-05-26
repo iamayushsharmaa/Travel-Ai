@@ -7,7 +7,7 @@ part of 'travel_provider.dart';
 // **************************************************************************
 
 String _$generateAndStoreTripHash() =>
-    r'48cdd1dca6ee29dbe7bf8c41c7e425fbb7896c42';
+    r'f954c814dc56c6fdf246d0d2e47d5947f557c6c4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -35,8 +35,7 @@ class _SystemHash {
 const generateAndStoreTripProvider = GenerateAndStoreTripFamily();
 
 /// See also [generateAndStoreTrip].
-class GenerateAndStoreTripFamily
-    extends Family<AsyncValue<Either<Failure, TravelDbModel>>> {
+class GenerateAndStoreTripFamily extends Family<AsyncValue<String>> {
   /// See also [generateAndStoreTrip].
   const GenerateAndStoreTripFamily();
 
@@ -68,8 +67,7 @@ class GenerateAndStoreTripFamily
 }
 
 /// See also [generateAndStoreTrip].
-class GenerateAndStoreTripProvider
-    extends AutoDisposeFutureProvider<Either<Failure, TravelDbModel>> {
+class GenerateAndStoreTripProvider extends AutoDisposeFutureProvider<String> {
   /// See also [generateAndStoreTrip].
   GenerateAndStoreTripProvider(TripPlanRequest tripPlanRequest)
     : this._internal(
@@ -103,10 +101,7 @@ class GenerateAndStoreTripProvider
 
   @override
   Override overrideWith(
-    FutureOr<Either<Failure, TravelDbModel>> Function(
-      GenerateAndStoreTripRef provider,
-    )
-    create,
+    FutureOr<String> Function(GenerateAndStoreTripRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -123,8 +118,7 @@ class GenerateAndStoreTripProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<Either<Failure, TravelDbModel>>
-  createElement() {
+  AutoDisposeFutureProviderElement<String> createElement() {
     return _GenerateAndStoreTripProviderElement(this);
   }
 
@@ -145,14 +139,13 @@ class GenerateAndStoreTripProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GenerateAndStoreTripRef
-    on AutoDisposeFutureProviderRef<Either<Failure, TravelDbModel>> {
+mixin GenerateAndStoreTripRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `tripPlanRequest` of this provider.
   TripPlanRequest get tripPlanRequest;
 }
 
 class _GenerateAndStoreTripProviderElement
-    extends AutoDisposeFutureProviderElement<Either<Failure, TravelDbModel>>
+    extends AutoDisposeFutureProviderElement<String>
     with GenerateAndStoreTripRef {
   _GenerateAndStoreTripProviderElement(super.provider);
 
