@@ -1,4 +1,4 @@
-# 🌍 TripTide - Your Ultimate Travel Planner App
+# 🌍 Travel AI - Your Ultimate Ai Travel Planner App
 
 
 
