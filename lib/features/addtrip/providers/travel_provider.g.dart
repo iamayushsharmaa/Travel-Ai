@@ -7,7 +7,7 @@ part of 'travel_provider.dart';
 // **************************************************************************
 
 String _$generateAndStoreTripHash() =>
-    r'f954c814dc56c6fdf246d0d2e47d5947f557c6c4';
+    r'd6345bdba4010f32c991893763773d6b7a35f349';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -291,5 +291,22 @@ class _TripByIdProviderElement
   String get travelId => (origin as TripByIdProvider).travelId;
 }
 
+String _$submitLoadingHash() => r'67fca38a8b8813fce3b95a80b78083c51563c22c';
+
+/// See also [SubmitLoading].
+@ProviderFor(SubmitLoading)
+final submitLoadingProvider =
+    AutoDisposeNotifierProvider<SubmitLoading, bool>.internal(
+      SubmitLoading.new,
+      name: r'submitLoadingProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$submitLoadingHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$SubmitLoading = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

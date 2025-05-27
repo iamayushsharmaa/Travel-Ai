@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/enums/trip_type.dart';
 import 'package:triptide/features/addtrip/providers/travel_provider.dart';
 import 'package:triptide/features/addtrip/screens/input_widget/date_budget_step.dart';
@@ -43,10 +44,13 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
 
   void onSubmitClick() async {
     FocusScope.of(context).unfocus();
-
+    final isLoading = ref.read(submitLoadingProvider.notifier);
+    isLoading.setLoading(true);
     if (startDate == null || endDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please select both start and end dates.")),
+        const SnackBar(
+          content: Text("Please select both start and end dates."),
+        ),
       );
       return;
     }
@@ -84,12 +88,13 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
       context.pushNamed('trip', pathParameters: {'travelId': travelId});
     } catch (e) {
       print('errorn: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to create trip: $e")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Failed to create trip: $e")));
+    } finally {
+      isLoading.setLoading(false);
     }
   }
-
 
   void onTripTypeChanged(TripType type) {
     setState(() {
@@ -225,6 +230,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
   @override
   Widget build(BuildContext context) {
     double progress = (_currentStep + 1) / _totalSteps;
+    final isLoading = ref.watch(submitLoadingProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -242,110 +248,122 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: LinearProgressIndicator(
-                value: progress,
-                minHeight: 17,
-                borderRadius: BorderRadius.circular(10),
-                backgroundColor: Colors.grey[200],
-                valueColor: const AlwaysStoppedAnimation<Color>(
-                  Colors.blueAccent,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  DestinationStep(
-                    destinationController: destinationController,
-                    selectedTripType: selectedTripType,
-                    onTripTypeChanged: (value) => onTripTypeChanged(value),
-                  ),
-                  DateBudgetStep(
-                    startDateController: startDateController,
-                    endDateController: endDateController,
-                    budgetController: budgetController,
-                    startDate: startDate,
-                    endDate: endDate,
-                    selectedCurrency: selectedCurrency,
-                    onCurrencyChanged: (value) => onCurrencyChanged(value),
-                    selectedBudgetType: selectedBudgetType,
-                    onBudgetTypeChanged: (value) => onBudgetTypeChanged(value),
-                    onStartDateChanged: (date) => onStartDateChanged(date),
-                    onEndDateChanged: (date) => onEndDateChanged(date),
-                  ),
-                  PersonalPreferencesStep(
-                    selectedInterests: selectedInterest,
-                    onInterestsChanged: (value) => onInterestsChanged(value),
-                    selectedCompanion: selectedCompanion,
-                    onCompanionChanged: (value) => onCompaionChanged(value),
-                  ),
-                  TravelPreferencesStep(
-                    accommodation: accommodation,
-                    onAccommodationChanged: onAccommodationChanged,
-                    transport: transport,
-                    onTransportChanged: onTransportChanged,
-                    pace: pace,
-                    onPaceChanged: onPaceChanged,
-                    food: food,
-                    onFoodChanged: onFoodChanged,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 55,
-                    child: ElevatedButton(
-                      onPressed: _currentStep > 0 ? _previousStep : null,
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: BorderSide.none,
+        child:
+            isLoading
+                ? const Loader()
+                : Column(
+                  children: [
+                    SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        minHeight: 17,
+                        borderRadius: BorderRadius.circular(10),
+                        backgroundColor: Colors.grey[200],
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          Colors.blueAccent,
                         ),
-                        backgroundColor: Colors.white.withOpacity(0.8),
-                        foregroundColor: Colors.blueAccent,
-                      ),
-                      child: const Text('Back'),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: SizedBox(
-                    height: 55,
-                    child: ElevatedButton(
-                      onPressed: () => _nextStep(),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: BorderSide.none,
-                        ),
-                        backgroundColor: Colors.blueAccent,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: Text(
-                        _currentStep == _totalSteps - 1 ? "Submit" : "Next",
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: PageView(
+                        controller: _pageController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          DestinationStep(
+                            destinationController: destinationController,
+                            selectedTripType: selectedTripType,
+                            onTripTypeChanged:
+                                (value) => onTripTypeChanged(value),
+                          ),
+                          DateBudgetStep(
+                            startDateController: startDateController,
+                            endDateController: endDateController,
+                            budgetController: budgetController,
+                            startDate: startDate,
+                            endDate: endDate,
+                            selectedCurrency: selectedCurrency,
+                            onCurrencyChanged:
+                                (value) => onCurrencyChanged(value),
+                            selectedBudgetType: selectedBudgetType,
+                            onBudgetTypeChanged:
+                                (value) => onBudgetTypeChanged(value),
+                            onStartDateChanged:
+                                (date) => onStartDateChanged(date),
+                            onEndDateChanged: (date) => onEndDateChanged(date),
+                          ),
+                          PersonalPreferencesStep(
+                            selectedInterests: selectedInterest,
+                            onInterestsChanged:
+                                (value) => onInterestsChanged(value),
+                            selectedCompanion: selectedCompanion,
+                            onCompanionChanged:
+                                (value) => onCompaionChanged(value),
+                          ),
+                          TravelPreferencesStep(
+                            accommodation: accommodation,
+                            onAccommodationChanged: onAccommodationChanged,
+                            transport: transport,
+                            onTransportChanged: onTransportChanged,
+                            pace: pace,
+                            onPaceChanged: onPaceChanged,
+                            food: food,
+                            onFoodChanged: onFoodChanged,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: 55,
+                            child: ElevatedButton(
+                              onPressed:
+                                  _currentStep > 0 ? _previousStep : null,
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  side: BorderSide.none,
+                                ),
+                                backgroundColor: Colors.white.withOpacity(0.8),
+                                foregroundColor: Colors.blueAccent,
+                              ),
+                              child: const Text('Back'),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: SizedBox(
+                            height: 55,
+                            child: ElevatedButton(
+                              onPressed: () => _nextStep(),
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  side: BorderSide.none,
+                                ),
+                                backgroundColor: Colors.blueAccent,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: Text(
+                                _currentStep == _totalSteps - 1
+                                    ? "Submit"
+                                    : "Next",
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                 ),
-              ],
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
       ),
     );
   }

@@ -22,21 +22,26 @@ class GeminiApiService {
       final response = await dio.post(
         'gemini-2.0-flash:generateContent?key=$_apiKey',
         data: {
-          "content": [
+          "contents": [
             {
+              "role": "user",
               "parts": [
-                {"text": "$prompt"},
+                {"text": prompt},
               ],
             },
           ],
         },
       );
+
       final geminiResponse = GeminiResponse.fromJsom(response.data);
+      print('dio response : ${geminiResponse}');
 
       final rawText =
           geminiResponse.candidates.first.content.parts.first.text.trim();
 
-      final decodedJson = json.decode(rawText);
+      final cleanedText = rawText.replaceAll(RegExp(r'^```json|```$'), '').trim();
+
+      final decodedJson = json.decode(cleanedText);
       final trips = (decodedJson['tripSuggestions']).map(
         (e) => TravelGeminiResponse.fromJson(e),
       );

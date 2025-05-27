@@ -10,6 +10,15 @@ import '../../auth/provider/auth_providers.dart';
 part 'travel_provider.g.dart';
 
 @riverpod
+class SubmitLoading extends _$SubmitLoading {
+  @override
+  bool build() => false;
+
+  void setLoading(bool value) => state = value;
+}
+
+
+@riverpod
 Future<String> generateAndStoreTrip(
   GenerateAndStoreTripRef ref,
   TripPlanRequest tripPlanRequest,

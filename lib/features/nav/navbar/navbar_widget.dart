@@ -11,26 +11,42 @@ class NavbarWidget extends StatelessWidget {
       valueListenable: selectedPageNotifier,
       builder: (context, selectedIndex, child) {
         return NavigationBar(
-          height: 60,
           backgroundColor: Colors.white,
           indicatorColor: Colors.transparent,
           labelTextStyle: MaterialStateProperty.all(
             TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+              fontSize: 15,
+              color: Colors.blueAccent,
+              fontWeight: FontWeight.w600,
             ),
           ),
           indicatorShape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
+            borderRadius: BorderRadius.circular(12),
           ),
           animationDuration: Duration(milliseconds: 300),
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           destinations: [
             NavigationDestination(
-              icon: Icon(Icons.home),
+              icon: Icon(
+                Icons.home,
+                color: selectedIndex == 0 ? Colors.blueAccent : Colors.grey,
+              ),
               label: 'Home',
             ),
-            NavigationDestination(icon: Icon(Icons.add), label: 'Add'),
+            NavigationDestination(
+              icon: Icon(
+                Icons.history,
+                color: selectedIndex == 1 ? Colors.blueAccent : Colors.grey,
+              ),
+              label: 'Visited',
+            ),
+            NavigationDestination(
+              icon: Icon(
+                Icons.add,
+                color: selectedIndex == 2 ? Colors.blueAccent : Colors.grey,
+              ),
+              label: 'Add',
+            ),
           ],
           onDestinationSelected: (int value) {
             selectedPageNotifier.value = value;
