@@ -42,12 +42,31 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
   String food = '';
 
   void onSubmitClick() async {
+    FocusScope.of(context).unfocus();
+
+    if (startDate == null || endDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select both start and end dates.")),
+      );
+      return;
+    }
+
+    if (selectedTripType == null || selectedCompanion == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select trip type and companion.")),
+      );
+      return;
+    }
+
+    final budgetRaw = budgetController.text.replaceAll(',', '');
+    final double budget = double.tryParse(budgetRaw) ?? 0.0;
+
     final tripPlanRequest = TripPlanRequest(
       destination: destinationController.text,
       startDate: startDate!,
       endDate: endDate!,
       tripType: selectedTripType.toString(),
-      budget: double.tryParse(budgetController.text) ?? 0.0,
+      budget: budget,
       budgetType: selectedBudgetType.toString(),
       interests: selectedInterest,
       companions: selectedCompanion,
@@ -57,12 +76,20 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
       food: food,
     );
 
-    final travelId = await ref.watch(
-      generateAndStoreTripProvider(tripPlanRequest).future,
-    );
-
-    context.pushNamed('trip', pathParameters: {'travelId': travelId});
+    try {
+      print('try');
+      final travelId = await ref.watch(
+        generateAndStoreTripProvider(tripPlanRequest).future,
+      );
+      context.pushNamed('trip', pathParameters: {'travelId': travelId});
+    } catch (e) {
+      print('errorn: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to create trip: $e")),
+      );
+    }
   }
+
 
   void onTripTypeChanged(TripType type) {
     setState(() {
@@ -152,6 +179,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
   }
 
   void _nextStep() {
+    FocusScope.of(context).unfocus();
     if (!_isStepValid()) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please fill all required fields')),
@@ -172,6 +200,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
   }
 
   void _previousStep() {
+    FocusScope.of(context).unfocus();
     if (_currentStep > 0) {
       setState(() {
         _currentStep--;

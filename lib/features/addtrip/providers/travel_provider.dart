@@ -15,7 +15,12 @@ Future<String> generateAndStoreTrip(
   TripPlanRequest tripPlanRequest,
 ) async {
   final travelRepository = ref.read(travelRepositoryProvider);
-  final userId = ref.read(userInfoProvider)!.uid;
+  final userInfo = ref.read(userInfoProvider);
+  if (userInfo == null) {
+    throw Exception('User not logged in.');
+  }
+  final userId = userInfo.uid;
+  print('userId: $userId');
   final travelId = const Uuid().v4();
 
   final prompt = '''
@@ -45,7 +50,10 @@ Please tailor the plan to the user’s preferences and return only the JSON.
     travelId: travelId,
   );
 
-  return result.fold((l) => throw Exception(l.message), (r) => r.travelId);
+  return result.fold((l) {
+    print('Eror : ${l.message}');
+    throw Exception(l.message);
+  }, (r) => r.travelId);
 }
 
 @riverpod
@@ -61,8 +69,5 @@ Future<TravelDbModel> tripById(TripByIdRef ref, String travelId) async {
   final repository = ref.read(travelRepositoryProvider);
   final result = await repository.getTripById(travelId);
 
-  return result.fold(
-          (l) => throw Exception(l.message),
-          (trip) => trip,
-  );
+  return result.fold((l) => throw Exception(l.message), (trip) => trip);
 }

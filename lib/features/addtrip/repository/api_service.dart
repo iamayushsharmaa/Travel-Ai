@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/features/addtrip/models/gemini_response_model.dart';
 import 'package:triptide/features/addtrip/models/travel_gemini_model.dart';
@@ -21,7 +20,7 @@ class GeminiApiService {
   Future<TravelGeminiResponse> getGeminiComplete(String prompt) async {
     try {
       final response = await dio.post(
-        'gemini-pro:generateContent?key=$_apiKey',
+        'gemini-2.0-flash:generateContent?key=$_apiKey',
         data: {
           "content": [
             {
