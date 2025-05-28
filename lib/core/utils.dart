@@ -33,3 +33,22 @@ class NumberInputFormatter extends TextInputFormatter {
     );
   }
 }
+
+
+IconData getTripTypeIcon(String tripType) {
+  switch (tripType.toLowerCase()) {
+    case 'business':
+      return Icons.business_center;
+    case 'vacation':
+      return Icons.beach_access;
+    case 'romantic':
+      return Icons.favorite;
+    case 'adventure':
+      return Icons.terrain;
+    case 'roadtrip':
+      return Icons.route;
+    case 'other':
+    default:
+      return Icons.travel_explore;
+  }
+}

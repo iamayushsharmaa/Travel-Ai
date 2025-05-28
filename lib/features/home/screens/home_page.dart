@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:triptide/features/home/providers/trips_home_provider.dart';
 import 'package:triptide/features/home/screens/widgets/trip_view.dart';
 
@@ -17,14 +18,20 @@ class HomePage extends ConsumerWidget {
           'Trave AI',
           style: TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w700,
             fontSize: 25,
           ),
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 19, top: 8),
-            child: CircleAvatar(child: Icon(Icons.person)),
+            child: GestureDetector(
+              onTap: () {},
+              child: CircleAvatar(
+                backgroundColor: Colors.grey.shade300,
+                child: Icon(Icons.person, color: Colors.black),
+              ),
+            ),
           ),
         ],
         centerTitle: false,
@@ -65,7 +72,7 @@ class HomePage extends ConsumerWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(height: 5,),
+                    const SizedBox(height: 5),
                     Text(
                       '4',
                       style: TextStyle(
@@ -83,7 +90,7 @@ class HomePage extends ConsumerWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(height: 5,),
+                    const SizedBox(height: 5),
                     Text(
                       '9',
                       style: TextStyle(
@@ -129,7 +136,13 @@ class HomePage extends ConsumerWidget {
                       : ListView.builder(
                         itemCount: list.length,
                         itemBuilder: (context, index) {
-                          return TripView();
+                          return TripView(
+                            onTripClicked:
+                                (travelId) => context.pushNamed(
+                                  'trip',
+                                  pathParameters: {'travelId': travelId},
+                                ),
+                          );
                         },
                       ),
             ),

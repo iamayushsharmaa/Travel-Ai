@@ -29,11 +29,31 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/onBoarding',
         builder: (context, state) => const OnBoardingPage(),
       ),
-      GoRoute(path: '/signin', builder: (context, state) => SigninPage()),
-      GoRoute(path: '/signup', builder: (context, state) => SignUpPage()),
-      GoRoute(path: '/', builder: (context, state) => WidgetTree()),
-      GoRoute(path: '/home', builder: (context, state) => HomePage()),
-      GoRoute(path: '/addtrip', builder: (context, state) => AddTripPage()),
+      GoRoute(
+        path: '/signin',
+        name: 'signin',
+        builder: (context, state) => SigninPage(),
+      ),
+      GoRoute(
+        path: '/signup',
+        name: 'signup',
+        builder: (context, state) => SignUpPage(),
+      ),
+      GoRoute(
+        path: '/',
+        name: 'main',
+        builder: (context, state) => WidgetTree(),
+      ),
+      GoRoute(
+        path: '/home',
+        name: 'home',
+        builder: (context, state) => HomePage(),
+      ),
+      GoRoute(
+        path: '/addtrip',
+        name: 'addTrip',
+        builder: (context, state) => AddTripPage(),
+      ),
       GoRoute(
         path: '/trip/:travelId',
         name: 'trip',
