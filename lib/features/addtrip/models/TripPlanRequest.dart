@@ -1,4 +1,5 @@
 class TripPlanRequest {
+  final String currentLocation;
   final String destination;
   final DateTime startDate;
   final DateTime endDate;
@@ -13,6 +14,7 @@ class TripPlanRequest {
   final String food;
 
   TripPlanRequest({
+    required this.currentLocation,
     required this.destination,
     required this.startDate,
     required this.endDate,
@@ -29,6 +31,7 @@ class TripPlanRequest {
 
   Map<String, dynamic> toMap() {
     return {
+      'currentLocation': this.currentLocation,
       'destination': this.destination,
       'startDate': this.startDate,
       'endDate': this.endDate,
@@ -46,6 +49,7 @@ class TripPlanRequest {
 
   factory TripPlanRequest.fromMap(Map<String, dynamic> map) {
     return TripPlanRequest(
+      currentLocation: map['currentLocation'] as String,
       destination: map['destination'] as String,
       startDate: map['startDate'] as DateTime,
       endDate: map['endDate'] as DateTime,
@@ -61,12 +65,14 @@ class TripPlanRequest {
     );
   }
 
+
   @override
   String toString() {
-    return 'TripPlanRequest{destination: $destination, startDate: $startDate, endDate: $endDate, tripType: $tripType, budget: $budget, budgetType: $budgetType, interests: $interests, companions: $companions, accommodationType: $accommodationType, transportPreferences: $transportPreferences, pace: $pace, food: $food}';
+    return 'TripPlanRequest{currentLocation: $currentLocation, destination: $destination, startDate: $startDate, endDate: $endDate, tripType: $tripType, budget: $budget, budgetType: $budgetType, interests: $interests, companions: $companions, accommodationType: $accommodationType, transportPreferences: $transportPreferences, pace: $pace, food: $food}';
   }
 
   TripPlanRequest copyWith({
+    String? currentLocation,
     String? destination,
     DateTime? startDate,
     DateTime? endDate,
@@ -81,6 +87,7 @@ class TripPlanRequest {
     String? food,
   }) {
     return TripPlanRequest(
+      currentLocation: currentLocation ?? this.currentLocation,
       destination: destination ?? this.destination,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,

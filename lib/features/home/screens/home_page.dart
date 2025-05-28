@@ -19,6 +19,11 @@ class HomePage extends ConsumerWidget {
             fontSize: 25,
           ),
         ),
+        actions: [
+          CircleAvatar(
+            child: Icon(Icons.person),
+          )
+        ],
         centerTitle: false,
         backgroundColor: Colors.white,
       ),

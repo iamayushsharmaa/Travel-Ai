@@ -25,6 +25,8 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
   int _currentStep = 0;
   final int _totalSteps = 4;
 
+  final TextEditingController currentLocationController =
+      TextEditingController();
   final TextEditingController destinationController = TextEditingController();
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
@@ -66,7 +68,8 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
     final double budget = double.tryParse(budgetRaw) ?? 0.0;
 
     final tripPlanRequest = TripPlanRequest(
-      destination: destinationController.text,
+      currentLocation: currentLocationController.text.trim(),
+      destination: destinationController.text.trim(),
       startDate: startDate!,
       endDate: endDate!,
       tripType: selectedTripType.toString(),
@@ -273,6 +276,8 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
                           DestinationStep(
+                            currentLocationController:
+                                currentLocationController,
                             destinationController: destinationController,
                             selectedTripType: selectedTripType,
                             onTripTypeChanged:

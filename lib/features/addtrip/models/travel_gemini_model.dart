@@ -1,5 +1,6 @@
 class TravelGeminiResponse {
   final String destination;
+  final String currentLocation;
   final DateTime startDate;
   final DateTime endDate;
   final String overview;
@@ -11,6 +12,7 @@ class TravelGeminiResponse {
 
   TravelGeminiResponse({
     required this.destination,
+    required this.currentLocation,
     required this.startDate,
     required this.endDate,
     required this.overview,
@@ -21,39 +23,36 @@ class TravelGeminiResponse {
     required this.additionalTips,
   });
 
-  factory TravelGeminiResponse.fromJson(Map<String, dynamic> json) {
-    return TravelGeminiResponse(
-      destination: json['destination'],
-      startDate: DateTime.parse(json['startDate']),
-      endDate: DateTime.parse(json['endDate']),
-      overview: json['overview'],
-      dailyPlan: (json['dailyPlan'] as List)
-          .map((e) => DayPlan.fromJson(e))
-          .toList(),
-      accommodationSuggestions: (json['accommodationSuggestions'] as List)
-          .map((e) => AccommodationSuggestion.fromJson(e))
-          .toList(),
-      transportationDetails:
-      TransportationDetails.fromJson(json['transportationDetails']),
-      foodRecommendations:
-      List<String>.from(json['foodRecommendations'] ?? []),
-      additionalTips: List<String>.from(json['additionalTips'] ?? []),
-    );
-  }
-
   Map<String, dynamic> toJson() {
     return {
-      'destination': destination,
-      'startDate': startDate.toIso8601String(),
-      'endDate': endDate.toIso8601String(),
-      'overview': overview,
-      'dailyPlan': dailyPlan.map((e) => e.toJson()).toList(),
-      'accommodationSuggestions':
-      accommodationSuggestions.map((e) => e.toJson()).toList(),
-      'transportationDetails': transportationDetails.toJson(),
-      'foodRecommendations': foodRecommendations,
-      'additionalTips': additionalTips,
+      'destination': this.destination,
+      'currentLocation': this.currentLocation,
+      'startDate': this.startDate,
+      'endDate': this.endDate,
+      'overview': this.overview,
+      'dailyPlan': this.dailyPlan,
+      'accommodationSuggestions': this.accommodationSuggestions,
+      'transportationDetails': this.transportationDetails,
+      'foodRecommendations': this.foodRecommendations,
+      'additionalTips': this.additionalTips,
     };
+  }
+
+  factory TravelGeminiResponse.fromJson(Map<String, dynamic> map) {
+    return TravelGeminiResponse(
+      destination: map['destination'] as String,
+      currentLocation: map['currentLocation'] as String,
+      startDate: map['startDate'] as DateTime,
+      endDate: map['endDate'] as DateTime,
+      overview: map['overview'] as String,
+      dailyPlan: map['dailyPlan'] as List<DayPlan>,
+      accommodationSuggestions:
+          map['accommodationSuggestions'] as List<AccommodationSuggestion>,
+      transportationDetails:
+          map['transportationDetails'] as TransportationDetails,
+      foodRecommendations: map['foodRecommendations'] as List<String>,
+      additionalTips: map['additionalTips'] as List<String>,
+    );
   }
 }
 
@@ -62,18 +61,16 @@ class DayPlan {
   final String date;
   final List<Activity> activities;
 
-  DayPlan({
-    required this.day,
-    required this.date,
-    required this.activities,
-  });
+  DayPlan({required this.day, required this.date, required this.activities});
 
   factory DayPlan.fromJson(Map<String, dynamic> json) {
     return DayPlan(
       day: json['day'],
       date: json['date'],
       activities:
-      (json['activities'] as List).map((e) => Activity.fromJson(e)).toList(),
+          (json['activities'] as List)
+              .map((e) => Activity.fromJson(e))
+              .toList(),
     );
   }
 
@@ -90,23 +87,14 @@ class Activity {
   final String time;
   final String description;
 
-  Activity({
-    required this.time,
-    required this.description,
-  });
+  Activity({required this.time, required this.description});
 
   factory Activity.fromJson(Map<String, dynamic> json) {
-    return Activity(
-      time: json['time'],
-      description: json['description'],
-    );
+    return Activity(time: json['time'], description: json['description']);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'time': time,
-      'description': description,
-    };
+    return {'time': time, 'description': description};
   }
 }
 
@@ -146,10 +134,7 @@ class TransportationDetails {
   final String localTransport;
   final String tips;
 
-  TransportationDetails({
-    required this.localTransport,
-    required this.tips,
-  });
+  TransportationDetails({required this.localTransport, required this.tips});
 
   factory TransportationDetails.fromJson(Map<String, dynamic> json) {
     return TransportationDetails(
@@ -159,10 +144,6 @@ class TransportationDetails {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'localTransport': localTransport,
-      'tips': tips,
-    };
+    return {'localTransport': localTransport, 'tips': tips};
   }
 }
-

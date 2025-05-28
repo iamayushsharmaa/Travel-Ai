@@ -4,13 +4,16 @@ import '../../../../core/enums/trip_type.dart';
 
 class DestinationStep extends StatelessWidget {
   final TextEditingController destinationController;
+  final TextEditingController currentLocationController;
   final TripType? selectedTripType;
   final ValueChanged<TripType> onTripTypeChanged;
 
   DestinationStep({
     super.key,
     required this.destinationController,
-    required this.selectedTripType, required this.onTripTypeChanged,
+    required this.selectedTripType,
+    required this.onTripTypeChanged,
+    required this.currentLocationController,
   });
 
   @override
@@ -41,6 +44,25 @@ class DestinationStep extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: currentLocationController,
+            maxLines: 1,
+            decoration: InputDecoration(
+              hintText: 'City, Country',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.blueAccent, width: 2),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Colors.blueAccent, // Red when focused
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
           const SizedBox(height: 20),
           Text('What\'s your trip type?', style: TextStyle(fontSize: 18)),
           const SizedBox(height: 10),
@@ -53,7 +75,7 @@ class DestinationStep extends StatelessWidget {
                     label: Text(type.label),
                     selected: isSelected,
                     selectedColor: Colors.blueAccent,
-                    onSelected: (_)=> onTripTypeChanged(type),
+                    onSelected: (_) => onTripTypeChanged(type),
                   );
                 }).toList(),
           ),
