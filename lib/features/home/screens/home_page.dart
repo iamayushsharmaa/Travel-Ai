@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:triptide/features/home/providers/trips_home_provider.dart';
 import 'package:triptide/features/home/screens/widgets/trip_view.dart';
 
 class HomePage extends ConsumerWidget {
@@ -9,6 +10,7 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final list = ['hello sululu'];
 
+    final usersTrip = ref.watch(userTripsProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -20,9 +22,10 @@ class HomePage extends ConsumerWidget {
           ),
         ),
         actions: [
-          CircleAvatar(
-            child: Icon(Icons.person),
-          )
+          Padding(
+            padding: const EdgeInsets.only(right: 19, top: 8),
+            child: CircleAvatar(child: Icon(Icons.person)),
+          ),
         ],
         centerTitle: false,
         backgroundColor: Colors.white,
@@ -32,37 +35,62 @@ class HomePage extends ConsumerWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 170,
+              height: 180,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.blueAccent,
+                color: Colors.white70,
                 borderRadius: BorderRadius.circular(14),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
-                    blurRadius: 5,
+                    blurRadius: 4,
                   ),
                 ],
               ),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        Text(
-                          'You wanna Travel!',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      'This month',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 5,),
+                    Text(
+                      '4',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Last month',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 5,),
+                    Text(
+                      '9',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -80,6 +108,13 @@ class HomePage extends ConsumerWidget {
             SizedBox(height: 20),
             Expanded(
               child:
+                  // usersTrip.when(
+                  //   data: (data) {
+                  //
+                  //   },
+                  //   error: (error, stackTrace) => ErrorText(error: error.toString()),
+                  //   loading: () => const Loader(),
+                  // ),
                   list.isEmpty
                       ? Center(
                         child: Text(

@@ -38,6 +38,7 @@ You are a travel planner assistant. Based on the following trip details, generat
 ${Constant.jsonResponseExample}
  
 Here are the trip details:
+- CurrentLocation: ${tripPlanRequest.currentLocation}
 - Destination: ${tripPlanRequest.destination}
 - Start Date: ${tripPlanRequest.startDate}
 - End Date: ${tripPlanRequest.endDate}
@@ -63,20 +64,4 @@ Please tailor the plan to the user’s preferences and return only the JSON.
     print('Eror : ${l.message}');
     throw Exception(l.message);
   }, (r) => r.travelId);
-}
-
-@riverpod
-Stream<List<TravelDbModel>> userTrips(UserTripsRef ref) {
-  final userId = ref.read(userInfoProvider)!.uid;
-  final repository = ref.read(travelRepositoryProvider);
-
-  return repository.getUserTrips(userId);
-}
-
-@riverpod
-Future<TravelDbModel> tripById(TripByIdRef ref, String travelId) async {
-  final repository = ref.read(travelRepositoryProvider);
-  final result = await repository.getTripById(travelId);
-
-  return result.fold((l) => throw Exception(l.message), (trip) => trip);
 }

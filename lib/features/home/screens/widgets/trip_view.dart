@@ -40,9 +40,9 @@ class TripView extends StatelessWidget {
                   Row(
                     children: [
                       Text('10 days', style: TextStyle(fontSize: 13)),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 50,),
                       Text(
-                        '24 Jun 25 - 30 Jun 25',
+                        '24 Jun - 30 Jun',
                         style: TextStyle(fontSize: 13),
                       ),
                     ],
