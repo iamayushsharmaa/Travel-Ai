@@ -9,6 +9,7 @@ class TravelGeminiResponse {
   final TransportationDetails transportationDetails;
   final List<String> foodRecommendations;
   final List<String> additionalTips;
+  final String budget;
 
   TravelGeminiResponse({
     required this.destination,
@@ -21,6 +22,7 @@ class TravelGeminiResponse {
     required this.transportationDetails,
     required this.foodRecommendations,
     required this.additionalTips,
+    required this.budget,
   });
 
   Map<String, dynamic> toJson() {
@@ -35,6 +37,7 @@ class TravelGeminiResponse {
       'transportationDetails': this.transportationDetails,
       'foodRecommendations': this.foodRecommendations,
       'additionalTips': this.additionalTips,
+      'budget': this.budget,
     };
   }
 
@@ -52,6 +55,7 @@ class TravelGeminiResponse {
           map['transportationDetails'] as TransportationDetails,
       foodRecommendations: map['foodRecommendations'] as List<String>,
       additionalTips: map['additionalTips'] as List<String>,
+      budget: map['budget'] as String,
     );
   }
 }
@@ -131,19 +135,29 @@ class AccommodationSuggestion {
 }
 
 class TransportationDetails {
+  final List<String> transportModes;
   final String localTransport;
   final String tips;
 
-  TransportationDetails({required this.localTransport, required this.tips});
+  TransportationDetails({
+    required this.transportModes,
+    required this.localTransport,
+    required this.tips,
+  });
 
   factory TransportationDetails.fromJson(Map<String, dynamic> json) {
     return TransportationDetails(
-      localTransport: json['localTransport'],
-      tips: json['tips'],
+      transportModes: json['transportModes'] ?? '',
+      localTransport: json['localTransport'] ?? '',
+      tips: json['tips'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'localTransport': localTransport, 'tips': tips};
+    return {
+      'transportModes': transportModes,
+      'localTransport': localTransport,
+      'tips': tips,
+    };
   }
 }

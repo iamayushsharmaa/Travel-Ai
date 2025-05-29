@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:triptide/core/utils.dart';
+import 'package:triptide/features/home/screens/widgets/accomodation_card_widget.dart';
+import 'package:triptide/features/home/screens/widgets/overview_widget.dart';
 import 'package:triptide/features/home/screens/widgets/timeline_widget.dart';
+import 'package:triptide/features/home/screens/widgets/transport_widget.dart'
+    hide TransportationDetails;
+
+import '../../addtrip/models/travel_gemini_model.dart';
 
 class TripPage extends StatelessWidget {
   final String travelId;
@@ -10,91 +16,120 @@ class TripPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> itinerary = [
-      'Day 1: Arrival & Beach Visit',
-      'Day 2: Sightseeing',
-      'Day 3: Arrival & Beach Visit',
-      'Day 4: Sightseeing',
-      'Day 5: Arrival & Beach Visit',
-      'Day 6: Sightseeing',
+    List<DayPlan> itinerary = [
+      DayPlan(
+        day: 1,
+        date: "29 Jun 25",
+        activities: [
+          Activity(description: "Arrive at Goa Airport", time: ''),
+          Activity(description: "Check-in to hotel", time: ''),
+          Activity(description: "Evening beach walk and dinner", time: ''),
+        ],
+      ),
+      DayPlan(
+        day: 2,
+        date: "30 Jun 25",
+        activities: [
+          Activity(description: "Breakfast at hotel", time: ''),
+          Activity(description: "Visit Fort Aguada", time: ''),
+          Activity(description: "Lunch at local restaurant", time: ''),
+        ],
+      ),
+      DayPlan(
+        day: 3,
+        date: "29 Jun 25",
+        activities: [
+          Activity(description: "Arrive at Goa Airport", time: ''),
+          Activity(description: "Check-in to hotel", time: ''),
+          Activity(description: "Evening beach walk and dinner", time: ''),
+        ],
+      ),
+      DayPlan(
+        day: 4,
+        date: "30 Jun 25",
+        activities: [
+          Activity(description: "Breakfast at hotel", time: ''),
+          Activity(description: "Visit Fort Aguada", time: ''),
+          Activity(description: "Lunch at local restaurant", time: ''),
+        ],
+      ),
     ];
+
+    final transportationDetails = TransportationDetails(
+      transportModes: ['Bus', 'Taxi', 'Train'],
+      localTransport: 'Local buses and taxis are widely available...',
+      tips: 'Try to avoid peak hours for better experience.',
+    );
+
+    final List<AccommodationSuggestion> accommodationSuggestions = [
+      AccommodationSuggestion(
+        name: 'Palm Beach Resort',
+        type: 'Resort',
+        location: 'Candolim Beach, Goa',
+        priceRange: '₹3,000 – ₹5,000 per night',
+      ),
+      AccommodationSuggestion(
+        name: 'Goa Backpackers Hostel',
+        type: 'Hostel',
+        location: 'Anjuna, Goa',
+        priceRange: '₹500 – ₹1,200 per night',
+      ),
+      AccommodationSuggestion(
+        name: 'The Sunset Villa',
+        type: 'Homestay',
+        location: 'Arambol, Goa',
+        priceRange: '₹1,800 – ₹2,500 per night',
+      ),
+      AccommodationSuggestion(
+        name: 'Bayview Business Hotel',
+        type: 'Hotel',
+        location: 'Panaji, Goa',
+        priceRange: '₹2,500 – ₹4,000 per night',
+      ),
+      AccommodationSuggestion(
+        name: 'Tropical Treehouse Stay',
+        type: 'Treehouse',
+        location: 'South Goa Hills',
+        priceRange: '₹4,000 – ₹6,000 per night',
+      ),
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        // soft shadow for separation
+        centerTitle: true,
         title: Text(
           'Trip to Goa',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 25,
             color: Colors.black,
             fontWeight: FontWeight.w600,
           ),
         ),
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: Icon(Icons.arrow_back_ios_new_outlined),
+        iconTheme: const IconThemeData(color: Colors.black),
+        // icon color
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: IconButton(
+            onPressed: () => context.pop(),
+            icon: const Icon(Icons.arrow_back_ios_new_outlined),
+          ),
         ),
-        backgroundColor: Colors.white,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 200,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blueAccent.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Overview',
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    IconTextDesign(
-                      text: 'Delhi - Goa',
-                      icon: Icon(Icons.flight, color: Colors.white),
-                    ),
-                    const SizedBox(height: 8),
-                    IconTextDesign(
-                      text: 'Business',
-                      icon: Icon(
-                        getTripTypeIcon('Business'),
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    IconTextDesign(
-                      text: '4 people',
-                      icon: Icon(Icons.people, color: Colors.white),
-                    ),
-                    const SizedBox(height: 8),
-                    IconTextDesign(
-                      text: '10 days',
-                      icon: Icon(Icons.access_time, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
+            OverviewCard(
+              route: 'Delhi - Goa',
+              tripType: 'Adventure',
+              peopleCount: '4 People',
+              duration: '4 days',
             ),
             const SizedBox(height: 26),
             Text(
@@ -106,16 +141,69 @@ class TripPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Expanded(
-              child: ListView.builder(
-                itemCount: itinerary.length,
-                itemBuilder: (context, index) {
-                  return TimeLineWidget(
-                    isFirst: index == 0,
-                    isLast: index == itinerary.length - 1,
-                    dayText: itinerary[index],
-                  );
-                },
+            ...List.generate(itinerary.length, (index) {
+              return TimeLineWidget(
+                isFirst: index == 0,
+                isLast: index == itinerary.length - 1,
+                dayPlan: itinerary[index],
+              );
+            }),
+
+            const SizedBox(height: 24),
+            AccommodationSuggestionsWidget(
+              accommodationSuggestions: accommodationSuggestions,
+            ),
+            const SizedBox(height: 24),
+            TransportWidget(transportationDetails: transportationDetails),
+            const SizedBox(height: 10),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.green.shade50,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.06),
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.account_balance_wallet_outlined,
+                    size: 36,
+                    color: Colors.green.shade700,
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Estimated Budget',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green.shade800,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          '\$ 40,000',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.green.shade900,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -123,27 +211,35 @@ class TripPage extends StatelessWidget {
       ),
     );
   }
-}
 
-class IconTextDesign extends StatelessWidget {
-  final String text;
-  final Icon icon;
-
-  const IconTextDesign({super.key, required this.text, required this.icon});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildSection({
+    required IconData icon,
+    required String title,
+    required String content,
+    Color? iconColor,
+  }) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        icon,
-        const SizedBox(width: 8),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
+        Icon(icon, color: iconColor ?? Colors.grey),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                content,
+                style: const TextStyle(fontSize: 14, color: Colors.black87),
+              ),
+            ],
           ),
         ),
       ],

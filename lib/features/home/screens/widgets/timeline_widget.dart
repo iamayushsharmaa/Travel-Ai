@@ -1,75 +1,85 @@
 import 'package:flutter/material.dart';
 
+import '../../../addtrip/models/travel_gemini_model.dart';
+
+
 class TimeLineWidget extends StatelessWidget {
   final bool isFirst;
   final bool isLast;
-  final String dayText;
+  final DayPlan dayPlan;
 
   const TimeLineWidget({
     super.key,
     required this.isFirst,
     required this.isLast,
-    required this.dayText,
+    required this.dayPlan,
   });
 
   @override
   Widget build(BuildContext context) {
+    final baseColor = Colors.blue.shade700;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
+        SizedBox(
           width: 40,
           child: Column(
             children: [
               Container(
-                width: 2,
-                height: isFirst ? 12 : 24,
-                color: isFirst ? Colors.transparent : Colors.grey,
+                width: 3,
+                height: isFirst ? 20 : 36,
+                color: isFirst ? Colors.transparent : baseColor.withOpacity(0.5),
               ),
-              // Circle
               Container(
-                width: 20,
-                height: 20,
-                decoration: const BoxDecoration(
+                width: 26,
+                height: 26,
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.blueAccent,
+                  color: baseColor,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  '${dayPlan.day}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
-              // Bottom connector line
               Container(
-                width: 2,
-                height: isLast ? 0 : 145,
-                color: isLast ? Colors.transparent : Colors.grey,
+                width: 3,
+                height: isLast ? 0 : 90 + dayPlan.activities.length * 30,
+                color: isLast ? Colors.transparent : baseColor.withOpacity(0.5),
               ),
             ],
           ),
         ),
 
-        const SizedBox(width: 8),
+        const SizedBox(width: 16),
 
         Expanded(
           child: Container(
-            margin: const EdgeInsets.only(bottom: 24),
-            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.only(bottom: 28),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.grey.shade300,
+              color: baseColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  dayText,
+                  'Day ${dayPlan.day} - ${dayPlan.date}',
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                    color: baseColor,
                   ),
                 ),
-                const SizedBox(height: 12),
-                _buildBulletPoint('Arrive at Goa Airport'),
-                _buildBulletPoint('Check-in to hotel'),
-                _buildBulletPoint('Evening beach walk and dinner'),
+                const SizedBox(height: 14),
+                ...dayPlan.activities.map((activity) => _buildActivityItem(activity.description, baseColor)).toList(),
               ],
             ),
           ),
@@ -78,17 +88,22 @@ class TimeLineWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildBulletPoint(String text) {
+  Widget _buildActivityItem(String text, Color baseColor) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(bottom: 10.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("• ", style: TextStyle(color: Colors.black, fontSize: 18)),
+          Icon(Icons.check_circle_rounded, size: 20, color: baseColor),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(color: Colors.black, fontSize: 16),
+              style: TextStyle(
+                color: Colors.grey.shade900,
+                fontSize: 16,
+                height: 1.4,
+              ),
             ),
           ),
         ],
