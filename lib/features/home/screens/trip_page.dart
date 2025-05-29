@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:triptide/core/utils.dart';
+import 'package:triptide/features/home/screens/widgets/timeline_widget.dart';
 
 class TripPage extends StatelessWidget {
   final String travelId;
@@ -9,6 +10,14 @@ class TripPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> itinerary = [
+      'Day 1: Arrival & Beach Visit',
+      'Day 2: Sightseeing',
+      'Day 3: Arrival & Beach Visit',
+      'Day 4: Sightseeing',
+      'Day 5: Arrival & Beach Visit',
+      'Day 6: Sightseeing',
+    ];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -94,6 +103,19 @@ class TripPage extends StatelessWidget {
                 fontSize: 22,
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                itemCount: itinerary.length,
+                itemBuilder: (context, index) {
+                  return TimeLineWidget(
+                    isFirst: index == 0,
+                    isLast: index == itinerary.length - 1,
+                    dayText: itinerary[index],
+                  );
+                },
               ),
             ),
           ],
