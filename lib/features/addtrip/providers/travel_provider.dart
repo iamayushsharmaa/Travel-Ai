@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/core/constant/constant.dart';
 import 'package:triptide/features/addtrip/models/TripPlanRequest.dart';
-import 'package:triptide/features/addtrip/models/travel_db_model.dart';
 import 'package:triptide/features/addtrip/repository/gemini_repository.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,7 +15,6 @@ class SubmitLoading extends _$SubmitLoading {
 
   void setLoading(bool value) => state = value;
 }
-
 
 @riverpod
 Future<String> generateAndStoreTrip(
@@ -58,6 +56,7 @@ Please tailor the plan to the user’s preferences and return only the JSON.
     prompt: prompt,
     userId: userId,
     travelId: travelId,
+    createdAt: DateTime.now(),
   );
 
   return result.fold((l) {

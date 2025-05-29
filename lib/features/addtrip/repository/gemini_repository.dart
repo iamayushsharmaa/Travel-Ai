@@ -35,13 +35,25 @@ class TravelRepository {
     required String prompt,
     required String userId,
     required String travelId,
+    required DateTime createdAt,
   }) async {
     try {
       final tripResponse = await _apiService.getGeminiComplete(prompt);
       final storeTrip = TravelDbModel(
         travelId: travelId,
         userId: userId,
-        tripPlan: tripResponse,
+        createdAt: createdAt,
+        destination: tripResponse.destination,
+        currentLocation: tripResponse.currentLocation,
+        startDate: tripResponse.startDate,
+        endDate: tripResponse.endDate,
+        overview: tripResponse.overview,
+        dailyPlan: tripResponse.dailyPlan,
+        accommodationSuggestions: tripResponse.accommodationSuggestions,
+        transportationDetails: tripResponse.transportationDetails,
+        foodRecommendations: tripResponse.foodRecommendations,
+        additionalTips: tripResponse.additionalTips,
+        budget: tripResponse.budget,
       );
 
       await _trips.doc(travelId).set(storeTrip.toMap());

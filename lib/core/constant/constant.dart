@@ -1,6 +1,7 @@
 class Constant {
   static const jsonResponseExample = ''' {
   "destination": String,
+  "currentLocation": String
   "startDate": String (yyyy-MM-dd),
   "endDate": String (yyyy-MM-dd),
   "overview": String,

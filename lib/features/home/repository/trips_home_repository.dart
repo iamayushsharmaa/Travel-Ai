@@ -64,8 +64,8 @@ class TripsHomeRepository {
     final thisMonthTrips =
         trips.where((trip) {
           final tripMonth = DateTime(
-            trip.tripPlan.startDate.year,
-            trip.tripPlan.startDate.month,
+            trip.startDate.year,
+            trip.startDate.month,
           );
           return tripMonth == currentMonth;
         }).toList();
@@ -73,8 +73,8 @@ class TripsHomeRepository {
     final lastMonthTrips =
         trips.where((trip) {
           final tripMonth = DateTime(
-            trip.tripPlan.startDate.year,
-            trip.tripPlan.startDate.month,
+            trip.startDate.year,
+            trip.startDate.month,
           );
           return tripMonth == previousMonth;
         }).toList();

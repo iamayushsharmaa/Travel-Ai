@@ -251,7 +251,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
       ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 16.0),
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
         child:
             isLoading
                 ? const Loader()
@@ -274,6 +274,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
                     Expanded(
                       child: PageView(
                         controller: _pageController,
+                        physics: NeverScrollableScrollPhysics(),
                         children: [
                           DestinationStep(
                             currentLocationController:
