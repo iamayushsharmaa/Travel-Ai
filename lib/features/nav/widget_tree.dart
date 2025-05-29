@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:triptide/features/history/screen/trip_history.dart';
 
 import '../addtrip/screens/add_trip.dart';
-import '../home/screens/home_page.dart';
+import '../home/pages/home_page.dart';
 import 'navbar/navbar_widget.dart';
 import 'navbar/notifier.dart';
 
@@ -16,7 +16,6 @@ class WidgetTree extends StatefulWidget {
 }
 
 class _WidgetTreeState extends State<WidgetTree> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

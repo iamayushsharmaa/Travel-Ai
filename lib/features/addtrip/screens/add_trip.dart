@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/enums/trip_type.dart';
 import 'package:triptide/features/addtrip/providers/travel_provider.dart';
-import 'package:triptide/features/addtrip/screens/input_widget/date_budget_step.dart';
-import 'package:triptide/features/addtrip/screens/input_widget/destination_step.dart';
-import 'package:triptide/features/addtrip/screens/input_widget/personal_exp_step.dart';
-import 'package:triptide/features/addtrip/screens/input_widget/travel_prep_step.dart';
+import 'package:triptide/features/addtrip/screens/widget/date_budget_step.dart';
+import 'package:triptide/features/addtrip/screens/widget/destination_step.dart';
+import 'package:triptide/features/addtrip/screens/widget/personal_exp_step.dart';
+import 'package:triptide/features/addtrip/screens/widget/travel_prep_step.dart';
 
 import '../../../core/enums/budget_type.dart';
 import '../../../core/enums/currency.dart';
@@ -236,6 +236,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
     final isLoading = ref.watch(submitLoadingProvider);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(
           'Plan Your Trip',
@@ -250,7 +251,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
       ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding:  EdgeInsets.symmetric(horizontal: 16.0),
         child:
             isLoading
                 ? const Loader()
@@ -273,7 +274,6 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
                     Expanded(
                       child: PageView(
                         controller: _pageController,
-                        physics: const NeverScrollableScrollPhysics(),
                         children: [
                           DestinationStep(
                             currentLocationController:
@@ -320,7 +320,6 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

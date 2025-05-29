@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:triptide/features/home/providers/trips_home_provider.dart';
-import 'package:triptide/features/home/screens/widgets/trip_view.dart';
+import 'package:triptide/features/home/pages/widgets/month_widget.dart';
+import 'package:triptide/features/home/pages/widgets/trip_view.dart';
 
+import '../provider/trips_home_provider.dart';
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
@@ -14,7 +15,7 @@ class HomePage extends ConsumerWidget {
     final usersTrip = ref.watch(userTripsProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Trave AI',
           style: TextStyle(
             color: Colors.black,
@@ -26,83 +27,28 @@ class HomePage extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(right: 19, top: 8),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                // Profile tapped
+              },
               child: CircleAvatar(
                 backgroundColor: Colors.grey.shade300,
-                child: Icon(Icons.person, color: Colors.black),
+                child: const Icon(Icons.person, color: Colors.black),
               ),
             ),
           ),
         ],
         centerTitle: false,
         backgroundColor: Colors.white,
+        elevation: 0.5,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey.shade100,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              height: 180,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white70,
-                borderRadius: BorderRadius.circular(14),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 4,
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 6),
-                    Text(
-                      'This month',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      '4',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Last month',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      '9',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            MonthWidget(),
             const SizedBox(height: 20),
             Text(
               'Your Trips',

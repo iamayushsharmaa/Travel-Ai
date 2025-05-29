@@ -82,14 +82,18 @@ class DateBudgetStep extends StatelessWidget {
               controller: endDateController,
               readOnly: true,
               onTap: () async {
+                final selectedStartDate = startDate;
+                if(selectedStartDate == null){
+                  return showSnackBar(context, 'Please select a start date first.');
+                }
                 final date = await showDatePicker(
                   context: context,
-                  firstDate: DateTime.now(),
+                  firstDate: selectedStartDate ?? DateTime.now(),
                   lastDate: DateTime(2100),
                 );
                 if (date != null) {
                   onEndDateChanged(date);
-                  endDateController.text = "${DateFormat.yMMMd().format(date)}";
+                  endDateController.text = DateFormat.yMMMd().format(date);
                 }
               },
               decoration: InputDecoration(

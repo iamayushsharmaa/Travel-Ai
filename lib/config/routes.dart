@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:triptide/features/addtrip/screens/add_trip.dart';
-import 'package:triptide/features/home/screens/home_page.dart';
-import 'package:triptide/features/home/screens/trip_page.dart';
-
-import 'features/auth/provider/auth_providers.dart';
-import 'features/auth/screens/onboarding_page.dart';
-import 'features/auth/screens/signin_page.dart';
-import 'features/auth/screens/signup_page.dart';
-import 'features/nav/widget_tree.dart';
+import '../features/auth/provider/auth_providers.dart';
+import '../features/auth/screens/onboarding_page.dart';
+import '../features/auth/screens/signin_page.dart';
+import '../features/auth/screens/signup_page.dart';
+import '../features/home/pages/home_page.dart';
+import '../features/home/pages/trip_page.dart';
+import '../features/nav/widget_tree.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final listenable = ValueNotifier<bool>(false);

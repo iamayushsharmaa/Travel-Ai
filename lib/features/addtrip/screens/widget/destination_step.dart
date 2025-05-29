@@ -45,6 +45,8 @@ class DestinationStep extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
+          const Text("Where are you going from?", style: TextStyle(fontSize: 18)),
+          const SizedBox(height: 10),
           TextField(
             controller: currentLocationController,
             maxLines: 1,
@@ -65,7 +67,7 @@ class DestinationStep extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text('What\'s your trip type?', style: TextStyle(fontSize: 18)),
-          const SizedBox(height: 10),
+          SizedBox(height: 15),
           Wrap(
             spacing: 10,
             children:
