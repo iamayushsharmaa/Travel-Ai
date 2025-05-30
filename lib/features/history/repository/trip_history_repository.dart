@@ -16,7 +16,6 @@ class TripHistoryRepository {
 
   TripHistoryRepository({required FirebaseFirestore firestore})
     : _firestore = firestore;
-
   CollectionReference get _trips =>
       _firestore.collection(FirebaseConstant.trips);
 
@@ -33,5 +32,9 @@ class TripHistoryRepository {
               )
               .toList();
         });
+  }
+
+  Future<void> addTrip(TravelDbModel travelDbModel) async {
+    await _trips.add(travelDbModel.toMap());
   }
 }
