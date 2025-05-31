@@ -1,44 +1,37 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:triptide/features/home/screens/widgets/trip_view.dart'; // Optional if using GoRouter
+import 'dart:async';
 
-class SearchScreen extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:triptide/features/home/screens/widgets/trip_view.dart';
+
+import '../providers/search_provider.dart'; // Optional if using GoRouter
+
+class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  ConsumerState<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends ConsumerState<SearchScreen> {
   final TextEditingController _controller = TextEditingController();
+  Timer? _debounce;
+  String _query = "";
 
-  final List<String> allTrips = [
-    'London Trip',
-    'Paris Getaway',
-    'New York Adventure',
-    'Tokyo Tour',
-    'Bali Beach',
-    'Dubai Desert',
-  ];
-  List<String> filteredTrips = [];
+  void _onSearchChanged(String value) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
 
-  @override
-  void initState() {
-    super.initState();
-    filteredTrips = allTrips;
-  }
-
-  void _searchTrips(String query) {
-    setState(() {
-      filteredTrips =
-          allTrips
-              .where((trip) => trip.toLowerCase().contains(query.toLowerCase()))
-              .toList();
+    _debounce = Timer(const Duration(milliseconds: 400), () {
+      setState(() => _query = value.trim().toLowerCase());
+      ref.invalidate(searchTripProvider); // reset cache
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final result = ref.watch(searchTripProvider(_query));
+
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -52,9 +45,9 @@ class _SearchScreenState extends State<SearchScreen> {
           padding: const EdgeInsets.only(top: 8.0),
           child: TextField(
             controller: _controller,
-            onChanged: _searchTrips,
+            onChanged: _onSearchChanged,
             decoration: InputDecoration(
-              hintText: 'Search trips...',
+              hintText: 'Search trips',
               filled: true,
               fillColor: Colors.white,
               prefixIcon: const Icon(Icons.search),
@@ -67,32 +60,23 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ),
-      body:
-          filteredTrips.isEmpty
-              ? Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                    'No Trip Found',
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black54,
-                      fontSize: 18,
-                    ),
+      body: Column(
+        children: [
+          Expanded(
+            child: result.when(
+              data:
+                  (items) => ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder:
+                        (context, index) =>
+                            TripView(onTripClicked: (travelId) {}),
                   ),
-                ),
-              )
-              : ListView.builder(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                itemCount: filteredTrips.length,
-                itemBuilder: (context, index) {
-                  final trip = filteredTrips[index];
-                  return TripView(onTripClicked: (travelId) {});
-                },
-              ),
+              loading: () => Center(child: CircularProgressIndicator()),
+              error: (e, _) => Text("Error: $e"),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

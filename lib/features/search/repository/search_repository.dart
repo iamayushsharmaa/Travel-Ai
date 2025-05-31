@@ -25,6 +25,7 @@ class SearchRepository {
 
   FutureEither<List<TravelDbModel>> searchTrips(String query) async {
     try {
+      if (query.isEmpty) return right([]);
       final snapshot =
           await _trips
               .where('destination', isEqualTo: query)
