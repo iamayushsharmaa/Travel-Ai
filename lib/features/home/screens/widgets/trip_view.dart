@@ -12,7 +12,7 @@ class TripView extends StatelessWidget {
       onTap: () => onTripClicked('travelId'),
       child: Container(
         height: 160,
-        margin: const EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 7),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,

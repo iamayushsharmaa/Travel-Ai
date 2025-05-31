@@ -41,7 +41,6 @@ class HomePage extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 8, right: 12),
                 child: GestureDetector(
                   onTap: () {
-                    showSnackBar(context, 'Search Button Clicked');
                     context.pushNamed('search');
                   },
                   child: CircleAvatar(
@@ -54,7 +53,7 @@ class HomePage extends ConsumerWidget {
                 padding: const EdgeInsets.only(right: 19, top: 8),
                 child: GestureDetector(
                   onTap: () {
-                    showSnackBar(context, 'Profile Button Clicked');
+                    context.pushNamed('profile');
                   },
                   child: CircleAvatar(
                     backgroundColor: Colors.grey.shade300,
