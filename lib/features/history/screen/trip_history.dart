@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triptide/core/enums/trip_filter.dart';
 
-import '../../../core/enums/trip_filter.dart';
 import '../../home/screens/widgets/trip_view.dart';
+import '../provider/trip_history_provider.dart';
 
 class TripHistory extends ConsumerStatefulWidget {
   const TripHistory({super.key});
@@ -13,25 +14,11 @@ class TripHistory extends ConsumerStatefulWidget {
 }
 
 class _TripHistoryState extends ConsumerState<TripHistory> {
-
-  final list = [' ', ' '];
-  TripFilter selectedFilter = TripFilter.all;
-
-  final List<Map<String, dynamic>> allTrips = [
-    {
-      'id': '1',
-      'title': 'Trip to Paris',
-      'date': DateTime.now(),
-    },
-    {
-      'id': '2',
-      'title': 'Trip to Tokyo',
-      'date': DateTime.now().subtract(Duration(days: 30)),
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final list = [' ', ' '];
+    final selectedFilter = ref.watch(tripFilterNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey.shade100,
@@ -49,6 +36,33 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 40,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: TripFilter.values.length,
+                separatorBuilder: (context, index) => const SizedBox(width: 8),
+                itemBuilder: (context, index) {
+                  final filter = TripFilter.values[index];
+                  final isSelected = filter == selectedFilter;
+                  return ChoiceChip(
+                    label: Text(filter.label),
+                    selected: isSelected,
+                    onSelected:
+                        (_) => ref
+                            .read(tripFilterNotifierProvider.notifier)
+                            .setFilter(filter),
+                    selectedColor: Colors.blueAccent,
+                    backgroundColor: Colors.grey.shade300,
+                    labelStyle: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black,
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
             Expanded(
               child:
                   // usersTrip.when(
