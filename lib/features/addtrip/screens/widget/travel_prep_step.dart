@@ -112,36 +112,37 @@ class _CustomDropdownState extends State<CustomDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: DropdownButtonFormField<String>(
 
-      focusNode: _focusNode,
-      value: widget.value.isNotEmpty ? widget.value : null,
-      items:
-          widget.options.map((option) {
-            return DropdownMenuItem(value: option, child: Text(option));
-          }).toList(),
-      onChanged: (val) {
-        if (val != null) widget.onChanged(val);
-      },
-      decoration: InputDecoration(
-        labelText: widget.label,
-        labelStyle: TextStyle(
-          color: _isFocused ? Colors.blueAccent : Colors.grey,
+        focusNode: _focusNode,
+        value: widget.value.isNotEmpty ? widget.value : null,
+        items:
+            widget.options.map((option) {
+              return DropdownMenuItem(value: option, child: Text(option));
+            }).toList(),
+        onChanged: (val) {
+          if (val != null) widget.onChanged(val);
+        },
+        decoration: InputDecoration(
+          labelText: widget.label,
+          labelStyle: TextStyle(
+            color: _isFocused ? Colors.blueAccent : Colors.grey,
+          ),
+          hintText: widget.hintText,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.grey, width: 2),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.blueAccent, width: 2),
+          ),
         ),
-        hintText: widget.hintText,
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey, width: 2),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.blueAccent, width: 2),
-        ),
+        dropdownColor: Colors.white,
+        iconEnabledColor: _isFocused ? Colors.blueAccent : Colors.grey,
       ),
-      dropdownColor: Colors.white,
-      iconEnabledColor: _isFocused ? Colors.blueAccent : Colors.grey,
     );
   }
 }

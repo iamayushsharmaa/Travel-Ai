@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:triptide/features/home/pages/widgets/month_widget.dart';
-import 'package:triptide/features/home/pages/widgets/trip_view.dart';
+import 'package:triptide/features/home/screens/widgets/month_widget.dart';
+import 'package:triptide/features/home/screens/widgets/trip_view.dart';
 
 import '../provider/trips_home_provider.dart';
 class HomePage extends ConsumerWidget {
@@ -19,8 +19,8 @@ class HomePage extends ConsumerWidget {
           'Trave AI',
           style: TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.w700,
-            fontSize: 25,
+            fontWeight: FontWeight.w600,
+            fontSize: 26,
           ),
         ),
         actions: [
@@ -74,7 +74,7 @@ class HomePage extends ConsumerWidget {
                           'No Trip Yet!',
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
-                            color: Colors.grey,
+                            color: Colors.black54,
                             fontSize: 18,
                           ),
                         ),

@@ -241,17 +241,17 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
         title: Text(
           'Plan Your Trip',
           style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
+            fontSize: 26,
+            fontWeight: FontWeight.w600,
             color: Colors.black,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey.shade100,
         centerTitle: false,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey.shade100,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
         child:
             isLoading
                 ? const Loader()
@@ -270,7 +270,6 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
                     Expanded(
                       child: PageView(
                         controller: _pageController,
@@ -366,9 +365,9 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
                   ],
                 ),
+
       ),
     );
   }

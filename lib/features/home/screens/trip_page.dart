@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart' hide TransportationDetails;
-import 'package:triptide/features/home/pages/widgets/accomodation_card_widget.dart';
-import 'package:triptide/features/home/pages/widgets/overview_widget.dart';
-import 'package:triptide/features/home/pages/widgets/timeline_widget.dart';
-import 'package:triptide/features/home/pages/widgets/transport_widget.dart';
+import 'package:triptide/features/home/screens/widgets/accomodation_card_widget.dart';
+import 'package:triptide/features/home/screens/widgets/overview_widget.dart';
+import 'package:triptide/features/home/screens/widgets/timeline_widget.dart';
+import 'package:triptide/features/home/screens/widgets/transport_widget.dart';
 
 import '../../addtrip/models/travel_gemini_model.dart';
 

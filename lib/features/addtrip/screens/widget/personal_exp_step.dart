@@ -65,6 +65,7 @@ class PersonalPreferencesStep extends StatelessWidget {
               ),
               hintText: "Select companion",
             ),
+            dropdownColor: Colors.grey.shade100,
           ),
           const SizedBox(height: 16),
           const Text("Select Your Interests", style: TextStyle(fontSize: 18)),

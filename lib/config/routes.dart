@@ -6,8 +6,8 @@ import '../features/auth/provider/auth_providers.dart';
 import '../features/auth/screens/onboarding_page.dart';
 import '../features/auth/screens/signin_page.dart';
 import '../features/auth/screens/signup_page.dart';
-import '../features/home/pages/home_page.dart';
-import '../features/home/pages/trip_page.dart';
+import '../features/home/screens/home_page.dart';
+import '../features/home/screens/trip_page.dart';
 import '../features/nav/widget_tree.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
