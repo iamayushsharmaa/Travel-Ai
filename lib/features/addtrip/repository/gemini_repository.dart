@@ -54,6 +54,7 @@ class TravelRepository {
         foodRecommendations: tripResponse.foodRecommendations,
         additionalTips: tripResponse.additionalTips,
         budget: tripResponse.budget,
+        isFavorite: false
       );
 
       await _trips.doc(travelId).set(storeTrip.toMap());

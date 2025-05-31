@@ -54,6 +54,9 @@ class TripHistoryRepository {
         break;
       case TripFilter.all:
         break;
+      case TripFilter.favorite:
+        query = query.where('isFavorite', isEqualTo: true);
+        break;
     }
 
     return query.snapshots().map((snapshot) {

@@ -15,6 +15,7 @@ class TravelDbModel {
   final List<String> foodRecommendations;
   final List<String> additionalTips;
   final String budget;
+  final bool isFavorite;
 
   TravelDbModel({
     required this.travelId,
@@ -31,6 +32,7 @@ class TravelDbModel {
     required this.foodRecommendations,
     required this.additionalTips,
     required this.budget,
+    required this.isFavorite,
   });
 
   Map<String, dynamic> toMap() {
@@ -49,6 +51,7 @@ class TravelDbModel {
       'foodRecommendations': this.foodRecommendations,
       'additionalTips': this.additionalTips,
       'budget': this.budget,
+      'isFavorite': this.isFavorite,
     };
   }
 
@@ -70,47 +73,12 @@ class TravelDbModel {
       foodRecommendations: map['foodRecommendations'] as List<String>,
       additionalTips: map['additionalTips'] as List<String>,
       budget: map['budget'] as String,
-    );
-  }
-
-  TravelDbModel copyWith({
-    String? travelId,
-    String? userId,
-    DateTime? createdAt,
-    String? destination,
-    String? currentLocation,
-    DateTime? startDate,
-    DateTime? endDate,
-    String? overview,
-    List<DayPlan>? dailyPlan,
-    List<AccommodationSuggestion>? accommodationSuggestions,
-    TransportationDetails? transportationDetails,
-    List<String>? foodRecommendations,
-    List<String>? additionalTips,
-    String? budget,
-  }) {
-    return TravelDbModel(
-      travelId: travelId ?? this.travelId,
-      userId: userId ?? this.userId,
-      createdAt: createdAt ?? this.createdAt,
-      destination: destination ?? this.destination,
-      currentLocation: currentLocation ?? this.currentLocation,
-      startDate: startDate ?? this.startDate,
-      endDate: endDate ?? this.endDate,
-      overview: overview ?? this.overview,
-      dailyPlan: dailyPlan ?? this.dailyPlan,
-      accommodationSuggestions:
-          accommodationSuggestions ?? this.accommodationSuggestions,
-      transportationDetails:
-          transportationDetails ?? this.transportationDetails,
-      foodRecommendations: foodRecommendations ?? this.foodRecommendations,
-      additionalTips: additionalTips ?? this.additionalTips,
-      budget: budget ?? this.budget,
+      isFavorite: map['isFavorite'] as bool,
     );
   }
 
   @override
   String toString() {
-    return 'TravelDbModel{travelId: $travelId, userId: $userId, createdAt: $createdAt, destination: $destination, currentLocation: $currentLocation, startDate: $startDate, endDate: $endDate, overview: $overview, dailyPlan: $dailyPlan, accommodationSuggestions: $accommodationSuggestions, transportationDetails: $transportationDetails, foodRecommendations: $foodRecommendations, additionalTips: $additionalTips, budget: $budget}';
+    return 'TravelDbModel{travelId: $travelId, userId: $userId, createdAt: $createdAt, destination: $destination, currentLocation: $currentLocation, startDate: $startDate, endDate: $endDate, overview: $overview, dailyPlan: $dailyPlan, accommodationSuggestions: $accommodationSuggestions, transportationDetails: $transportationDetails, foodRecommendations: $foodRecommendations, additionalTips: $additionalTips, budget: $budget, isFavorite: $isFavorite}';
   }
 }

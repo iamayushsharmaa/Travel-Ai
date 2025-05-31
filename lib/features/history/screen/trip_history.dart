@@ -16,12 +16,13 @@ class TripHistory extends ConsumerStatefulWidget {
 class _TripHistoryState extends ConsumerState<TripHistory> {
   @override
   Widget build(BuildContext context) {
-    final list = [' ', ' '];
+    final list = [' ', ' ', ' ', ' ', ' ', ' '];
     final selectedFilter = ref.watch(tripFilterNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey.shade100,
+        elevation: 1,
         title: Text(
           'History',
           style: TextStyle(
@@ -32,7 +33,7 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
         ),
       ),
       backgroundColor: Colors.grey.shade100,
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
@@ -62,40 +63,40 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
                 },
               ),
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child:
-                  // usersTrip.when(
-                  //   data: (data) {
-                  //
-                  //   },
-                  //   error: (error, stackTrace) => ErrorText(error: error.toString()),
-                  //   loading: () => const Loader(),
-                  // ),
-                  list.isEmpty
-                      ? Center(
-                        child: Text(
-                          'No Trip Yet!',
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black54,
-                            fontSize: 18,
+            const SizedBox(height: 8),
+
+            // usersTrip.when(
+            //   data: (data) {
+            //
+            //   },
+            //   error: (error, stackTrace) => ErrorText(error: error.toString()),
+            //   loading: () => const Loader(),
+            // ),
+            list.isEmpty
+                ? Center(
+                  child: Text(
+                    'No Trip Yet!',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black54,
+                      fontSize: 18,
+                    ),
+                  ),
+                )
+                : ListView.builder(
+                  itemCount: list.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return TripView(
+                      onTripClicked:
+                          (travelId) => context.pushNamed(
+                            'trip',
+                            pathParameters: {'travelId': travelId},
                           ),
-                        ),
-                      )
-                      : ListView.builder(
-                        itemCount: list.length,
-                        itemBuilder: (context, index) {
-                          return TripView(
-                            onTripClicked:
-                                (travelId) => context.pushNamed(
-                                  'trip',
-                                  pathParameters: {'travelId': travelId},
-                                ),
-                          );
-                        },
-                      ),
-            ),
+                    );
+                  },
+                ),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart' hide TransportationDetails;
 import 'package:triptide/features/home/screens/widgets/accomodation_card_widget.dart';
 import 'package:triptide/features/home/screens/widgets/overview_widget.dart';
@@ -8,13 +9,13 @@ import 'package:triptide/features/home/screens/widgets/transport_widget.dart';
 
 import '../../addtrip/models/travel_gemini_model.dart';
 
-class TripPage extends StatelessWidget {
+class TripPage extends ConsumerWidget {
   final String travelId;
 
   const TripPage({super.key, required this.travelId});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     List<DayPlan> itinerary = [
       DayPlan(
         day: 1,
@@ -98,7 +99,6 @@ class TripPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        // soft shadow for separation
         centerTitle: true,
         title: Text(
           'Trip to Goa',
@@ -108,7 +108,6 @@ class TripPage extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
         // icon color
         leading: Padding(
           padding: const EdgeInsets.only(left: 8.0),
@@ -117,6 +116,15 @@ class TripPage extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios_new_outlined),
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 5.0),
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.favorite, color: Colors.black, size: 28),
+            ),
+          ),
+        ],
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: SingleChildScrollView(
@@ -140,13 +148,18 @@ class TripPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            ...List.generate(itinerary.length, (index) {
-              return TimeLineWidget(
-                isFirst: index == 0,
-                isLast: index == itinerary.length - 1,
-                dayPlan: itinerary[index],
-              );
-            }),
+            ListView.builder(
+              itemCount: itinerary.length,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return TimeLineWidget(
+                  isFirst: index == 0,
+                  isLast: index == itinerary.length - 1,
+                  dayPlan: itinerary[index],
+                );
+              },
+            ),
 
             const SizedBox(height: 24),
             AccommodationSuggestionsWidget(
