@@ -27,6 +27,7 @@ class TripsHomeRepository {
       _firestore.collection(FirebaseConstant.trips);
 
   Stream<List<TravelDbModel>> getUserTrips(String userId) {
+    print('fetching trips in repos');
     return _trips.where('userId', isEqualTo: userId).snapshots().map((
       snapshot,
     ) {
@@ -58,74 +59,84 @@ class TripsHomeRepository {
   }
 
   Map<String, List<TravelDbModel>> categorizeTrips(
-    List<TravelDbModel> trips,
-    String userId,
-  ) {
-    final userTrips = trips.where((trip) => trip.userId == userId).toList();
-
+      List<TravelDbModel> trips,
+      String userId,
+      ) {
     final now = DateTime.now();
     final currentMonth = DateTime(now.year, now.month);
-    final previousMonth = DateTime(now.year, now.month - 1);
+    final previousMonth =
+    now.month == 1 ? DateTime(now.year - 1, 12) : DateTime(now.year, now.month - 1);
 
-    final thisMonthTrips =
-        userTrips.where((trip) {
-          final tripMonth = DateTime(trip.startDate.year, trip.startDate.month);
-          return tripMonth == currentMonth;
-        }).toList();
+    final thisMonthTrips = trips.where((trip) {
+      final tripMonth = DateTime(trip.startDate.year, trip.startDate.month);
+      return trip.userId == userId && tripMonth == currentMonth;
+    }).toList();
 
-    final lastMonthTrips =
-        userTrips.where((trip) {
-          final tripMonth = DateTime(trip.startDate.year, trip.startDate.month);
-          return tripMonth == previousMonth;
-        }).toList();
+    final lastMonthTrips = trips.where((trip) {
+      final tripMonth = DateTime(trip.startDate.year, trip.startDate.month);
+      return trip.userId == userId && tripMonth == previousMonth;
+    }).toList();
 
     return {'This Month': thisMonthTrips, 'Last Month': lastMonthTrips};
   }
 
+
   Future<void> addSampleTripForUser(String userId) async {
-    if (userId.isEmpty) return;
+    try {
+      if (userId.isEmpty) {
+        print('userId is null');
+        return;
+      }
 
-    final trip = TravelDbModel(
-      travelId: Uuid().v4(),
-      userId: userId,
-      createdAt: DateTime.now(),
-      destination: "Goa",
-      currentLocation: "Mumbai",
-      tripType: "Leisure",
-      startDate: DateTime.now(),
-      endDate: DateTime.now().add(Duration(days: 5)),
-      totalDays: 5,
-      totalPeople: 3,
-      overview: "Fun trip to Goa",
-      budget: "₹25,000",
-      isFavorite: false,
-      foodRecommendations: ["Fish Curry", "Bebinca"],
-      additionalTips: ["Pack light", "Carry sunscreen"],
-      transportationDetails: TransportationDetails(
-        transportModes: ["Train", "Taxi"],
-        localTransport: "Scooters",
-        tips: "Rent early to avoid surge",
-      ),
-      accommodationSuggestions: [
-        AccommodationSuggestion(
-          name: "Goa Beach Resort",
-          type: "Hotel",
-          location: "Calangute",
-          priceRange: "₹2000-3000",
-        ),
-      ],
-      dailyPlan: [
-        DayPlan(
-          day: 1,
-          date: DateTime.now().toIso8601String(),
-          activities: [
-            Activity(time: "10:00 AM", description: "Reach hotel"),
-            Activity(time: "12:00 PM", description: "Beach walk"),
-          ],
-        ),
-      ],
-    );
+      print('userId is $userId');
 
-    await _trips.doc(trip.travelId).set(trip.toMap());
+      final trip = TravelDbModel(
+        travelId: Uuid().v4(),
+        userId: userId,
+        createdAt: DateTime.now(),
+        destination: "Goa",
+        currentLocation: "Mumbai",
+        tripType: "Leisure",
+        startDate: DateTime.now(),
+        endDate: DateTime.now().add(Duration(days: 5)),
+        totalDays: 5,
+        totalPeople: 3,
+        overview: "Fun trip to Goa",
+        budget: "₹25,000",
+        isFavorite: false,
+        foodRecommendations: ["Fish Curry", "Bebinca"],
+        additionalTips: ["Pack light", "Carry sunscreen"],
+        transportationDetails: TransportationDetails(
+          transportModes: ["Train", "Taxi"],
+          localTransport: "Scooters",
+          tips: "Rent early to avoid surge",
+        ),
+        accommodationSuggestions: [
+          AccommodationSuggestion(
+            name: "Goa Beach Resort",
+            type: "Hotel",
+            location: "Calangute",
+            priceRange: "₹2000-3000",
+          ),
+        ],
+        dailyPlan: [
+          DayPlan(
+            day: 1,
+            date: DateTime.now().toIso8601String(),
+            activities: [
+              Activity(time: "10:00 AM", description: "Reach hotel"),
+              Activity(time: "12:00 PM", description: "Beach walk"),
+            ],
+          ),
+        ],
+      );
+      print(trip.toMap());
+      await _trips.doc(trip.travelId).set(trip.toMap());
+      print('trips saved succesfully');
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      print('Failed to save trips $e');
+    }
   }
 }

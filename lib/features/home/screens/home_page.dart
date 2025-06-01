@@ -16,15 +16,12 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  @override
-  void initState() {
-    ref.read(insertSampleTripOnStartProvider);
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
     final usersTrip = ref.watch(userTripsProvider);
+    final categorizedAsync = ref.watch(categorizeTripsProvider);
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -74,7 +71,6 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ],
           ),
-
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(
@@ -85,9 +81,22 @@ class _HomePageState extends ConsumerState<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 8),
-                  MonthWidget(),
+                  categorizedAsync.when(
+                    data: (categorized) {
+                      final thisMonthTrips =
+                          (categorized['This Month'] ?? []).length;
+                      final lastMonthTrips =
+                          (categorized['Last Month'] ?? []).length;
+
+                      return MonthWidget(thisMonthTrips, lastMonthTrips);
+                    },
+                    error:
+                        (error, stackTrace) =>
+                            ErrorText(error: error.toString()),
+                    loading: () => const Loader(),
+                  ),
                   const SizedBox(height: 20),
-                  Text(
+                  const Text(
                     'Your Trips',
                     style: TextStyle(
                       fontSize: 24,
@@ -99,10 +108,10 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ),
           ),
-
           usersTrip.when(
             data: (data) {
               if (data.isEmpty) {
+                print('No Trip Yet!');
                 return SliverToBoxAdapter(
                   child: Center(
                     child: Padding(
@@ -119,6 +128,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ),
                 );
               } else {
+                print('user trip length${data.length}');
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
                     childCount: data.length,
@@ -140,8 +150,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                 );
               }
             },
-            error: (error, stackTrace) => ErrorText(error: error.toString()),
-            loading: () => const Loader(),
+            error: (error, stackTrace) {
+              print('error${error.toString()}');
+
+              return SliverToBoxAdapter(
+                child: Center(child: ErrorText(error: error.toString())),
+              );
+            },
+            loading:
+                () => const SliverToBoxAdapter(child: Center(child: Loader())),
           ),
         ],
       ),

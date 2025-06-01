@@ -10,7 +10,7 @@ part 'trips_home_provider.g.dart';
 Stream<List<TravelDbModel>> userTrips(UserTripsRef ref) {
   final userId = ref.read(userInfoProvider)!.uid;
   final repository = ref.read(tripsHomeRepositoryProvider);
-
+  print('in provider');
   return repository.getUserTrips(userId);
 }
 
@@ -27,7 +27,11 @@ Future<Map<String, List<TravelDbModel>>> categorizeTrips(
   CategorizeTripsRef ref,
 ) async {
   final trips = ref.watch(userTripsProvider).valueOrNull ?? [];
-  final userId = ref.read(userInfoProvider)!.uid;
+
+  final userInfo = ref.watch(userInfoProvider);
+  if (userInfo == null) return {'This Month': [], 'Last Month': []};
+
+  final userId = userInfo.uid;
   final repositroy = ref.read(tripsHomeRepositoryProvider);
   return repositroy.categorizeTrips(trips, userId);
 }
@@ -36,9 +40,12 @@ Future<Map<String, List<TravelDbModel>>> categorizeTrips(
 @riverpod
 Future<void> insertSampleTripOnStart(InsertSampleTripOnStartRef ref) async {
   final repo = ref.read(tripsHomeRepositoryProvider);
-  final user = ref.read(userInfoProvider);
+  final userId = ref.read(userInfoProvider)!.uid;
 
-  if (user != null) {
-    await repo.addSampleTripForUser(user.uid);
+  print('userId is $userId');
+
+  if (userId != null) {
+    print('userId is userId');
+    await repo.addSampleTripForUser(userId);
   }
 }

@@ -79,22 +79,22 @@ class DayPlan {
 
   DayPlan({required this.day, required this.date, required this.activities});
 
-  factory DayPlan.fromJson(Map<String, dynamic> json) {
+  factory DayPlan.fromMap(Map<String, dynamic> json) {
     return DayPlan(
-      day: json['day'],
-      date: json['date'],
+      day: json['day'] ?? 0,
+      date: json['date'] ?? '',
       activities:
-          (json['activities'] as List)
-              .map((e) => Activity.fromJson(e))
+          (json['activities'] as List<dynamic>? ?? [])
+              .map((e) => Activity.fromMap(e))
               .toList(),
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'day': day,
       'date': date,
-      'activities': activities.map((e) => e.toJson()).toList(),
+      'activities': activities.map((e) => e.toMap()).toList(),
     };
   }
 }
@@ -105,11 +105,11 @@ class Activity {
 
   Activity({required this.time, required this.description});
 
-  factory Activity.fromJson(Map<String, dynamic> json) {
+  factory Activity.fromMap(Map<String, dynamic> json) {
     return Activity(time: json['time'], description: json['description']);
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {'time': time, 'description': description};
   }
 }
@@ -127,7 +127,7 @@ class AccommodationSuggestion {
     required this.priceRange,
   });
 
-  factory AccommodationSuggestion.fromJson(Map<String, dynamic> json) {
+  factory AccommodationSuggestion.fromMap(Map<String, dynamic> json) {
     return AccommodationSuggestion(
       name: json['name'],
       type: json['type'],
@@ -136,7 +136,7 @@ class AccommodationSuggestion {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'name': name,
       'type': type,
@@ -157,15 +157,15 @@ class TransportationDetails {
     required this.tips,
   });
 
-  factory TransportationDetails.fromJson(Map<String, dynamic> json) {
+  factory TransportationDetails.fromMap(Map<String, dynamic> json) {
     return TransportationDetails(
-      transportModes: json['transportModes'] ?? '',
+      transportModes: (json['transportModes'] as List<dynamic>?)?.cast<String>() ?? [],
       localTransport: json['localTransport'] ?? '',
       tips: json['tips'] ?? '',
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'transportModes': transportModes,
       'localTransport': localTransport,
