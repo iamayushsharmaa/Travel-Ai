@@ -29,6 +29,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    _debounce?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final result = ref.watch(searchTripProvider(_query));
 
@@ -52,7 +59,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               fillColor: Colors.white,
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(6),
                 borderSide: BorderSide.none,
               ),
               contentPadding: const EdgeInsets.symmetric(vertical: 0),
@@ -67,9 +74,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               data:
                   (items) => ListView.builder(
                     itemCount: items.length,
-                    itemBuilder:
-                        (context, index) =>
-                            TripView(onTripClicked: (travelId) {}),
+                    itemBuilder: (context, index) {
+                      final trip = items[index];
+                      return TripView(
+                        trip: trip,
+                        onTripClicked:
+                            (trip) => context.pushNamed(
+                              'trip',
+                              pathParameters: {'travelId': trip.travelId},
+                            ),
+                      );
+                    },
                   ),
               loading: () => Center(child: CircularProgressIndicator()),
               error: (e, _) => Text("Error: $e"),

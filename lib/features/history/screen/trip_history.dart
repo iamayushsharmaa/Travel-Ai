@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triptide/core/common/error_text.dart';
+import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/enums/trip_filter.dart';
 
 import '../../home/screens/widgets/trip_view.dart';
@@ -14,12 +16,17 @@ class TripHistory extends ConsumerStatefulWidget {
 }
 
 class _TripHistoryState extends ConsumerState<TripHistory> {
+  void onFitlerSelected(TripFilter filter) {
+    ref.read(tripFilterNotifierProvider.notifier).setFilter(filter);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final list = [' ', ' ', ' ', ' ', ' ', ' '];
     final selectedFilter = ref.watch(tripFilterNotifierProvider);
+    final userHistoryTrips = ref.watch(userHistoryTripsProvider);
 
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         backgroundColor: Colors.grey.shade100,
         elevation: 1,
@@ -32,7 +39,6 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
           ),
         ),
       ),
-      backgroundColor: Colors.grey.shade100,
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
@@ -50,10 +56,7 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
                   return ChoiceChip(
                     label: Text(filter.label),
                     selected: isSelected,
-                    onSelected:
-                        (_) => ref
-                            .read(tripFilterNotifierProvider.notifier)
-                            .setFilter(filter),
+                    onSelected: (_) => onFitlerSelected(filter),
                     selectedColor: Colors.blueAccent,
                     backgroundColor: Colors.grey.shade300,
                     labelStyle: TextStyle(
@@ -65,38 +68,41 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
             ),
             const SizedBox(height: 8),
 
-            // usersTrip.when(
-            //   data: (data) {
-            //
-            //   },
-            //   error: (error, stackTrace) => ErrorText(error: error.toString()),
-            //   loading: () => const Loader(),
-            // ),
-            list.isEmpty
-                ? Center(
-                  child: Text(
-                    'No Trip Yet!',
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black54,
-                      fontSize: 18,
+            userHistoryTrips.when(
+              data: (data) {
+                if (data.isEmpty) {
+                  return Center(
+                    child: Text(
+                      'No Trip Yet!',
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        color: Colors.black54,
+                        fontSize: 18,
+                      ),
                     ),
-                  ),
-                )
-                : ListView.builder(
-                  itemCount: list.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return TripView(
-                      onTripClicked:
-                          (travelId) => context.pushNamed(
-                            'trip',
-                            pathParameters: {'travelId': travelId},
-                          ),
-                    );
-                  },
-                ),
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: data.length,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final trip = data[index];
+                      return TripView(
+                        trip: trip,
+                        onTripClicked:
+                            (trip) => context.pushNamed(
+                              'trip',
+                              pathParameters: {'travelId': trip.travelId},
+                            ),
+                      );
+                    },
+                  );
+                }
+              },
+              error: (error, stackTrace) => ErrorText(error: error.toString()),
+              loading: () => const Loader(),
+            ),
           ],
         ),
       ),

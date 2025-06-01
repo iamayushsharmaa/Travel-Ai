@@ -43,7 +43,7 @@ class GeminiApiService {
 
       final decodedJson = json.decode(cleanedText);
       final trips = (decodedJson['tripSuggestions']).map(
-        (e) => TravelGeminiResponse.fromJson(e),
+        (e) => TravelGeminiResponse.fromMap(e),
       );
       return trips;
     } on DioException catch (e) {

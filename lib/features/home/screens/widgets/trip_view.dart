@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+import 'package:triptide/features/addtrip/models/travel_db_model.dart';
 
 class TripView extends StatelessWidget {
-  final Function(String travelId) onTripClicked;
+  final TravelDbModel trip;
+  final void Function(TravelDbModel trip) onTripClicked;
 
-  const TripView({super.key, required this.onTripClicked});
+  const TripView({super.key, required this.onTripClicked, required this.trip});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTripClicked('travelId'),
+      onTap: () => onTripClicked(trip),
       child: Container(
         height: 160,
         margin: const EdgeInsets.symmetric(vertical: 7),
@@ -41,32 +42,24 @@ class TripView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// Top Row: Duration and Date
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
-                        '10 days',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.black54,
-                        ),
+                        '${trip.totalDays}',
+                        style: TextStyle(fontSize: 13, color: Colors.black54),
                       ),
                       Text(
-                        '24 Jun - 30 Jun',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.black54,
-                        ),
+                        '${trip.startDate} - ${trip.endDate}',
+                        style: TextStyle(fontSize: 13, color: Colors.black54),
                       ),
                     ],
                   ),
 
                   const SizedBox(height: 6),
 
-                  /// Destination
-                  const Text(
-                    'Goa',
+                  Text(
+                    trip.destination,
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -76,20 +69,16 @@ class TripView extends StatelessWidget {
 
                   const SizedBox(height: 8),
 
-                  /// Budget
-                  const Row(
+                  Row(
                     children: [
                       Text(
                         'Budget: ',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black54,
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.black54),
                       ),
                       Text(
-                        '\$400',
+                        '${trip.budget}',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: Colors.black87,
                         ),
@@ -99,18 +88,17 @@ class TripView extends StatelessWidget {
 
                   const Spacer(),
 
-                  /// Trip Type Chip
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.teal.shade400,
+                      color: Colors.teal.shade200,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Text(
-                      'Adventure',
+                    child: Text(
+                      trip.tripType,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.white,

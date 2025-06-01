@@ -6,8 +6,10 @@ class TravelDbModel {
   final DateTime? createdAt;
   final String destination;
   final String currentLocation;
+  final String tripType;
   final DateTime startDate;
   final DateTime endDate;
+  final int totalDays;
   final String overview;
   final List<DayPlan> dailyPlan;
   final List<AccommodationSuggestion> accommodationSuggestions;
@@ -33,6 +35,8 @@ class TravelDbModel {
     required this.additionalTips,
     required this.budget,
     required this.isFavorite,
+    required this.tripType,
+    required this.totalDays,
   });
 
   Map<String, dynamic> toMap() {
@@ -42,6 +46,7 @@ class TravelDbModel {
       'createdAt': this.createdAt,
       'destination': this.destination,
       'currentLocation': this.currentLocation,
+      'tripType': this.tripType,
       'startDate': this.startDate,
       'endDate': this.endDate,
       'overview': this.overview,
@@ -52,6 +57,7 @@ class TravelDbModel {
       'additionalTips': this.additionalTips,
       'budget': this.budget,
       'isFavorite': this.isFavorite,
+      'totalDays': this.totalDays,
     };
   }
 
@@ -62,6 +68,7 @@ class TravelDbModel {
       createdAt: map['createdAt'] as DateTime,
       destination: map['destination'] as String,
       currentLocation: map['currentLocation'] as String,
+      tripType: map['tripType'] as String,
       startDate: map['startDate'] as DateTime,
       endDate: map['endDate'] as DateTime,
       overview: map['overview'] as String,
@@ -74,11 +81,12 @@ class TravelDbModel {
       additionalTips: map['additionalTips'] as List<String>,
       budget: map['budget'] as String,
       isFavorite: map['isFavorite'] as bool,
+      totalDays: map['totalDays'] as int,
     );
   }
 
   @override
   String toString() {
-    return 'TravelDbModel{travelId: $travelId, userId: $userId, createdAt: $createdAt, destination: $destination, currentLocation: $currentLocation, startDate: $startDate, endDate: $endDate, overview: $overview, dailyPlan: $dailyPlan, accommodationSuggestions: $accommodationSuggestions, transportationDetails: $transportationDetails, foodRecommendations: $foodRecommendations, additionalTips: $additionalTips, budget: $budget, isFavorite: $isFavorite}';
+    return 'TravelDbModel{travelId: $travelId, userId: $userId, totalDays: $totalDays, createdAt: $createdAt, destination: $destination, currentLocation: $currentLocation, tripType: $tripType, startDate: $startDate, endDate: $endDate, overview: $overview, dailyPlan: $dailyPlan, accommodationSuggestions: $accommodationSuggestions, transportationDetails: $transportationDetails, foodRecommendations: $foodRecommendations, additionalTips: $additionalTips, budget: $budget, isFavorite: $isFavorite}';
   }
 }

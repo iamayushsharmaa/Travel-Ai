@@ -4,6 +4,8 @@ class TravelGeminiResponse {
   final DateTime startDate;
   final DateTime endDate;
   final String overview;
+  final String tripType;
+  final int totalDays;
   final List<DayPlan> dailyPlan;
   final List<AccommodationSuggestion> accommodationSuggestions;
   final TransportationDetails transportationDetails;
@@ -17,6 +19,8 @@ class TravelGeminiResponse {
     required this.startDate,
     required this.endDate,
     required this.overview,
+    required this.tripType,
+    required this.totalDays,
     required this.dailyPlan,
     required this.accommodationSuggestions,
     required this.transportationDetails,
@@ -25,13 +29,15 @@ class TravelGeminiResponse {
     required this.budget,
   });
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'destination': this.destination,
       'currentLocation': this.currentLocation,
       'startDate': this.startDate,
       'endDate': this.endDate,
       'overview': this.overview,
+      'tripType': this.tripType,
+      'totalDays': this.totalDays,
       'dailyPlan': this.dailyPlan,
       'accommodationSuggestions': this.accommodationSuggestions,
       'transportationDetails': this.transportationDetails,
@@ -41,13 +47,15 @@ class TravelGeminiResponse {
     };
   }
 
-  factory TravelGeminiResponse.fromJson(Map<String, dynamic> map) {
+  factory TravelGeminiResponse.fromMap(Map<String, dynamic> map) {
     return TravelGeminiResponse(
       destination: map['destination'] as String,
       currentLocation: map['currentLocation'] as String,
       startDate: map['startDate'] as DateTime,
       endDate: map['endDate'] as DateTime,
       overview: map['overview'] as String,
+      tripType: map['tripType'] as String,
+      totalDays: map['totalDays'] as int,
       dailyPlan: map['dailyPlan'] as List<DayPlan>,
       accommodationSuggestions:
           map['accommodationSuggestions'] as List<AccommodationSuggestion>,
