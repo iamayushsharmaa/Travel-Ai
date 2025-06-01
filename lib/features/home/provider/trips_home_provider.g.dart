@@ -164,7 +164,7 @@ class _TripByIdProviderElement
   String get travelId => (origin as TripByIdProvider).travelId;
 }
 
-String _$categorizeTripsHash() => r'8963de4bf49ca9a21d8abdaaa60903f794fab949';
+String _$categorizeTripsHash() => r'f63cdc054860ac3e218c2da19faf6d80a30ed0c4';
 
 /// See also [categorizeTrips].
 @ProviderFor(categorizeTrips)
@@ -184,5 +184,25 @@ final categorizeTripsProvider =
 // ignore: unused_element
 typedef CategorizeTripsRef =
     AutoDisposeFutureProviderRef<Map<String, List<TravelDbModel>>>;
+String _$insertSampleTripOnStartHash() =>
+    r'14716c1097e7e114fa135c1be90e65ebea197ead';
+
+/// See also [insertSampleTripOnStart].
+@ProviderFor(insertSampleTripOnStart)
+final insertSampleTripOnStartProvider =
+    AutoDisposeFutureProvider<void>.internal(
+      insertSampleTripOnStart,
+      name: r'insertSampleTripOnStartProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$insertSampleTripOnStartHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef InsertSampleTripOnStartRef = AutoDisposeFutureProviderRef<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

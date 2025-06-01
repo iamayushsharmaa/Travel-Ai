@@ -6,6 +6,7 @@ class TravelGeminiResponse {
   final String overview;
   final String tripType;
   final int totalDays;
+  final int totalPeople;
   final List<DayPlan> dailyPlan;
   final List<AccommodationSuggestion> accommodationSuggestions;
   final TransportationDetails transportationDetails;
@@ -21,6 +22,7 @@ class TravelGeminiResponse {
     required this.overview,
     required this.tripType,
     required this.totalDays,
+    required this.totalPeople,
     required this.dailyPlan,
     required this.accommodationSuggestions,
     required this.transportationDetails,
@@ -38,6 +40,7 @@ class TravelGeminiResponse {
       'overview': this.overview,
       'tripType': this.tripType,
       'totalDays': this.totalDays,
+      'totalPeople': this.totalPeople,
       'dailyPlan': this.dailyPlan,
       'accommodationSuggestions': this.accommodationSuggestions,
       'transportationDetails': this.transportationDetails,
@@ -56,6 +59,7 @@ class TravelGeminiResponse {
       overview: map['overview'] as String,
       tripType: map['tripType'] as String,
       totalDays: map['totalDays'] as int,
+      totalPeople: map['totalPeople'] as int,
       dailyPlan: map['dailyPlan'] as List<DayPlan>,
       accommodationSuggestions:
           map['accommodationSuggestions'] as List<AccommodationSuggestion>,

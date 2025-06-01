@@ -57,6 +57,7 @@ class TravelRepository {
         isFavorite: false,
         tripType: tripResponse.tripType,
         totalDays: tripResponse.totalDays,
+        totalPeople: tripResponse.totalPeople,
       );
 
       await _trips.doc(travelId).set(storeTrip.toMap());

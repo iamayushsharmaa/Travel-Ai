@@ -8,11 +8,22 @@ import 'package:triptide/features/home/screens/widgets/trip_view.dart';
 import '../../../core/common/error_text.dart';
 import '../provider/trips_home_provider.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  @override
+  void initState() {
+    ref.read(insertSampleTripOnStartProvider);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final usersTrip = ref.watch(userTripsProvider);
 
     return Scaffold(

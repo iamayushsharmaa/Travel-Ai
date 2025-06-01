@@ -27,7 +27,18 @@ Future<Map<String, List<TravelDbModel>>> categorizeTrips(
   CategorizeTripsRef ref,
 ) async {
   final trips = ref.watch(userTripsProvider).valueOrNull ?? [];
-
+  final userId = ref.read(userInfoProvider)!.uid;
   final repositroy = ref.read(tripsHomeRepositoryProvider);
-  return repositroy.categorizeTrips(trips);
+  return repositroy.categorizeTrips(trips, userId);
+}
+
+
+@riverpod
+Future<void> insertSampleTripOnStart(InsertSampleTripOnStartRef ref) async {
+  final repo = ref.read(tripsHomeRepositoryProvider);
+  final user = ref.read(userInfoProvider);
+
+  if (user != null) {
+    await repo.addSampleTripForUser(user.uid);
+  }
 }
