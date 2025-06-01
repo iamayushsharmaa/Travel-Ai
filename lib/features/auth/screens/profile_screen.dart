@@ -16,7 +16,6 @@ class ProfileScreen extends ConsumerStatefulWidget {
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   bool isUpdating = false;
-  File? profileFile;
   late TextEditingController nameController;
   late TextEditingController emailController;
   late TextEditingController passwordController;
@@ -52,9 +51,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         .read(authStateNotifierProvider.notifier)
         .updateUserData(name, email, password);
 
+    print(isUpdating);
     setState(() {
       isUpdating = false;
     });
+    print(isUpdating);
   }
 
   void signOut() {

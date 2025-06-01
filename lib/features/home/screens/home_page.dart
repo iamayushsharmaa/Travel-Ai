@@ -17,6 +17,11 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
 
+  @override
+  void initState() {
+    super.initState();
+    ref.read(insertSampleTripOnStartProvider);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +97,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     },
                     error:
                         (error, stackTrace) =>
-                            ErrorText(error: error.toString()),
+                        ErrorText(error: error.toString()),
                     loading: () => const Loader(),
                   ),
                   const SizedBox(height: 20),
@@ -132,14 +137,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
                     childCount: data.length,
-                    (context, index) {
+                        (context, index) {
                       final trip = data[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: TripView(
                           trip: trip,
                           onTripClicked:
-                              (trip) => context.pushNamed(
+                              (trip) =>
+                              context.pushNamed(
                                 'trip',
                                 pathParameters: {'travelId': trip.travelId},
                               ),
