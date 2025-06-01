@@ -6,7 +6,7 @@ part of 'trips_home_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userTripsHash() => r'c723b4ca4c49e34a2a80cb2571bc5c7b8c37677a';
+String _$userTripsHash() => r'5f22905f85cbe87d81d692653fab716ac98cc041';
 
 /// See also [userTrips].
 @ProviderFor(userTrips)
@@ -164,7 +164,7 @@ class _TripByIdProviderElement
   String get travelId => (origin as TripByIdProvider).travelId;
 }
 
-String _$categorizeTripsHash() => r'f63cdc054860ac3e218c2da19faf6d80a30ed0c4';
+String _$categorizeTripsHash() => r'b11092e5ae1fbe5a3fdf2f24f53c1c52bbf655ef';
 
 /// See also [categorizeTrips].
 @ProviderFor(categorizeTrips)
@@ -185,7 +185,7 @@ final categorizeTripsProvider =
 typedef CategorizeTripsRef =
     AutoDisposeFutureProviderRef<Map<String, List<TravelDbModel>>>;
 String _$insertSampleTripOnStartHash() =>
-    r'14716c1097e7e114fa135c1be90e65ebea197ead';
+    r'0ac5c40b5e19d090a98e3798978012bba7227614';
 
 /// See also [insertSampleTripOnStart].
 @ProviderFor(insertSampleTripOnStart)

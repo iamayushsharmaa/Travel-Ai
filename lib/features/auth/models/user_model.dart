@@ -62,4 +62,22 @@ class UserModel {
       name.hashCode ^
       profilePic.hashCode ^
       isAuthenticated.hashCode;
+
+  UserModel copyWith({
+    String? uid,
+    String? email,
+    String? password,
+    String? name,
+    String? profilePic,
+    bool? isAuthenticated,
+  }) {
+    return UserModel(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      name: name ?? this.name,
+      profilePic: profilePic ?? this.profilePic,
+      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
+    );
+  }
 }

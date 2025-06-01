@@ -56,6 +56,14 @@ AuthRepository authRepository(AuthRepositoryRef ref) {
 }
 
 @riverpod
+Stream<UserModel> userData(UserDataRef ref) {
+  final userId = ref.read(userInfoProvider)?.uid;
+  if (userId == null) throw Exception("User not logged in");
+  print(userId);
+  return ref.read(authRepositoryProvider).getUserData(userId);
+}
+
+@riverpod
 class AuthStateNotifier extends _$AuthStateNotifier {
   @override
   AsyncValue<UserModel?> build() {
@@ -145,8 +153,16 @@ class AuthStateNotifier extends _$AuthStateNotifier {
     }
   }
 
-  Stream<UserModel> getUserData(String uid) {
-    return ref.read(authRepositoryProvider).getUserData(uid);
+  void updateUserData(String name, String email, String password) {
+    final user = ref.read(userInfoProvider);
+    if (user != null) {
+      final updatedUser = user.copyWith(
+        name: name,
+        email: email,
+        password: password,
+      );
+      ref.read(authRepositoryProvider).updateUserData(updatedUser);
+    }
   }
 
   void signOut() async {

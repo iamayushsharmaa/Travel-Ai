@@ -12,7 +12,7 @@ import '../features/auth/screens/signup_page.dart';
 import '../features/home/screens/home_page.dart';
 import '../features/home/screens/trip_page.dart';
 import '../features/nav/widget_tree.dart';
-import '../features/profile/screen/profile_screen.dart';
+import '../features/auth/screens/profile_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final listenable = ValueNotifier<bool>(false);

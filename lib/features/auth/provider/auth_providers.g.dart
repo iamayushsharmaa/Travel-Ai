@@ -75,6 +75,22 @@ final authRepositoryProvider = AutoDisposeProvider<AuthRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef AuthRepositoryRef = AutoDisposeProviderRef<AuthRepository>;
+String _$userDataHash() => r'e58e6a3d77e8576e47bb4cc620b4a2c0b7aa7154';
+
+/// See also [userData].
+@ProviderFor(userData)
+final userDataProvider = AutoDisposeStreamProvider<UserModel>.internal(
+  userData,
+  name: r'userDataProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$userDataHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef UserDataRef = AutoDisposeStreamProviderRef<UserModel>;
 String _$userInfoHash() => r'6cbfd77b4965ad68fa4efaedfff7d1fc59f8873e';
 
 /// See also [UserInfo].
@@ -89,7 +105,7 @@ final userInfoProvider = NotifierProvider<UserInfo, UserModel?>.internal(
 );
 
 typedef _$UserInfo = Notifier<UserModel?>;
-String _$authStateNotifierHash() => r'b67d59cc5e2330ea72851675eef913b112012330';
+String _$authStateNotifierHash() => r'0d657d6b25633659eacf5cbe01c24a0f2995bf23';
 
 /// See also [AuthStateNotifier].
 @ProviderFor(AuthStateNotifier)

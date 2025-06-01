@@ -95,7 +95,7 @@ class AuthRepository {
         uid: userCredential.user!.uid,
         email: email,
         password: password,
-        name: userCredential.user!.displayName ?? 'No Name',
+        name: userCredential.user!.displayName ?? 'Name',
         profilePic: userCredential.user!.photoURL ?? '',
         isAuthenticated: true,
       );
@@ -108,13 +108,17 @@ class AuthRepository {
     }
   }
 
+  Future<void> updateUserData(UserModel user) async {
+    await _users.doc(user.uid).update(user.toMap());
+  }
+
   Stream<UserModel> getUserData(String uid) {
     return _users.doc(uid).snapshots().map((event) {
       return UserModel.fromMap(event.data() as Map<String, dynamic>);
     });
   }
 
-  void signout() async {
+  Future<void> signout() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
   }
