@@ -157,9 +157,18 @@ class TransportationDetails {
     required this.tips,
   });
 
+  factory TransportationDetails.empty() {
+    return TransportationDetails(
+      transportModes: [],
+      localTransport: '',
+      tips: '',
+    );
+  }
+
   factory TransportationDetails.fromMap(Map<String, dynamic> json) {
     return TransportationDetails(
-      transportModes: (json['transportModes'] as List<dynamic>?)?.cast<String>() ?? [],
+      transportModes:
+          (json['transportModes'] as List<dynamic>?)?.cast<String>() ?? [],
       localTransport: json['localTransport'] ?? '',
       tips: json['tips'] ?? '',
     );

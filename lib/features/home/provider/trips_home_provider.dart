@@ -8,10 +8,12 @@ part 'trips_home_provider.g.dart';
 
 @riverpod
 Stream<List<TravelDbModel>> userTrips(UserTripsRef ref) {
-  final userId = ref.read(userInfoProvider)!.uid;
+  final user = ref.watch(userInfoProvider);
+  if (user == null) return const Stream.empty();
   final repository = ref.read(tripsHomeRepositoryProvider);
-  print('in provider');
-  return repository.getUserTrips(userId);
+  return repository.getUserTrips(user.uid).handleError((e, stack) {
+    print('Error in getUserTrips: $e');
+  });
 }
 
 @riverpod
@@ -35,7 +37,6 @@ Future<Map<String, List<TravelDbModel>>> categorizeTrips(
   final repositroy = ref.read(tripsHomeRepositoryProvider);
   return repositroy.categorizeTrips(trips, userId);
 }
-
 
 @riverpod
 Future<void> insertSampleTripOnStart(InsertSampleTripOnStartRef ref) async {

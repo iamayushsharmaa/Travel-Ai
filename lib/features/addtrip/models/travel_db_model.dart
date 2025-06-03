@@ -56,7 +56,8 @@ class TravelDbModel {
       'totalPeople': totalPeople,
       'overview': overview,
       'dailyPlan': dailyPlan.map((x) => x.toMap()).toList(),
-      'accommodationSuggestions': accommodationSuggestions.map((x) => x.toMap()).toList(),
+      'accommodationSuggestions':
+          accommodationSuggestions.map((x) => x.toMap()).toList(),
       'transportationDetails': transportationDetails.toMap(),
       'foodRecommendations': foodRecommendations,
       'additionalTips': additionalTips,
@@ -67,41 +68,42 @@ class TravelDbModel {
 
   factory TravelDbModel.fromMap(Map<String, dynamic> map) {
     return TravelDbModel(
-      travelId: map['travelId'] as String,
-      userId: map['userId'] as String,
+      travelId: map['travelId'] ?? '',
+      userId: map['userId'] ?? '',
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
-      destination: map['destination'] as String,
-      currentLocation: map['currentLocation'] as String,
-      tripType: map['tripType'] as String,
-      startDate: (map['startDate'] as Timestamp).toDate(),
-      endDate: (map['endDate'] as Timestamp).toDate(),
-      totalDays: map['totalDays'] as int,
-      totalPeople: map['totalPeople'] as int,
-      overview: map['overview'] as String,
-
-      dailyPlan: (map['dailyPlan'] as List<dynamic>)
-          .map((e) => DayPlan.fromMap(e as Map<String, dynamic>))
-          .toList(),
-
-      accommodationSuggestions: (map['accommodationSuggestions'] as List<dynamic>)
-          .map((e) => AccommodationSuggestion.fromMap(e as Map<String, dynamic>))
-          .toList(),
-
-      transportationDetails: TransportationDetails.fromMap(
-        map['transportationDetails'] as Map<String, dynamic>,
-      ),
-
+      destination: map['destination'] ?? '',
+      currentLocation: map['currentLocation'] ?? '',
+      tripType: map['tripType'] ?? '',
+      startDate: (map['startDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      endDate: (map['endDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      totalDays: map['totalDays'] is int ? map['totalDays'] : 0,
+      totalPeople: map['totalPeople'] is int ? map['totalPeople'] : 0,
+      overview: map['overview'] ?? '',
+      dailyPlan:
+          (map['dailyPlan'] as List<dynamic>?)
+              ?.map((e) => DayPlan.fromMap(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      accommodationSuggestions:
+          (map['accommodationSuggestions'] as List<dynamic>?)
+              ?.map(
+                (e) =>
+                    AccommodationSuggestion.fromMap(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
+      transportationDetails:
+          map['transportationDetails'] != null
+              ? TransportationDetails.fromMap(
+                map['transportationDetails'] as Map<String, dynamic>,
+              )
+              : TransportationDetails.empty(),
       foodRecommendations: List<String>.from(map['foodRecommendations'] ?? []),
-
       additionalTips: List<String>.from(map['additionalTips'] ?? []),
-
-      budget: map['budget'] as String,
-      isFavorite: map['isFavorite'] as bool,
+      budget: map['budget'] ?? '',
+      isFavorite: map['isFavorite'] ?? false,
     );
   }
-
-
-
 
   @override
   String toString() {
