@@ -6,7 +6,7 @@ part of 'trips_home_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userTripsHash() => r'5f22905f85cbe87d81d692653fab716ac98cc041';
+String _$userTripsHash() => r'925594f257a78a06b11fb74f52c3fc581c6e95d9';
 
 /// See also [userTrips].
 @ProviderFor(userTrips)

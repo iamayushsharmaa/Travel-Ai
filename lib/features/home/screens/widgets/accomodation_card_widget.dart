@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 
-import '../../../addtrip/models/travel_gemini_model.dart';
+import '../../../addtrip/models/travel_gemini_response.dart';
 
 class AccommodationSuggestionsWidget extends StatelessWidget {
   final List<AccommodationSuggestion> accommodationSuggestions;

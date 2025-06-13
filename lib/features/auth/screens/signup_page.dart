@@ -49,6 +49,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     final authState = ref.watch(authStateNotifierProvider);
 
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

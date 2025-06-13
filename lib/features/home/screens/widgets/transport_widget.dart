@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:triptide/features/addtrip/models/travel_gemini_model.dart';
+import 'package:triptide/features/addtrip/models/travel_gemini_response.dart';
 import 'package:flutter/material.dart';
 
 class TransportWidget extends StatelessWidget {
@@ -39,23 +39,23 @@ class TransportWidget extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: transportationDetails.transportModes.map((mode) {
-              return Chip(
-                label: Text(
-                  mode,
-                  style: TextStyle(
-                    color: Colors.orange.shade900,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                backgroundColor: Colors.orange.shade100,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              );
-            }).toList(),
-          ),
+          // Wrap(
+          //   spacing: 8,
+          //   runSpacing: 8,
+          //   children: transportationDetails.transportModes.map((mode) {
+          //     return Chip(
+          //       label: Text(
+          //         mode,
+          //         style: TextStyle(
+          //           color: Colors.orange.shade900,
+          //           fontWeight: FontWeight.w600,
+          //         ),
+          //       ),
+          //       backgroundColor: Colors.orange.shade100,
+          //       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          //     );
+          //   }).toList(),
+          // ),
 
           const SizedBox(height: 20),
 

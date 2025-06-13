@@ -35,7 +35,7 @@ class SearchRepository {
           snapshot.docs
               .map(
                 (doc) =>
-                    TravelDbModel.fromMap(doc.data() as Map<String, dynamic>),
+                    TravelDbModel.fromJson(doc.data() as Map<String, dynamic>),
               )
               .toList();
 

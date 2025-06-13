@@ -5,14 +5,34 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:triptide/main.dart';
+import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
+import 'package:triptide/features/auth/repository/firebase_repository.dart';
 
 void main() {
+  late MockFirebaseAuth mockFirebaseAuth;
+  late FakeFirebaseFirestore mockFirestore;
+  late MockGoogleSignIn mockGoogleSignIn;
+  late AuthRepository authRepository;
 
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {});
 
-  });
+  setUp(() async {
+    mockFirebaseAuth = MockFirebaseAuth();
+    mockFirestore = FakeFirebaseFirestore();
+    mockGoogleSignIn = MockGoogleSignIn();
+    mockFirebaseAuth = MockFirebaseAuth(
+        mockUser: MockUser(
+            uid: 'test_uid',
+            email: 'test@gmail.com'
+        )
+    );
+    authRepository = AuthRepository(
+        firestore: mockFirestore,
+        auth: mockFirebaseAuth,
+        googleSignIn: mockGoogleSignIn,
+    );
+  },);
 }

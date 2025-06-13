@@ -22,9 +22,6 @@ class _SigninPageState extends ConsumerState<SigninPage> {
   bool obscurePassword = true;
   String? _errorMsg;
 
-  void signInButtonClicked(){
-
-  }
 
   @override
   void dispose() {
@@ -37,7 +34,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateNotifierProvider);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey.shade100,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

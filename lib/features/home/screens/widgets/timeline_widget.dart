@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../addtrip/models/travel_gemini_model.dart';
+import '../../../addtrip/models/travel_gemini_response.dart';
 
 
 class TimeLineWidget extends StatelessWidget {
@@ -72,7 +72,7 @@ class TimeLineWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Day ${dayPlan.day} - ${DateFormat('d MMM yyyy').format(DateTime.parse(dayPlan.date))}',
+                  'Day ${dayPlan.day} - ${DateFormat('d MMM yyyy').format(dayPlan.date)}',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,

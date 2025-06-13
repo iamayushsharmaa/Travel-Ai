@@ -62,7 +62,7 @@ class TripHistoryRepository {
     return query.snapshots().map((snapshot) {
       return snapshot.docs
           .map(
-            (doc) => TravelDbModel.fromMap(doc.data() as Map<String, dynamic>),
+            (doc) => TravelDbModel.fromJson(doc.data() as Map<String, dynamic>),
           )
           .toList();
     });

@@ -8,7 +8,7 @@ import '../../../core/constant/firebase_constant.dart';
 import '../../../core/failure.dart';
 import '../../../core/type_def.dart';
 import '../../addtrip/models/travel_db_model.dart';
-import '../../addtrip/models/travel_gemini_model.dart';
+import '../../addtrip/models/travel_gemini_response.dart';
 
 part 'trips_home_repository.g.dart';
 
@@ -33,7 +33,7 @@ class TripsHomeRepository {
     ) {
       return snapshot.docs
           .map(
-            (doc) => TravelDbModel.fromMap(doc.data() as Map<String, dynamic>),
+            (doc) => TravelDbModel.fromJson(doc.data() as Map<String, dynamic>),
           )
           .toList();
     });
@@ -46,7 +46,7 @@ class TripsHomeRepository {
       if (snapshot.docs.isNotEmpty) {
         final trip = snapshot.docs.first;
         return right(
-          TravelDbModel.fromMap(trip.data() as Map<String, dynamic>),
+          TravelDbModel.fromJson(trip.data() as Map<String, dynamic>),
         );
       } else {
         return left(Failure('Trip not found'));
@@ -107,7 +107,6 @@ class TripsHomeRepository {
         foodRecommendations: ["Fish Curry", "Bebinca"],
         additionalTips: ["Pack light", "Carry sunscreen"],
         transportationDetails: TransportationDetails(
-          transportModes: ["Train", "Taxi"],
           localTransport: "Scooters",
           tips: "Rent early to avoid surge",
         ),
@@ -122,7 +121,7 @@ class TripsHomeRepository {
         dailyPlan: [
           DayPlan(
             day: 1,
-            date: DateTime.now().toIso8601String(),
+            date: DateTime.now(),
             activities: [
               Activity(time: "10:00 AM", description: "Reach hotel"),
               Activity(time: "12:00 PM", description: "Beach walk"),

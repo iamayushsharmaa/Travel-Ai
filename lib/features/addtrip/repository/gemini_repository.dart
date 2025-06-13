@@ -26,12 +26,11 @@ class TravelRepository {
     required FirebaseFirestore firestore,
     required GeminiApiService apiService,
   }) : _firestore = firestore,
-       _apiService = apiService;
+        _apiService = apiService;
 
-  CollectionReference get _trips =>
-      _firestore.collection(FirebaseConstant.trips);
+  CollectionReference get _trips => _firestore.collection('trips');
 
-  FutureEither<TravelDbModel> generateTripAndStore({
+  Future<Either<Failure, TravelDbModel>> generateTripAndStore({
     required String prompt,
     required String userId,
     required String travelId,
@@ -48,6 +47,9 @@ class TravelRepository {
         startDate: tripResponse.startDate,
         endDate: tripResponse.endDate,
         overview: tripResponse.overview,
+        tripType: tripResponse.tripType,
+        totalDays: tripResponse.totalDays,
+        totalPeople: tripResponse.totalPeople,
         dailyPlan: tripResponse.dailyPlan,
         accommodationSuggestions: tripResponse.accommodationSuggestions,
         transportationDetails: tripResponse.transportationDetails,
@@ -55,17 +57,14 @@ class TravelRepository {
         additionalTips: tripResponse.additionalTips,
         budget: tripResponse.budget,
         isFavorite: false,
-        tripType: tripResponse.tripType,
-        totalDays: tripResponse.totalDays,
-        totalPeople: tripResponse.totalPeople,
       );
 
       await _trips.doc(travelId).set(storeTrip.toMap());
-      return right(storeTrip);
+      return Right(storeTrip);
     } on FirebaseException catch (e) {
-      throw e.message!;
+      return Left(Failure(e.message ?? 'Firestore error'));
     } catch (e) {
-      return left(Failure(e.toString()));
+      return Left(Failure(e.toString()));
     }
   }
 }

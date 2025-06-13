@@ -1,10 +1,11 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/features/addtrip/models/gemini_response_model.dart';
-import 'package:triptide/features/addtrip/models/travel_gemini_model.dart';
+import 'package:triptide/features/addtrip/models/travel_gemini_response.dart';
 
 part 'api_service.g.dart';
 
@@ -14,44 +15,71 @@ GeminiApiService geminiApiService(GeminiApiServiceRef ref) {
 }
 
 class GeminiApiService {
-  final Dio dio = Dio(BaseOptions(baseUrl: '${dotenv.env["BASE_URL"]}'));
-  final String _apiKey = '${dotenv.env["API_KEY"]}';
+  final Dio dio = Dio(BaseOptions(
+    baseUrl: dotenv.env['BASE_URL'] ??
+        'https://generativelanguage.googleapis.com/v1beta/models/',
+  ));
+  final String _apiKey = dotenv.env['API_KEY'] ?? '';
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<TravelGeminiResponse> getGeminiComplete(String prompt) async {
     try {
+      // Make API call to Gemini
       final response = await dio.post(
-        'gemini-2.0-flash:generateContent?key=$_apiKey',
+        'gemini-1.5-flash:generateContent?key=$_apiKey',
         data: {
-          "contents": [
+          'contents': [
             {
-              "role": "user",
-              "parts": [
-                {"text": prompt},
+              'role': 'user',
+              'parts': [
+                {'text': prompt},
               ],
             },
           ],
         },
       );
 
-      final geminiResponse = GeminiResponse.fromJsom(response.data);
-      print('dio response : ${geminiResponse}');
+      final geminiResponse = GeminiResponse.fromJson(response.data);
+      final rawText = geminiResponse.candidates.first.content.parts.first.text
+          .trim();
 
-      final rawText =
-          geminiResponse.candidates.first.content.parts.first.text.trim();
+      Map<String, dynamic> decodedJson;
+      try {
+        decodedJson = json.decode(rawText);
+      } catch (e) {
+        print('Raw response: $rawText');
+        throw Exception('Failed to parse response as JSON: $e');
+      }
 
-      final cleanedText = rawText.replaceAll(RegExp(r'^```json|```$'), '').trim();
+      if (!decodedJson.containsKey('destination') ||
+          !decodedJson.containsKey('dailyPlan')) {
+        throw Exception('Invalid response format: Missing required fields');
+      }
 
-      final decodedJson = json.decode(cleanedText);
-      final trips = (decodedJson['tripSuggestions']).map(
-        (e) => TravelGeminiResponse.fromMap(e),
-      );
-      return trips;
+      // Compute totalDays and totalPeople if not provided
+      final startDate = DateTime.parse(decodedJson['startDate'] as String);
+      final endDate = DateTime.parse(decodedJson['endDate'] as String);
+      final totalDays = endDate
+          .difference(startDate)
+          .inDays + 1;
+      final totalPeople = decodedJson['totalPeople'] as int? ??
+          1;
+
+      decodedJson['totalDays'] = totalDays;
+      decodedJson['totalPeople'] = totalPeople;
+      decodedJson['tripType'] = decodedJson['tripType'] ?? 'Unknown';
+      decodedJson['budget'] = decodedJson['budget'] ?? 'Unknown';
+
+      // Parse into TravelGeminiResponse
+      final trip = TravelGeminiResponse.fromJson(decodedJson);
+      return trip;
     } on DioException catch (e) {
       throw Exception(
-        'Dio error: ${e.response?.statusCode} - ${e.response?.data}',
+        'Dio error: ${e.response?.statusCode} - ${e.response?.data ??
+            e.message}',
       );
     } catch (e) {
-      throw Exception('Parsing error: $e');
+      throw Exception('Error: $e');
     }
   }
 }

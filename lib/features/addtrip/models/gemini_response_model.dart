@@ -3,12 +3,11 @@ class GeminiResponse {
 
   GeminiResponse({required this.candidates});
 
-  factory GeminiResponse.fromJsom(Map<String, dynamic> json) {
+  factory GeminiResponse.fromJson(Map<String, dynamic> json) {
     return GeminiResponse(
-      candidates:
-          (json['candidates'] as List)
-              .map((e) => Candidate.fromJson(e))
-              .toList(),
+      candidates: (json['candidates'] as List)
+          .map((e) => Candidate.fromJson(e))
+          .toList(),
     );
   }
 }
@@ -19,7 +18,9 @@ class Candidate {
   Candidate({required this.content});
 
   factory Candidate.fromJson(Map<String, dynamic> json) {
-    return Candidate(content: Content.fromJson(json['content']));
+    return Candidate(
+      content: Content.fromJson(json['content']),
+    );
   }
 }
 
@@ -40,7 +41,7 @@ class Part {
 
   Part({required this.text});
 
-  factory Part.fromJson(Map<String, dynamic> map) {
-    return Part(text: map['text'] as String);
+  factory Part.fromJson(Map<String, dynamic> json) {
+    return Part(text: json['text']);
   }
 }

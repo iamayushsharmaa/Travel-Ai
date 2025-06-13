@@ -1,18 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:triptide/features/addtrip/models/travel_gemini_model.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:triptide/features/addtrip/models/travel_gemini_response.dart';
 
-class TravelDbModel {
+part 'travel_db_model.g.dart';
+
+@JsonSerializable()
+class TravelDbModel extends Equatable {
   final String travelId;
   final String userId;
-  final DateTime? createdAt;
+  @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
+  final DateTime createdAt;
   final String destination;
   final String currentLocation;
-  final String tripType;
+  @JsonKey(fromJson: _dateTimeFromString, toJson: _dateTimeToString)
   final DateTime startDate;
+  @JsonKey(fromJson: _dateTimeFromString, toJson: _dateTimeToString)
   final DateTime endDate;
+  final String overview;
+  final String tripType;
   final int totalDays;
   final int totalPeople;
-  final String overview;
   final List<DayPlan> dailyPlan;
   final List<AccommodationSuggestion> accommodationSuggestions;
   final TransportationDetails transportationDetails;
@@ -27,12 +35,12 @@ class TravelDbModel {
     required this.createdAt,
     required this.destination,
     required this.currentLocation,
-    required this.tripType,
     required this.startDate,
     required this.endDate,
+    required this.overview,
+    required this.tripType,
     required this.totalDays,
     required this.totalPeople,
-    required this.overview,
     required this.dailyPlan,
     required this.accommodationSuggestions,
     required this.transportationDetails,
@@ -42,71 +50,37 @@ class TravelDbModel {
     required this.isFavorite,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'travelId': travelId,
-      'userId': userId,
-      'createdAt': Timestamp.fromDate(createdAt ?? DateTime.now()),
-      'destination': destination,
-      'currentLocation': currentLocation,
-      'tripType': tripType,
-      'startDate': Timestamp.fromDate(startDate),
-      'endDate': Timestamp.fromDate(endDate),
-      'totalDays': totalDays,
-      'totalPeople': totalPeople,
-      'overview': overview,
-      'dailyPlan': dailyPlan.map((x) => x.toMap()).toList(),
-      'accommodationSuggestions':
-          accommodationSuggestions.map((x) => x.toMap()).toList(),
-      'transportationDetails': transportationDetails.toMap(),
-      'foodRecommendations': foodRecommendations,
-      'additionalTips': additionalTips,
-      'budget': budget,
-      'isFavorite': isFavorite,
-    };
-  }
+  factory TravelDbModel.fromJson(Map<String, dynamic> json) =>
+      _$TravelDbModelFromJson(json);
 
-  factory TravelDbModel.fromMap(Map<String, dynamic> map) {
-    return TravelDbModel(
-      travelId: map['travelId'] ?? '',
-      userId: map['userId'] ?? '',
-      createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
-      destination: map['destination'] ?? '',
-      currentLocation: map['currentLocation'] ?? '',
-      tripType: map['tripType'] ?? '',
-      startDate: (map['startDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      endDate: (map['endDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      totalDays: map['totalDays'] is int ? map['totalDays'] : 0,
-      totalPeople: map['totalPeople'] is int ? map['totalPeople'] : 0,
-      overview: map['overview'] ?? '',
-      dailyPlan:
-          (map['dailyPlan'] as List<dynamic>?)
-              ?.map((e) => DayPlan.fromMap(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      accommodationSuggestions:
-          (map['accommodationSuggestions'] as List<dynamic>?)
-              ?.map(
-                (e) =>
-                    AccommodationSuggestion.fromMap(e as Map<String, dynamic>),
-              )
-              .toList() ??
-          [],
-      transportationDetails:
-          map['transportationDetails'] != null
-              ? TransportationDetails.fromMap(
-                map['transportationDetails'] as Map<String, dynamic>,
-              )
-              : TransportationDetails.empty(),
-      foodRecommendations: List<String>.from(map['foodRecommendations'] ?? []),
-      additionalTips: List<String>.from(map['additionalTips'] ?? []),
-      budget: map['budget'] ?? '',
-      isFavorite: map['isFavorite'] ?? false,
-    );
-  }
+  Map<String, dynamic> toMap() => _$TravelDbModelToJson(this);
 
   @override
-  String toString() {
-    return 'TravelDbModel{travelId: $travelId, userId: $userId, createdAt: $createdAt, destination: $destination, currentLocation: $currentLocation, tripType: $tripType, startDate: $startDate, endDate: $endDate, totalDays: $totalDays, totalPeople: $totalPeople, overview: $overview, dailyPlan: $dailyPlan, accommodationSuggestions: $accommodationSuggestions, transportationDetails: $transportationDetails, foodRecommendations: $foodRecommendations, additionalTips: $additionalTips, budget: $budget, isFavorite: $isFavorite}';
-  }
+  List<Object?> get props => [
+    travelId,
+    userId,
+    createdAt,
+    destination,
+    currentLocation,
+    startDate,
+    endDate,
+    overview,
+    tripType,
+    totalDays,
+    totalPeople,
+    dailyPlan,
+    accommodationSuggestions,
+    transportationDetails,
+    foodRecommendations,
+    additionalTips,
+    budget,
+    isFavorite,
+  ];
+
+  static DateTime _dateTimeFromString(String date) => DateTime.parse(date);
+  static String _dateTimeToString(DateTime date) => date.toIso8601String();
+  static DateTime _dateTimeFromTimestamp(Timestamp timestamp) =>
+      timestamp.toDate();
+  static Timestamp _dateTimeToTimestamp(DateTime date) =>
+      Timestamp.fromDate(date);
 }
