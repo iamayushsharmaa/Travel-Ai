@@ -6,7 +6,7 @@ part of 'trip_history_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userHistoryTripsHash() => r'4dc39f7347cdda6f5f682c158cf797920d3ea46d';
+String _$userHistoryTripsHash() => r'cc4e59d6159abe34270f40ef35f648deb033c216';
 
 /// See also [userHistoryTrips].
 @ProviderFor(userHistoryTrips)
@@ -26,7 +26,7 @@ final userHistoryTripsProvider =
 // ignore: unused_element
 typedef UserHistoryTripsRef = AutoDisposeStreamProviderRef<List<TravelDbModel>>;
 String _$tripFilterNotifierHash() =>
-    r'd308fe552dc9ee3dd7be8041c421913bec4aead4';
+    r'c4c768e5643e7af4d31a3111e8e24646793f84ab';
 
 /// See also [TripFilterNotifier].
 @ProviderFor(TripFilterNotifier)

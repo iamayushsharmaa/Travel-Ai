@@ -80,7 +80,7 @@ class TripView extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          trip.budget,
+                          trip.budget!,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -112,7 +112,7 @@ class TripView extends StatelessWidget {
                         ],
                       ),
                       child: Text(
-                        trip.tripType,
+                        trip.tripType!,
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.white,

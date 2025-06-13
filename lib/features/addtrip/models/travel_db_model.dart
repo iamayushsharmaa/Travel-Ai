@@ -13,13 +13,13 @@ class TravelDbModel extends Equatable {
   final DateTime createdAt;
   final String destination;
   final String destinationLowerCase;
-  final String currentLocation;
+  final String? currentLocation;
   @JsonKey(fromJson: _dateTimeFromString, toJson: _dateTimeToString)
   final DateTime startDate;
   @JsonKey(fromJson: _dateTimeFromString, toJson: _dateTimeToString)
   final DateTime endDate;
-  final String overview;
-  final String tripType;
+  final String? overview;
+  final String? tripType;
   final int totalDays;
   final int totalPeople;
   final List<DayPlan> dailyPlan;
@@ -27,7 +27,7 @@ class TravelDbModel extends Equatable {
   final TransportationDetails transportationDetails;
   final List<String> foodRecommendations;
   final List<String> additionalTips;
-  final String budget;
+  final String? budget;
   final bool isFavorite;
 
   TravelDbModel({
@@ -36,11 +36,11 @@ class TravelDbModel extends Equatable {
     required this.createdAt,
     required this.destination,
     required this.destinationLowerCase,
-    required this.currentLocation,
+    this.currentLocation,
     required this.startDate,
     required this.endDate,
-    required this.overview,
-    required this.tripType,
+    this.overview,
+    this.tripType,
     required this.totalDays,
     required this.totalPeople,
     this.dailyPlan = const [],
@@ -48,13 +48,21 @@ class TravelDbModel extends Equatable {
     required this.transportationDetails,
     this.foodRecommendations = const [],
     this.additionalTips = const [],
-    required this.budget,
+    this.budget,
     this.isFavorite = false,
   });
 
   factory TravelDbModel.fromJson(Map<String, dynamic> json) {
     try {
-      return _$TravelDbModelFromJson(json);
+      return _$TravelDbModelFromJson({
+        ...json,
+        'destination': json['destination'] ?? '',
+        'destinationLowerCase': json['destinationLowerCase'] ?? (json['destination'] as String? ?? '').toLowerCase(),
+        'currentLocation': json['currentLocation'] ?? '',
+        'overview': json['overview'] ?? '',
+        'tripType': json['tripType'] ?? '',
+        'budget': json['budget'] ?? '',
+      });
     } catch (e) {
       print('Error parsing TravelDbModel: $e');
       rethrow;
@@ -87,13 +95,10 @@ class TravelDbModel extends Equatable {
   ];
 
   static DateTime _dateTimeFromString(String? date) =>
-      date != null ? DateTime.parse(date) : DateTime.now();
-
+      date != null && date.isNotEmpty ? DateTime.parse(date) : DateTime.now();
   static String _dateTimeToString(DateTime date) => date.toIso8601String();
-
   static DateTime _dateTimeFromTimestamp(Timestamp? timestamp) =>
       timestamp?.toDate() ?? DateTime.now();
-
   static Timestamp _dateTimeToTimestamp(DateTime date) =>
       Timestamp.fromDate(date);
 }

@@ -55,8 +55,56 @@ class TripPage extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 5.0),
                     child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.favorite_outline_sharp, color: Colors.black, size: 28),
+                      icon: Icon(Icons.delete),
+                      onPressed: () async {
+                        final confirm = await showDialog<bool>(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text(
+                                'Delete Trip',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              content: const Text(
+                                'Are you sure you want to delete this trip?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed:
+                                      () => Navigator.pop(context, false),
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: const Text('Delete'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+
+                        if (confirm == true) {
+                          final result = await ref.read(deleteTripProvider(travelId).future);
+                          result.fold(
+                                (failure) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Failed to delete trip: ${failure.message}')),
+                              );
+                            },
+                                (_) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Trip deleted successfully')),
+                              );
+                              // Pop back to TripHistoryScreen
+                              context.pop();
+                            },
+                          );
+                        }
+                      },
                     ),
                   ),
                 ],
@@ -69,7 +117,7 @@ class TripPage extends ConsumerWidget {
                   children: [
                     OverviewCard(
                       route: '${trip.currentLocation} - ${trip.destination}',
-                      tripType: trip.tripType,
+                      tripType: trip.tripType!,
                       peopleCount: '${trip.totalPeople} People',
                       duration: '${trip.totalDays} days',
                     ),

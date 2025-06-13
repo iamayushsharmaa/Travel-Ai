@@ -59,7 +59,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               fillColor: Colors.white,
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide.none,
               ),
               contentPadding: const EdgeInsets.symmetric(vertical: 0),
@@ -67,30 +67,33 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: result.when(
-              data:
-                  (items) => ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      final trip = items[index];
-                      return TripView(
-                        trip: trip,
-                        onTripClicked:
-                            (trip) => context.pushNamed(
-                              'trip',
-                              pathParameters: {'travelId': trip.travelId},
-                            ),
-                      );
-                    },
-                  ),
-              loading: () => Center(child: CircularProgressIndicator()),
-              error: (e, _) => Text("Error: $e"),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+        child: Column(
+          children: [
+            Expanded(
+              child: result.when(
+                data:
+                    (items) => ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        final trip = items[index];
+                        return TripView(
+                          trip: trip,
+                          onTripClicked:
+                              (trip) => context.pushNamed(
+                                'trip',
+                                pathParameters: {'travelId': trip.travelId},
+                              ),
+                        );
+                      },
+                    ),
+                loading: () => Center(child: CircularProgressIndicator()),
+                error: (e, _) => Text("Error: $e"),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

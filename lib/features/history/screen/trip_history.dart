@@ -5,7 +5,6 @@ import 'package:triptide/core/common/error_text.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/enums/trip_filter.dart';
 
-import '../../home/provider/trips_home_provider.dart';
 import '../../home/screens/widgets/trip_view.dart';
 import '../provider/trip_history_provider.dart';
 
@@ -17,7 +16,6 @@ class TripHistory extends ConsumerStatefulWidget {
 }
 
 class _TripHistoryState extends ConsumerState<TripHistory> {
-
   void onFitlerSelected(TripFilter filter) {
     ref.read(tripFilterNotifierProvider.notifier).setFilter(filter);
   }
@@ -69,41 +67,43 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
               ),
             ),
             const SizedBox(height: 8),
-
-            userHistoryTrips.when(
-              data: (data) {
-                if (data.isEmpty) {
-                  return Center(
-                    child: Text(
-                      'No Trip Yet!',
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        color: Colors.black54,
-                        fontSize: 18,
+            Expanded(
+              child: userHistoryTrips.when(
+                data: (data) {
+                  if (data.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'No Trip Yet!',
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          color: Colors.black54,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                  );
-                } else {
-                  return ListView.builder(
-                    itemCount: data.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final trip = data[index];
-                      return TripView(
-                        trip: trip,
-                        onTripClicked:
-                            (trip) => context.pushNamed(
-                              'trip',
-                              pathParameters: {'travelId': trip.travelId},
-                            ),
-                      );
-                    },
-                  );
-                }
-              },
-              error: (error, stackTrace) => ErrorText(error: error.toString()),
-              loading: () => const Loader(),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: data.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final trip = data[index];
+                        return TripView(
+                          trip: trip,
+                          onTripClicked:
+                              (trip) => context.pushNamed(
+                                'trip',
+                                pathParameters: {'travelId': trip.travelId},
+                              ),
+                        );
+                      },
+                    );
+                  }
+                },
+                error:
+                    (error, stackTrace) => ErrorText(error: error.toString()),
+                loading: () => const Loader(),
+              ),
             ),
           ],
         ),

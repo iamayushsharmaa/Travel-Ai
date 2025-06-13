@@ -89,12 +89,11 @@ class TripsHomeRepository {
     return {'This Month': thisMonthTrips, 'Last Month': lastMonthTrips};
   }
 
-  Future<Either<Failure, Unit>> deleteTrip({
+  FutureEither<Unit> deleteTrip({
     required String userId,
     required String travelId,
   }) async {
     try {
-      // Verify the trip exists and belongs to the user
       final doc = await _trips.doc(travelId).get();
       if (!doc.exists) {
         return Left(Failure('Trip with ID $travelId not found'));
@@ -104,7 +103,6 @@ class TripsHomeRepository {
         return Left(Failure('Unauthorized: You can only delete your own trips'));
       }
 
-      // Delete the trip
       await _trips.doc(travelId).delete();
       print('Trip $travelId deleted successfully');
       return const Right(unit);

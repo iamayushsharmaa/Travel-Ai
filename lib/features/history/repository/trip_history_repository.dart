@@ -30,41 +30,39 @@ class TripHistoryRepository {
     final startOfLastMonth = DateTime(now.year, now.month - 1, 1);
     final endOfLastMonth = DateTime(now.year, now.month, 0);
 
-    Query query = _trips.where('userId', isEqualTo: userId);
+    // Base query: trips for user with endDate before now
+    Query query = _trips
+        .where('userId', isEqualTo: userId)
+        .where('endDate', isLessThan: Timestamp.fromDate(now));
 
     switch (filter) {
-      case TripFilter.thisMonth:
-        query = query
-            .where(
-              'endDate',
-              isGreaterThanOrEqualTo: startOfThisMonth.toIso8601String(),
-            )
-            .where('endDate', isLessThanOrEqualTo: now.toIso8601String());
-        break;
-      case TripFilter.lastMonth:
-        query = query
-            .where(
-              'endDate',
-              isGreaterThanOrEqualTo: startOfLastMonth.toIso8601String(),
-            )
-            .where(
-              'endDate',
-              isLessThanOrEqualTo: endOfLastMonth.toIso8601String(),
-            );
-        break;
       case TripFilter.all:
+      // No additional filters, already limited to past trips
         break;
       case TripFilter.favorite:
         query = query.where('isFavorite', isEqualTo: true);
         break;
+      case TripFilter.thisMonth:
+        query = query
+            .where('endDate', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfThisMonth))
+            .where('endDate', isLessThanOrEqualTo: Timestamp.fromDate(now));
+        break;
+      case TripFilter.lastMonth:
+        query = query
+            .where('endDate', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfLastMonth))
+            .where('endDate', isLessThanOrEqualTo: Timestamp.fromDate(endOfLastMonth));
+        break;
     }
 
     return query.snapshots().map((snapshot) {
-      return snapshot.docs
-          .map(
-            (doc) => TravelDbModel.fromJson(doc.data() as Map<String, dynamic>),
-          )
-          .toList();
+      return snapshot.docs.map((doc) {
+        try {
+          return TravelDbModel.fromJson(doc.data() as Map<String, dynamic>);
+        } catch (e) {
+          print('Error parsing document ${doc.id} for user $userId: $e');
+          rethrow;
+        }
+      }).toList();
     });
   }
 }

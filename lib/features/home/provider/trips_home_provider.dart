@@ -1,6 +1,5 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:triptide/core/type_def.dart';
 import 'package:triptide/features/home/repository/trips_home_repository.dart';
 
 import '../../../core/failure.dart';
@@ -18,13 +17,17 @@ Stream<List<TravelDbModel>> userTrips(UserTripsRef ref) {
   }
   print('Fetching trips for user: ${user.uid}');
   final repository = ref.read(tripsHomeRepositoryProvider);
-  return repository.getUserTrips(user.uid).handleError((e, stack) {
-    print('Error in getUserTrips: $e\nStack: $stack');
-    throw e; // Rethrow to ensure the error reaches the UI
-  }).asBroadcastStream().map((trips) {
-    print('Stream emitted ${trips.length} trips');
-    return trips;
-  });
+  return repository
+      .getUserTrips(user.uid)
+      .handleError((e, stack) {
+        print('Error in getUserTrips: $e\nStack: $stack');
+        throw e; // Rethrow to ensure the error reaches the UI
+      })
+      .asBroadcastStream()
+      .map((trips) {
+        print('Stream emitted ${trips.length} trips');
+        return trips;
+      });
 }
 
 @riverpod
@@ -49,28 +52,22 @@ Future<Map<String, List<TravelDbModel>>> categorizeTrips(
   return repositroy.categorizeTrips(trips, userId);
 }
 
-// @riverpod
-// FutureVoid deleteTrip(DeleteTripRef ref, {required String travelId,}) async {
-//   final user = ref.read(userInfoProvider);
-//   if (user == null) {
-//     print('No user logged in');
-//     return Left(Failure('User not logged in'));
-//   }
-//
-//   final repository = ref.read(tripsHomeRepositoryProvider);
-//   print('Deleting trip $travelId for user ${user.uid}');
-//   final result = await repository.deleteTrip(
-//     userId: user.uid,
-//     travelId: travelId,
-//   );
-//   return result.fold(
-//         (failure) {
-//       print('Delete trip failed: ${failure.message}');
-//       return Left(failure);
-//     },
-//         (unit) {
-//       print('Delete trip succeeded: $travelId');
-//       return Right(unit);
-//     },
-//   );
-// }
+
+
+@riverpod
+Future<Either<Failure, Unit>> deleteTrip(
+    DeleteTripRef ref,
+    String travelId,
+    ) async {
+  final user = ref.read(userInfoProvider);
+  if (user == null) {
+    print('No user logged in, cannot delete trip $travelId');
+    return Left(Failure('User not logged in'));
+  }
+  final repository = ref.read(tripsHomeRepositoryProvider);
+  print('Deleting trip $travelId for user ${user.uid}');
+  return await repository.deleteTrip(
+    travelId: travelId,
+    userId: user.uid,
+  );
+}

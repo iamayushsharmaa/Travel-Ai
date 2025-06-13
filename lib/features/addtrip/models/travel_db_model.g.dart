@@ -16,11 +16,11 @@ TravelDbModel _$TravelDbModelFromJson(
   ),
   destination: json['destination'] as String,
   destinationLowerCase: json['destinationLowerCase'] as String,
-  currentLocation: json['currentLocation'] as String,
+  currentLocation: json['currentLocation'] as String?,
   startDate: TravelDbModel._dateTimeFromString(json['startDate'] as String?),
   endDate: TravelDbModel._dateTimeFromString(json['endDate'] as String?),
-  overview: json['overview'] as String,
-  tripType: json['tripType'] as String,
+  overview: json['overview'] as String?,
+  tripType: json['tripType'] as String?,
   totalDays: (json['totalDays'] as num).toInt(),
   totalPeople: (json['totalPeople'] as num).toInt(),
   dailyPlan:
@@ -48,7 +48,7 @@ TravelDbModel _$TravelDbModelFromJson(
           ?.map((e) => e as String)
           .toList() ??
       const [],
-  budget: json['budget'] as String,
+  budget: json['budget'] as String?,
   isFavorite: json['isFavorite'] as bool? ?? false,
 );
 

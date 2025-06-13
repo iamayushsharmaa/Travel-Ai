@@ -43,8 +43,8 @@ class TravelRepository {
         destination: tripResponse.destination,
         destinationLowerCase: tripResponse.destination.toLowerCase(),
         currentLocation: tripResponse.currentLocation,
-        startDate: tripResponse.startDate,
-        endDate: tripResponse.endDate,
+        startDate: tripResponse.startDate ?? DateTime.now(),
+        endDate: tripResponse.endDate ?? DateTime.now().add(const Duration(days: 7)),
         overview: tripResponse.overview,
         tripType: tripResponse.tripType,
         totalDays: tripResponse.totalDays,
@@ -58,7 +58,6 @@ class TravelRepository {
         isFavorite: false,
       );
 
-      // Log the serialized data for debugging
       final tripData = storeTrip.toMap();
       print('Serialized trip data: $tripData');
 

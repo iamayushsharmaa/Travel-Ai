@@ -184,5 +184,126 @@ final categorizeTripsProvider =
 // ignore: unused_element
 typedef CategorizeTripsRef =
     AutoDisposeFutureProviderRef<Map<String, List<TravelDbModel>>>;
+String _$deleteTripHash() => r'1c97516fe5fb3c8e1ef34a8d22d20d2a2a195d51';
+
+/// See also [deleteTrip].
+@ProviderFor(deleteTrip)
+const deleteTripProvider = DeleteTripFamily();
+
+/// See also [deleteTrip].
+class DeleteTripFamily extends Family<AsyncValue<Either<Failure, Unit>>> {
+  /// See also [deleteTrip].
+  const DeleteTripFamily();
+
+  /// See also [deleteTrip].
+  DeleteTripProvider call(String travelId) {
+    return DeleteTripProvider(travelId);
+  }
+
+  @override
+  DeleteTripProvider getProviderOverride(
+    covariant DeleteTripProvider provider,
+  ) {
+    return call(provider.travelId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'deleteTripProvider';
+}
+
+/// See also [deleteTrip].
+class DeleteTripProvider
+    extends AutoDisposeFutureProvider<Either<Failure, Unit>> {
+  /// See also [deleteTrip].
+  DeleteTripProvider(String travelId)
+    : this._internal(
+        (ref) => deleteTrip(ref as DeleteTripRef, travelId),
+        from: deleteTripProvider,
+        name: r'deleteTripProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$deleteTripHash,
+        dependencies: DeleteTripFamily._dependencies,
+        allTransitiveDependencies: DeleteTripFamily._allTransitiveDependencies,
+        travelId: travelId,
+      );
+
+  DeleteTripProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.travelId,
+  }) : super.internal();
+
+  final String travelId;
+
+  @override
+  Override overrideWith(
+    FutureOr<Either<Failure, Unit>> Function(DeleteTripRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: DeleteTripProvider._internal(
+        (ref) => create(ref as DeleteTripRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        travelId: travelId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Either<Failure, Unit>> createElement() {
+    return _DeleteTripProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DeleteTripProvider && other.travelId == travelId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, travelId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin DeleteTripRef on AutoDisposeFutureProviderRef<Either<Failure, Unit>> {
+  /// The parameter `travelId` of this provider.
+  String get travelId;
+}
+
+class _DeleteTripProviderElement
+    extends AutoDisposeFutureProviderElement<Either<Failure, Unit>>
+    with DeleteTripRef {
+  _DeleteTripProviderElement(super.provider);
+
+  @override
+  String get travelId => (origin as DeleteTripProvider).travelId;
+}
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

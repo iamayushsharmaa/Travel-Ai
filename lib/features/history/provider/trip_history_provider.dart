@@ -14,13 +14,22 @@ class TripFilterNotifier extends _$TripFilterNotifier {
 
   void setFilter(TripFilter filter) {
     state = filter;
+    print('Trip filter set to: ${filter.label}');
   }
 }
 
 @riverpod
 Stream<List<TravelDbModel>> userHistoryTrips(UserHistoryTripsRef ref) {
-  final userId = ref.read(userInfoProvider)!.uid;
+  final user = ref.read(userInfoProvider);
+  if (user == null) {
+    print('No user logged in, returning empty stream');
+    return Stream.value([]);
+  }
+  final userId = user.uid;
   final filter = ref.watch(tripFilterNotifierProvider);
   final repository = ref.read(tripHistoryRepositoryProvider);
+  print(
+    'Fetching previous trips for user $userId with filter: ${filter.label}',
+  );
   return repository.getUsersPreviousTrips(userId: userId, filter: filter);
 }
