@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:triptide/core/constant/firebase_constant.dart';
 import 'package:triptide/core/failure.dart';
-import 'package:triptide/core/type_def.dart';
 import 'package:triptide/features/addtrip/models/travel_db_model.dart';
 import 'package:triptide/features/addtrip/repository/api_service.dart';
 import 'package:triptide/features/auth/provider/auth_providers.dart';
@@ -26,7 +24,7 @@ class TravelRepository {
     required FirebaseFirestore firestore,
     required GeminiApiService apiService,
   }) : _firestore = firestore,
-        _apiService = apiService;
+       _apiService = apiService;
 
   CollectionReference get _trips => _firestore.collection('trips');
 
@@ -43,6 +41,7 @@ class TravelRepository {
         userId: userId,
         createdAt: createdAt,
         destination: tripResponse.destination,
+        destinationLowerCase: tripResponse.destination.toLowerCase(),
         currentLocation: tripResponse.currentLocation,
         startDate: tripResponse.startDate,
         endDate: tripResponse.endDate,
@@ -59,11 +58,17 @@ class TravelRepository {
         isFavorite: false,
       );
 
-      await _trips.doc(travelId).set(storeTrip.toMap());
+      // Log the serialized data for debugging
+      final tripData = storeTrip.toMap();
+      print('Serialized trip data: $tripData');
+
+      await _trips.doc(travelId).set(tripData);
       return Right(storeTrip);
     } on FirebaseException catch (e) {
+      print('Firestore error: ${e.code} - ${e.message}');
       return Left(Failure(e.message ?? 'Firestore error'));
     } catch (e) {
+      print('General error: $e');
       return Left(Failure(e.toString()));
     }
   }

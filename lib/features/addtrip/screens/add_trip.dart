@@ -84,13 +84,15 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
     );
 
     try {
-      print('try');
       final travelId = await ref.watch(
         generateAndStoreTripProvider(tripPlanRequest).future,
       );
-      context.pushNamed('trip', pathParameters: {'travelId': travelId});
+      context.pushReplacementNamed(
+        'trip',
+        pathParameters: {'travelId': travelId},
+        extra: {'fromCreation': true}, // Pass flag to indicate trip creation
+      );
     } catch (e) {
-      print('errorn: $e');
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Failed to create trip: $e")));
@@ -367,7 +369,6 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
                     ),
                   ],
                 ),
-
       ),
     );
   }

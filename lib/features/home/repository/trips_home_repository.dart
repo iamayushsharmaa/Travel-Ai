@@ -2,13 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/features/auth/provider/auth_providers.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../core/constant/firebase_constant.dart';
 import '../../../core/failure.dart';
 import '../../../core/type_def.dart';
 import '../../addtrip/models/travel_db_model.dart';
-import '../../addtrip/models/travel_gemini_response.dart';
 
 part 'trips_home_repository.g.dart';
 
@@ -27,15 +25,22 @@ class TripsHomeRepository {
       _firestore.collection(FirebaseConstant.trips);
 
   Stream<List<TravelDbModel>> getUserTrips(String userId) {
-    print('fetching trips in repos');
-    return _trips.where('userId', isEqualTo: userId).snapshots().map((
-      snapshot,
-    ) {
-      return snapshot.docs
-          .map(
-            (doc) => TravelDbModel.fromJson(doc.data() as Map<String, dynamic>),
-          )
-          .toList();
+    print('Fetching trips for userId: $userId');
+    return _trips.where('userId', isEqualTo: userId).snapshots().map((snapshot) {
+      print('Snapshot received with ${snapshot.docs.length} docs');
+      return snapshot.docs.map((doc) {
+        try {
+          final data = doc.data() as Map<String, dynamic>;
+          print('Doc data for ${doc.id}: $data');
+          return TravelDbModel.fromJson(data);
+        } catch (e) {
+          print('Serialization error for doc ${doc.id}: $e');
+          throw Exception('Failed to parse trip: $e');
+        }
+      }).toList();
+    }).handleError((e) {
+      print('Stream error: $e');
+      throw e;
     });
   }
 
@@ -59,83 +64,56 @@ class TripsHomeRepository {
   }
 
   Map<String, List<TravelDbModel>> categorizeTrips(
-      List<TravelDbModel> trips,
-      String userId,
-      ) {
+    List<TravelDbModel> trips,
+    String userId,
+  ) {
     final now = DateTime.now();
     final currentMonth = DateTime(now.year, now.month);
     final previousMonth =
-    now.month == 1 ? DateTime(now.year - 1, 12) : DateTime(now.year, now.month - 1);
+        now.month == 1
+            ? DateTime(now.year - 1, 12)
+            : DateTime(now.year, now.month - 1);
 
-    final thisMonthTrips = trips.where((trip) {
-      final tripMonth = DateTime(trip.startDate.year, trip.startDate.month);
-      return trip.userId == userId && tripMonth == currentMonth;
-    }).toList();
+    final thisMonthTrips =
+        trips.where((trip) {
+          final tripMonth = DateTime(trip.startDate.year, trip.startDate.month);
+          return trip.userId == userId && tripMonth == currentMonth;
+        }).toList();
 
-    final lastMonthTrips = trips.where((trip) {
-      final tripMonth = DateTime(trip.startDate.year, trip.startDate.month);
-      return trip.userId == userId && tripMonth == previousMonth;
-    }).toList();
+    final lastMonthTrips =
+        trips.where((trip) {
+          final tripMonth = DateTime(trip.startDate.year, trip.startDate.month);
+          return trip.userId == userId && tripMonth == previousMonth;
+        }).toList();
 
     return {'This Month': thisMonthTrips, 'Last Month': lastMonthTrips};
   }
 
-
-  Future<void> addSampleTripForUser(String userId) async {
+  Future<Either<Failure, Unit>> deleteTrip({
+    required String userId,
+    required String travelId,
+  }) async {
     try {
-      if (userId.isEmpty) {
-        print('userId is null');
-        return;
+      // Verify the trip exists and belongs to the user
+      final doc = await _trips.doc(travelId).get();
+      if (!doc.exists) {
+        return Left(Failure('Trip with ID $travelId not found'));
+      }
+      final tripData = doc.data() as Map<String, dynamic>;
+      if (tripData['userId'] != userId) {
+        return Left(Failure('Unauthorized: You can only delete your own trips'));
       }
 
-      print('userId is $userId');
-
-      final trip = TravelDbModel(
-        travelId: Uuid().v4(),
-        userId: userId,
-        createdAt: DateTime.now(),
-        destination: "Goa",
-        currentLocation: "Mumbai",
-        tripType: "Leisure",
-        startDate: DateTime.now(),
-        endDate: DateTime.now().add(Duration(days: 5)),
-        totalDays: 5,
-        totalPeople: 3,
-        overview: "Fun trip to Goa",
-        budget: "₹25,000",
-        isFavorite: false,
-        foodRecommendations: ["Fish Curry", "Bebinca"],
-        additionalTips: ["Pack light", "Carry sunscreen"],
-        transportationDetails: TransportationDetails(
-          localTransport: "Scooters",
-          tips: "Rent early to avoid surge",
-        ),
-        accommodationSuggestions: [
-          AccommodationSuggestion(
-            name: "Goa Beach Resort",
-            type: "Hotel",
-            location: "Calangute",
-            priceRange: "₹2000-3000",
-          ),
-        ],
-        dailyPlan: [
-          DayPlan(
-            day: 1,
-            date: DateTime.now(),
-            activities: [
-              Activity(time: "10:00 AM", description: "Reach hotel"),
-              Activity(time: "12:00 PM", description: "Beach walk"),
-            ],
-          ),
-        ],
-      );
-      print(trip.toMap());
-      await _trips.doc(trip.travelId).set(trip.toMap());
-      print('trips saved succesfully');
+      // Delete the trip
+      await _trips.doc(travelId).delete();
+      print('Trip $travelId deleted successfully');
+      return const Right(unit);
     } on FirebaseException catch (e) {
-      throw e.message!;
+      print('Firestore error deleting trip $travelId: ${e.code} - ${e.message}');
+      return Left(Failure(e.message ?? 'Failed to delete trip'));
     } catch (e) {
-      print('Failed to save trips $e');
+      print('General error deleting trip $travelId: $e');
+      return Left(Failure('Failed to delete trip: $e'));
     }
   }
 }

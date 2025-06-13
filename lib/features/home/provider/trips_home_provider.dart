@@ -1,6 +1,9 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:triptide/core/type_def.dart';
 import 'package:triptide/features/home/repository/trips_home_repository.dart';
 
+import '../../../core/failure.dart';
 import '../../addtrip/models/travel_db_model.dart';
 import '../../auth/provider/auth_providers.dart';
 
@@ -9,10 +12,18 @@ part 'trips_home_provider.g.dart';
 @riverpod
 Stream<List<TravelDbModel>> userTrips(UserTripsRef ref) {
   final user = ref.watch(userInfoProvider);
-  if (user == null) return const Stream.empty();
+  if (user == null) {
+    print('No user logged in, returning empty stream');
+    return const Stream.empty();
+  }
+  print('Fetching trips for user: ${user.uid}');
   final repository = ref.read(tripsHomeRepositoryProvider);
   return repository.getUserTrips(user.uid).handleError((e, stack) {
-    print('Error in getUserTrips: $e');
+    print('Error in getUserTrips: $e\nStack: $stack');
+    throw e; // Rethrow to ensure the error reaches the UI
+  }).asBroadcastStream().map((trips) {
+    print('Stream emitted ${trips.length} trips');
+    return trips;
   });
 }
 
@@ -38,15 +49,28 @@ Future<Map<String, List<TravelDbModel>>> categorizeTrips(
   return repositroy.categorizeTrips(trips, userId);
 }
 
-@riverpod
-Future<void> insertSampleTripOnStart(InsertSampleTripOnStartRef ref) async {
-  final repo = ref.read(tripsHomeRepositoryProvider);
-  final userId = ref.read(userInfoProvider)!.uid;
-
-  print('userId is $userId');
-
-  if (userId != null) {
-    print('userId is userId');
-    await repo.addSampleTripForUser(userId);
-  }
-}
+// @riverpod
+// FutureVoid deleteTrip(DeleteTripRef ref, {required String travelId,}) async {
+//   final user = ref.read(userInfoProvider);
+//   if (user == null) {
+//     print('No user logged in');
+//     return Left(Failure('User not logged in'));
+//   }
+//
+//   final repository = ref.read(tripsHomeRepositoryProvider);
+//   print('Deleting trip $travelId for user ${user.uid}');
+//   final result = await repository.deleteTrip(
+//     userId: user.uid,
+//     travelId: travelId,
+//   );
+//   return result.fold(
+//         (failure) {
+//       print('Delete trip failed: ${failure.message}');
+//       return Left(failure);
+//     },
+//         (unit) {
+//       print('Delete trip succeeded: $travelId');
+//       return Right(unit);
+//     },
+//   );
+// }

@@ -5,13 +5,14 @@ import 'package:triptide/features/addtrip/models/travel_gemini_response.dart';
 
 part 'travel_db_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class TravelDbModel extends Equatable {
   final String travelId;
   final String userId;
   @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
   final DateTime createdAt;
   final String destination;
+  final String destinationLowerCase;
   final String currentLocation;
   @JsonKey(fromJson: _dateTimeFromString, toJson: _dateTimeToString)
   final DateTime startDate;
@@ -34,6 +35,7 @@ class TravelDbModel extends Equatable {
     required this.userId,
     required this.createdAt,
     required this.destination,
+    required this.destinationLowerCase,
     required this.currentLocation,
     required this.startDate,
     required this.endDate,
@@ -41,17 +43,23 @@ class TravelDbModel extends Equatable {
     required this.tripType,
     required this.totalDays,
     required this.totalPeople,
-    required this.dailyPlan,
-    required this.accommodationSuggestions,
+    this.dailyPlan = const [],
+    this.accommodationSuggestions = const [],
     required this.transportationDetails,
-    required this.foodRecommendations,
-    required this.additionalTips,
+    this.foodRecommendations = const [],
+    this.additionalTips = const [],
     required this.budget,
-    required this.isFavorite,
+    this.isFavorite = false,
   });
 
-  factory TravelDbModel.fromJson(Map<String, dynamic> json) =>
-      _$TravelDbModelFromJson(json);
+  factory TravelDbModel.fromJson(Map<String, dynamic> json) {
+    try {
+      return _$TravelDbModelFromJson(json);
+    } catch (e) {
+      print('Error parsing TravelDbModel: $e');
+      rethrow;
+    }
+  }
 
   Map<String, dynamic> toMap() => _$TravelDbModelToJson(this);
 
@@ -61,6 +69,7 @@ class TravelDbModel extends Equatable {
     userId,
     createdAt,
     destination,
+    destinationLowerCase,
     currentLocation,
     startDate,
     endDate,
@@ -77,10 +86,14 @@ class TravelDbModel extends Equatable {
     isFavorite,
   ];
 
-  static DateTime _dateTimeFromString(String date) => DateTime.parse(date);
+  static DateTime _dateTimeFromString(String? date) =>
+      date != null ? DateTime.parse(date) : DateTime.now();
+
   static String _dateTimeToString(DateTime date) => date.toIso8601String();
-  static DateTime _dateTimeFromTimestamp(Timestamp timestamp) =>
-      timestamp.toDate();
+
+  static DateTime _dateTimeFromTimestamp(Timestamp? timestamp) =>
+      timestamp?.toDate() ?? DateTime.now();
+
   static Timestamp _dateTimeToTimestamp(DateTime date) =>
       Timestamp.fromDate(date);
 }

@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'travel_gemini_response.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class TravelGeminiResponse extends Equatable {
   final String destination;
   final String currentLocation;
@@ -63,14 +63,15 @@ class TravelGeminiResponse extends Equatable {
     budget,
   ];
 
-  static DateTime _dateTimeFromString(String date) => DateTime.parse(date);
+  static DateTime _dateTimeFromString(String? date) =>
+      date != null ? DateTime.parse(date) : DateTime.now();
   static String _dateTimeToString(DateTime date) => date.toIso8601String();
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class DayPlan {
   final int day;
-  @JsonKey(fromJson: _dateTimeFromString, toJson: _dateTimeToString)
+  @JsonKey(fromJson: _dateTimeFromFirestore, toJson: _dateTimeToFirestore)
   final DateTime date;
   final List<Activity> activities;
 
@@ -83,11 +84,19 @@ class DayPlan {
   factory DayPlan.fromJson(Map<String, dynamic> json) => _$DayPlanFromJson(json);
   Map<String, dynamic> toJson() => _$DayPlanToJson(this);
 
-  static DateTime _dateTimeFromString(String date) => DateTime.parse(date);
-  static String _dateTimeToString(DateTime date) => date.toIso8601String();
+  static DateTime _dateTimeFromFirestore(dynamic value) {
+    if (value is Timestamp) {
+      return value.toDate();
+    } else if (value is String) {
+      return DateTime.parse(value);
+    }
+    return DateTime.now(); // Fallback
+  }
+
+  static Timestamp _dateTimeToFirestore(DateTime date) => Timestamp.fromDate(date);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Activity {
   final String time;
   final String description;
@@ -98,7 +107,7 @@ class Activity {
   Map<String, dynamic> toJson() => _$ActivityToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class AccommodationSuggestion {
   final String name;
   final String type;
@@ -117,7 +126,7 @@ class AccommodationSuggestion {
   Map<String, dynamic> toJson() => _$AccommodationSuggestionToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class TransportationDetails {
   final String localTransport;
   final String tips;

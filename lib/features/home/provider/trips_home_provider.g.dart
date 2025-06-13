@@ -6,7 +6,7 @@ part of 'trips_home_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userTripsHash() => r'925594f257a78a06b11fb74f52c3fc581c6e95d9';
+String _$userTripsHash() => r'56fe6faded226766973600374e1268f66f1ff3e3';
 
 /// See also [userTrips].
 @ProviderFor(userTrips)
@@ -184,25 +184,5 @@ final categorizeTripsProvider =
 // ignore: unused_element
 typedef CategorizeTripsRef =
     AutoDisposeFutureProviderRef<Map<String, List<TravelDbModel>>>;
-String _$insertSampleTripOnStartHash() =>
-    r'0ac5c40b5e19d090a98e3798978012bba7227614';
-
-/// See also [insertSampleTripOnStart].
-@ProviderFor(insertSampleTripOnStart)
-final insertSampleTripOnStartProvider =
-    AutoDisposeFutureProvider<void>.internal(
-      insertSampleTripOnStart,
-      name: r'insertSampleTripOnStartProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$insertSampleTripOnStartHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef InsertSampleTripOnStartRef = AutoDisposeFutureProviderRef<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -24,133 +24,139 @@ class TripPage extends ConsumerWidget {
         if (trip == null) {
           return Scaffold(appBar: AppBar(title: Text('No Trips')));
         } else {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
+          return WillPopScope(
+            onWillPop: () async {
+              context.goNamed('home');
+              return false;
+            },
+            child: Scaffold(
               backgroundColor: Colors.white,
-              elevation: 1,
-              centerTitle: true,
-              title: Text(
-                'Trip to ${trip.destination}',
-                style: const TextStyle(
-                  fontSize: 25,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                elevation: 1,
+                centerTitle: true,
+                title: Text(
+                  'Trip to ${trip.destination}',
+                  style: const TextStyle(
+                    fontSize: 25,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              // icon color
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: IconButton(
-                  onPressed: () => context.pop(),
-                  icon: const Icon(Icons.arrow_back_ios_new_outlined),
-                ),
-              ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 5.0),
+                // icon color
+                leading: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
                   child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.favorite, color: Colors.black, size: 28),
+                    onPressed: () => context.pop(),
+                    icon: const Icon(Icons.arrow_back_ios_new_outlined),
                   ),
                 ),
-              ],
-              systemOverlayStyle: SystemUiOverlayStyle.dark,
-            ),
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  OverviewCard(
-                    route: '${trip.currentLocation} - ${trip.destination}',
-                    tripType: trip.tripType,
-                    peopleCount: '${trip.totalPeople} People',
-                    duration: '${trip.totalDays} days',
-                  ),
-                  const SizedBox(height: 26),
-                  Text(
-                    'Itinerary',
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ListView.builder(
-                    itemCount: trip.dailyPlan.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return TimeLineWidget(
-                        isFirst: index == 0,
-                        isLast: index == trip.dailyPlan.length - 1,
-                        dayPlan: trip.dailyPlan[index],
-                      );
-                    },
-                  ),
-
-                  const SizedBox(height: 24),
-                  AccommodationSuggestionsWidget(
-                    accommodationSuggestions: trip.accommodationSuggestions,
-                  ),
-                  const SizedBox(height: 24),
-                  TransportWidget(
-                    transportationDetails: trip.transportationDetails,
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade50,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
-                          blurRadius: 10,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.account_balance_wallet_outlined,
-                          size: 36,
-                          color: Colors.green.shade700,
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Estimated Budget',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green.shade800,
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                '\$ ${trip.budget}',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.green.shade900,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5.0),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.favorite_outline_sharp, color: Colors.black, size: 28),
                     ),
                   ),
                 ],
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
+              ),
+              body: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    OverviewCard(
+                      route: '${trip.currentLocation} - ${trip.destination}',
+                      tripType: trip.tripType,
+                      peopleCount: '${trip.totalPeople} People',
+                      duration: '${trip.totalDays} days',
+                    ),
+                    const SizedBox(height: 26),
+                    Text(
+                      'Itinerary',
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ListView.builder(
+                      itemCount: trip.dailyPlan.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return TimeLineWidget(
+                          isFirst: index == 0,
+                          isLast: index == trip.dailyPlan.length - 1,
+                          dayPlan: trip.dailyPlan[index],
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 24),
+                    AccommodationSuggestionsWidget(
+                      accommodationSuggestions: trip.accommodationSuggestions,
+                    ),
+                    const SizedBox(height: 24),
+                    TransportWidget(
+                      transportationDetails: trip.transportationDetails,
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade50,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.06),
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.account_balance_wallet_outlined,
+                            size: 36,
+                            color: Colors.green.shade700,
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Estimated Budget',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green.shade800,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  '\$ ${trip.budget}',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.green.shade900,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );

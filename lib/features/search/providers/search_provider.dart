@@ -10,6 +10,6 @@ part 'search_provider.g.dart';
 Future<List<TravelDbModel>> searchTrip(SearchTripRef ref, String query) async {
   final user = ref.watch(userInfoProvider)!.uid;
   final searchRepository = ref.read(searchRepositoryProvider);
-  final result = await searchRepository.searchTrips(query);
+  final result = await searchRepository.searchTrips(userId: user, query: query);
   return result.fold((l) => [], (r) => r);
 }

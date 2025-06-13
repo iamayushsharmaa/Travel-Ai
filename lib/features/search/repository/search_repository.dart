@@ -23,27 +23,48 @@ class SearchRepository {
   CollectionReference get _trips =>
       _firestore.collection(FirebaseConstant.trips);
 
-  FutureEither<List<TravelDbModel>> searchTrips(String query) async {
+  FutureEither<List<TravelDbModel>> searchTrips({
+    required String userId,
+    required String query,
+  }) async {
     try {
-      if (query.isEmpty) return right([]);
-      final snapshot =
-          await _trips
-              .where('destination', isEqualTo: query)
-              .where('destination', isLessThanOrEqualTo: query + '\uf8ff')
-              .get();
-      final trips =
-          snapshot.docs
-              .map(
-                (doc) =>
-                    TravelDbModel.fromJson(doc.data() as Map<String, dynamic>),
-              )
-              .toList();
+      final trimmedQuery = query.trim();
+      print('Raw query: "$query", Trimmed query: "$trimmedQuery", User ID: $userId');
+      if (trimmedQuery.isEmpty) {
+        print('Empty query for user $userId, returning empty list');
+        return right([]);
+      }
 
+      final normalizedQuery = trimmedQuery.toLowerCase();
+      print('Normalized query: "$normalizedQuery"');
+
+      final snapshot = await _trips
+          .where('userId', isEqualTo: userId)
+          .where('destinationLowerCase', isGreaterThanOrEqualTo: normalizedQuery)
+          .where('destinationLowerCase', isLessThanOrEqualTo: normalizedQuery + '\uf8ff')
+          .limit(20)
+          .get();
+
+      print('Snapshot docs: ${snapshot.docs.length}');
+      final trips = snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        print('Doc ${doc.id} data: $data');
+        try {
+          return TravelDbModel.fromJson(data);
+        } catch (e) {
+          print('Error parsing document ${doc.id} for user $userId: $e');
+          throw Exception('Failed to parse trip: $e');
+        }
+      }).toList();
+
+      print('Found ${trips.length} trips for user $userId with query: $trimmedQuery');
       return right(trips);
     } on FirebaseException catch (e) {
-      throw e.message!;
-    } catch (e) {
-      return left(Failure(e.toString()));
+      print('Firestore error searching trips for user $userId: ${e.code} - ${e.message}');
+      return left(Failure(e.message ?? 'Failed to search trips'));
+    } catch (e, stack) {
+      print('General error searching trips for user $userId: $e\nStack: $stack');
+      return left(Failure('Failed to search trips: $e'));
     }
   }
 }

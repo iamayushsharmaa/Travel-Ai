@@ -12,9 +12,9 @@ TravelGeminiResponse _$TravelGeminiResponseFromJson(
   destination: json['destination'] as String,
   currentLocation: json['currentLocation'] as String,
   startDate: TravelGeminiResponse._dateTimeFromString(
-    json['startDate'] as String,
+    json['startDate'] as String?,
   ),
-  endDate: TravelGeminiResponse._dateTimeFromString(json['endDate'] as String),
+  endDate: TravelGeminiResponse._dateTimeFromString(json['endDate'] as String?),
   overview: json['overview'] as String,
   tripType: json['tripType'] as String,
   totalDays: (json['totalDays'] as num).toInt(),
@@ -54,9 +54,10 @@ Map<String, dynamic> _$TravelGeminiResponseToJson(
   'tripType': instance.tripType,
   'totalDays': instance.totalDays,
   'totalPeople': instance.totalPeople,
-  'dailyPlan': instance.dailyPlan,
-  'accommodationSuggestions': instance.accommodationSuggestions,
-  'transportationDetails': instance.transportationDetails,
+  'dailyPlan': instance.dailyPlan.map((e) => e.toJson()).toList(),
+  'accommodationSuggestions':
+      instance.accommodationSuggestions.map((e) => e.toJson()).toList(),
+  'transportationDetails': instance.transportationDetails.toJson(),
   'foodRecommendations': instance.foodRecommendations,
   'additionalTips': instance.additionalTips,
   'budget': instance.budget,
@@ -64,7 +65,7 @@ Map<String, dynamic> _$TravelGeminiResponseToJson(
 
 DayPlan _$DayPlanFromJson(Map<String, dynamic> json) => DayPlan(
   day: (json['day'] as num).toInt(),
-  date: DayPlan._dateTimeFromString(json['date'] as String),
+  date: DayPlan._dateTimeFromFirestore(json['date']),
   activities:
       (json['activities'] as List<dynamic>)
           .map((e) => Activity.fromJson(e as Map<String, dynamic>))
@@ -73,8 +74,8 @@ DayPlan _$DayPlanFromJson(Map<String, dynamic> json) => DayPlan(
 
 Map<String, dynamic> _$DayPlanToJson(DayPlan instance) => <String, dynamic>{
   'day': instance.day,
-  'date': DayPlan._dateTimeToString(instance.date),
-  'activities': instance.activities,
+  'date': DayPlan._dateTimeToFirestore(instance.date),
+  'activities': instance.activities.map((e) => e.toJson()).toList(),
 };
 
 Activity _$ActivityFromJson(Map<String, dynamic> json) => Activity(
