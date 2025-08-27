@@ -22,7 +22,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       theme: ThemeData(
         fontFamily: 'Poppins',
-      ),
+      ),ā
       debugShowCheckedModeBanner: false,
       routerConfig: router,
     );

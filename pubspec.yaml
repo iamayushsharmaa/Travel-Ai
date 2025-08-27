@@ -50,6 +50,7 @@ dependencies:
   intl: ^0.20.2
   google_fonts: ^6.2.1
   google_maps_flutter: ^2.6.0
+  flutter_launcher_icons: ^0.14.4
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -76,6 +77,11 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"
+
 flutter:
 
   # The following line ensures that the Material Icons font is
