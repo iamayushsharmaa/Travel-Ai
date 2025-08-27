@@ -26,7 +26,6 @@ class AuthRepository {
       _firestore.collection(FirebaseConstant.userCollection);
 
   Stream<User?> get authStateChange => _auth.authStateChanges();
-
   FutureEither<UserModel> signInWithGoogle() async {
     try {
       UserCredential userCredential;
@@ -34,32 +33,35 @@ class AuthRepository {
         GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
         googleAuthProvider.addScope('https://www.googleapis.com/screens/contacts.readonly');
         userCredential = await _auth.signInWithPopup(googleAuthProvider);
-      } else{
+      } else {
         final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
         final googleAuth = await googleUser?.authentication;
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken,
           idToken: googleAuth?.idToken,
         );
-
         userCredential = await _auth.signInWithCredential(credential);
-
       }
 
-      UserModel userModel;
-      if (userCredential.additionalUserInfo!.isNewUser) {
+      final uid = userCredential.user!.uid;
+      final userDoc = await _users.doc(uid).get();
+
+      late UserModel userModel;
+
+      if (!userDoc.exists || userDoc.data() == null) {
         userModel = UserModel(
           name: userCredential.user!.displayName ?? 'No Name',
           email: userCredential.user!.email!,
           password: null,
           profilePic: userCredential.user!.photoURL ?? '',
-          uid: userCredential.user!.uid,
+          uid: uid,
           isAuthenticated: true,
         );
-        await _users.doc(userCredential.user!.uid).set(userModel.toMap());
+        await _users.doc(uid).set(userModel.toMap());
       } else {
-        userModel = await getUserData(userCredential.user!.uid).first;
+        userModel = UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
       }
+
       print("User repo: $userModel");
       return right(userModel);
     } on FirebaseException catch (e) {
@@ -68,6 +70,7 @@ class AuthRepository {
       return left(Failure(e.toString()));
     }
   }
+
 
   FutureEither<UserModel?> signin(String email, String password) async {
     try {

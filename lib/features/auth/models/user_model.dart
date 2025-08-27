@@ -30,9 +30,9 @@ class UserModel {
     return UserModel(
       uid: map['uid'] as String,
       email: map['email'] as String,
-      password: map['password'] as String,
-      name: map['name'] as String,
-      profilePic: map['profilePic'] as String,
+      password: map['password'] as String?,
+      name: map['name'] as String?,
+      profilePic: map['profilePic'] as String?,
       isAuthenticated: map['isAuthenticated'] as bool,
     );
   }

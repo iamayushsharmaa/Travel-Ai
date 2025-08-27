@@ -16,7 +16,7 @@ class TripHistoryRepository {
   final FirebaseFirestore _firestore;
 
   TripHistoryRepository({required FirebaseFirestore firestore})
-    : _firestore = firestore;
+      : _firestore = firestore;
 
   CollectionReference get _trips =>
       _firestore.collection(FirebaseConstant.trips);
@@ -30,17 +30,21 @@ class TripHistoryRepository {
     final startOfLastMonth = DateTime(now.year, now.month - 1, 1);
     final endOfLastMonth = DateTime(now.year, now.month, 0);
 
-    // Base query: trips for user with endDate before now
-    Query query = _trips
-        .where('userId', isEqualTo: userId)
-        .where('endDate', isLessThan: Timestamp.fromDate(now));
+    Query query = _trips.where('userId', isEqualTo: userId);
 
+    // Log initial query
+    print('Getting trips for user: $userId');
+    print('Applying filter: ${filter.label}');
+
+    // Filter logic
     switch (filter) {
       case TripFilter.all:
-      // No additional filters, already limited to past trips
+        query = query.where('endDate', isLessThan: Timestamp.fromDate(now));
         break;
       case TripFilter.favorite:
-        query = query.where('isFavorite', isEqualTo: true);
+        query = query
+            .where('isFavorite', isEqualTo: true)
+            .where('endDate', isLessThan: Timestamp.fromDate(now));
         break;
       case TripFilter.thisMonth:
         query = query
@@ -55,9 +59,12 @@ class TripHistoryRepository {
     }
 
     return query.snapshots().map((snapshot) {
+      print('Fetched ${snapshot.docs.length} trips for user $userId');
       return snapshot.docs.map((doc) {
         try {
-          return TravelDbModel.fromJson(doc.data() as Map<String, dynamic>);
+          final data = doc.data() as Map<String, dynamic>;
+          print('Trip: ${doc.id} → $data');
+          return TravelDbModel.fromJson(data);
         } catch (e) {
           print('Error parsing document ${doc.id} for user $userId: $e');
           rethrow;

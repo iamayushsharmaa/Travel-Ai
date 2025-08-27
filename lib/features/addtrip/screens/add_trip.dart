@@ -90,7 +90,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
       context.pushReplacementNamed(
         'trip',
         pathParameters: {'travelId': travelId},
-        extra: {'fromCreation': true}, // Pass flag to indicate trip creation
+        extra: {'fromCreation': true},
       );
     } catch (e) {
       ScaffoldMessenger.of(

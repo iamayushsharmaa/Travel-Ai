@@ -24,12 +24,7 @@ class TripPage extends ConsumerWidget {
         if (trip == null) {
           return Scaffold(appBar: AppBar(title: Text('No Trips')));
         } else {
-          return WillPopScope(
-            onWillPop: () async {
-              context.goNamed('home');
-              return false;
-            },
-            child: Scaffold(
+          return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
                 backgroundColor: Colors.white,
@@ -47,7 +42,7 @@ class TripPage extends ConsumerWidget {
                 leading: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: IconButton(
-                    onPressed: () => context.pop(),
+                    onPressed: () => context.goNamed('home'),
                     icon: const Icon(Icons.arrow_back_ios_new_outlined),
                   ),
                 ),
@@ -190,7 +185,7 @@ class TripPage extends ConsumerWidget {
                                 ),
                                 const SizedBox(height: 6),
                                 Text(
-                                  '\$ ${trip.budget}',
+                                  '${trip.budget}',
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.green.shade900,
@@ -206,8 +201,7 @@ class TripPage extends ConsumerWidget {
                   ],
                 ),
               ),
-            ),
-          );
+            );
         }
       },
       error:

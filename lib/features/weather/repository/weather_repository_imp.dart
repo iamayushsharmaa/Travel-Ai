@@ -1,8 +1,8 @@
-import 'package:triptide/features/weather/data/model/weather_model.dart';
+import 'package:triptide/features/weather/repository/weather_repository.dart';
 
-import '../../data/remote/weather_api_service.dart';
-import '../../data/repository/weather_repository.dart';
 import '../entity/weather_entity.dart';
+import '../model/weather_model.dart';
+import '../remote/weather_api_service.dart';
 
 class WeatherRepositoryImpl implements WeatherRepository {
   final WeatherApiService apiService;
