@@ -26,7 +26,7 @@ WeatherRepository weatherRepository(WeatherRepositoryRef ref) {
 }
 
 @riverpod
-Future<List<WeatherEntity>> weatherForecast(WeatherForecastRef ref, double lat, double lon) {
+Future<List<WeatherEntity>> weatherForecast(WeatherForecastRef ref, double? lat, double? lon) {
   final repo = ref.read(weatherRepositoryProvider);
   return repo.getWeatherForecast(lat, lon);
 }

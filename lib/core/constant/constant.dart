@@ -2,12 +2,21 @@ class Constant {
   static const jsonResponseExample = '''{
     "destination": "string",
     "currentLocation": "string",
+    "currentLat": 0.0,
+    "currentLng": 0.0,
+    "destinationLat": 0.0,
+    "destinationLng": 0.0,
     "startDate": "string",
     "endDate": "string",
     "overview": "string",
     "tripType": "string",
     "totalDays": 0,
     "totalPeople": 0,
+    "images": [
+      "string", 
+      "string", 
+      "string"
+    ],
     "dailyPlan": [
       {
         "day": 0,

@@ -17,10 +17,8 @@ class SubmitLoading extends _$SubmitLoading {
 }
 
 @riverpod
-Future<String> generateAndStoreTrip(
-    GenerateAndStoreTripRef ref,
-    TripPlanRequest tripPlanRequest,
-    ) async {
+Future<String> generateAndStoreTrip(GenerateAndStoreTripRef ref,
+    TripPlanRequest tripPlanRequest,) async {
   final travelRepository = ref.read(travelRepositoryProvider);
   final userInfo = ref.read(userInfoProvider);
   if (userInfo == null) {
@@ -31,13 +29,13 @@ Future<String> generateAndStoreTrip(
   final travelId = const Uuid().v4();
 
   final prompt = '''
-You are a travel planner assistant. Based on the following trip details, generate a complete trip plan in JSON format. Return only a valid, parsable JSON object matching the following structure, without any markdown or code block wrappers (e.g., ```json):
+You are a travel planner assistant. Based on the following trip details, generate a complete trip plan in JSON format. Return only a valid, parsable JSON object matching the following structure, without any markdown or code block wrappers:
 
 ${Constant.jsonResponseExample}
 
 Here are the trip details:
-- CurrentLocation: ${tripPlanRequest.currentLocation}
-- Destination: ${tripPlanRequest.destination}
+- CurrentLocation: ${tripPlanRequest.currentLocation} (please also provide latitude and longitude)
+- Destination: ${tripPlanRequest.destination} (please also provide latitude and longitude)
 - Start Date: ${tripPlanRequest.startDate.toIso8601String()}
 - End Date: ${tripPlanRequest.endDate.toIso8601String()}
 - Trip Type: ${tripPlanRequest.tripType}
@@ -53,7 +51,12 @@ Include the following additional fields in the JSON:
 - tripType: String (from Trip Type)
 - budget: String (from Budget)
 - totalDays: int (calculated as the number of days between startDate and endDate, inclusive)
-- totalPeople: int (derived from Companions, e.g., 1 for "Solo", 2 for "Couple", etc.)
+- totalPeople: int (derived from Companions)
+- currentLat: double (latitude of CurrentLocation)
+- currentLng: double (longitude of CurrentLocation)
+- destinationLat: double (latitude of Destination)
+- destinationLng: double (longitude of Destination)
+- images: list of 3 to 5 URLs representing the destination (provide as "images": ["url1", "url2", "url3"])
 
 Return only the JSON object, nothing else.
 ''';

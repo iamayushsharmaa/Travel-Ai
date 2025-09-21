@@ -8,6 +8,10 @@ part 'travel_gemini_response.g.dart';
 class TravelGeminiResponse extends Equatable {
   final String destination;
   final String currentLocation;
+  final double destinationLat;
+  final double destinationLng;
+  final double currentLat;
+  final double currentLng;
   @JsonKey(fromJson: _dateTimeFromString, toJson: _dateTimeToString)
   final DateTime startDate;
   @JsonKey(fromJson: _dateTimeFromString, toJson: _dateTimeToString)
@@ -16,6 +20,7 @@ class TravelGeminiResponse extends Equatable {
   final String tripType;
   final int totalDays;
   final int totalPeople;
+  final List<String> images;
   final List<DayPlan> dailyPlan;
   final List<AccommodationSuggestion> accommodationSuggestions;
   final TransportationDetails transportationDetails;
@@ -26,6 +31,10 @@ class TravelGeminiResponse extends Equatable {
   TravelGeminiResponse({
     required this.destination,
     required this.currentLocation,
+    required this.destinationLat,
+    required this.destinationLng,
+    required this.currentLat,
+    required this.currentLng,
     required this.startDate,
     required this.endDate,
     required this.overview,
@@ -38,6 +47,7 @@ class TravelGeminiResponse extends Equatable {
     required this.foodRecommendations,
     required this.additionalTips,
     required this.budget,
+    required this.images,
   });
 
   factory TravelGeminiResponse.fromJson(Map<String, dynamic> json) =>
@@ -55,6 +65,7 @@ class TravelGeminiResponse extends Equatable {
     tripType,
     totalDays,
     totalPeople,
+    images,
     dailyPlan,
     accommodationSuggestions,
     transportationDetails,
@@ -65,6 +76,7 @@ class TravelGeminiResponse extends Equatable {
 
   static DateTime _dateTimeFromString(String? date) =>
       date != null ? DateTime.parse(date) : DateTime.now();
+
   static String _dateTimeToString(DateTime date) => date.toIso8601String();
 }
 
@@ -75,13 +87,11 @@ class DayPlan {
   final DateTime date;
   final List<Activity> activities;
 
-  DayPlan({
-    required this.day,
-    required this.date,
-    required this.activities,
-  });
+  DayPlan({required this.day, required this.date, required this.activities});
 
-  factory DayPlan.fromJson(Map<String, dynamic> json) => _$DayPlanFromJson(json);
+  factory DayPlan.fromJson(Map<String, dynamic> json) =>
+      _$DayPlanFromJson(json);
+
   Map<String, dynamic> toJson() => _$DayPlanToJson(this);
 
   static DateTime _dateTimeFromFirestore(dynamic value) {
@@ -93,7 +103,8 @@ class DayPlan {
     return DateTime.now(); // Fallback
   }
 
-  static Timestamp _dateTimeToFirestore(DateTime date) => Timestamp.fromDate(date);
+  static Timestamp _dateTimeToFirestore(DateTime date) =>
+      Timestamp.fromDate(date);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -103,7 +114,9 @@ class Activity {
 
   Activity({required this.time, required this.description});
 
-  factory Activity.fromJson(Map<String, dynamic> json) => _$ActivityFromJson(json);
+  factory Activity.fromJson(Map<String, dynamic> json) =>
+      _$ActivityFromJson(json);
+
   Map<String, dynamic> toJson() => _$ActivityToJson(this);
 }
 
@@ -123,6 +136,7 @@ class AccommodationSuggestion {
 
   factory AccommodationSuggestion.fromJson(Map<String, dynamic> json) =>
       _$AccommodationSuggestionFromJson(json);
+
   Map<String, dynamic> toJson() => _$AccommodationSuggestionToJson(this);
 }
 
@@ -135,5 +149,6 @@ class TransportationDetails {
 
   factory TransportationDetails.fromJson(Map<String, dynamic> json) =>
       _$TransportationDetailsFromJson(json);
+
   Map<String, dynamic> toJson() => _$TransportationDetailsToJson(this);
 }

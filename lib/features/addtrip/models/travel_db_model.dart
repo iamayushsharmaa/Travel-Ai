@@ -14,6 +14,10 @@ class TravelDbModel extends Equatable {
   final String destination;
   final String destinationLowerCase;
   final String? currentLocation;
+  final double? currentLat;
+  final double? currentLng;
+  final double? destinationLat;
+  final double? destinationLng;
   @JsonKey(fromJson: _dateTimeFromString, toJson: _dateTimeToString)
   final DateTime startDate;
   @JsonKey(fromJson: _dateTimeFromString, toJson: _dateTimeToString)
@@ -22,6 +26,7 @@ class TravelDbModel extends Equatable {
   final String? tripType;
   final int totalDays;
   final int totalPeople;
+  final List<String> images;
   final List<DayPlan> dailyPlan;
   final List<AccommodationSuggestion> accommodationSuggestions;
   final TransportationDetails transportationDetails;
@@ -37,10 +42,15 @@ class TravelDbModel extends Equatable {
     required this.destination,
     required this.destinationLowerCase,
     this.currentLocation,
+    this.currentLat,
+    this.currentLng,
+    this.destinationLat,
+    this.destinationLng,
     required this.startDate,
     required this.endDate,
     this.overview,
     this.tripType,
+    this.images = const [],
     required this.totalDays,
     required this.totalPeople,
     this.dailyPlan = const [],
@@ -57,11 +67,22 @@ class TravelDbModel extends Equatable {
       return _$TravelDbModelFromJson({
         ...json,
         'destination': json['destination'] ?? '',
-        'destinationLowerCase': json['destinationLowerCase'] ?? (json['destination'] as String? ?? '').toLowerCase(),
+        'destinationLowerCase':
+            json['destinationLowerCase'] ??
+            (json['destination'] as String? ?? '').toLowerCase(),
         'currentLocation': json['currentLocation'] ?? '',
         'overview': json['overview'] ?? '',
         'tripType': json['tripType'] ?? '',
         'budget': json['budget'] ?? '',
+        'currentLat': (json['currentLat'] as num?)?.toDouble() ?? 0.0,
+        'currentLng': (json['currentLng'] as num?)?.toDouble() ?? 0.0,
+        'destinationLat': (json['destinationLat'] as num?)?.toDouble() ?? 0.0,
+        'destinationLng': (json['destinationLng'] as num?)?.toDouble() ?? 0.0,
+        'images':
+            (json['images'] as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList() ??
+            [],
       });
     } catch (e) {
       print('Error parsing TravelDbModel: $e');
@@ -79,6 +100,10 @@ class TravelDbModel extends Equatable {
     destination,
     destinationLowerCase,
     currentLocation,
+    currentLat,
+    currentLng,
+    destinationLat,
+    destinationLng,
     startDate,
     endDate,
     overview,
@@ -91,14 +116,18 @@ class TravelDbModel extends Equatable {
     foodRecommendations,
     additionalTips,
     budget,
+    images,
     isFavorite,
   ];
 
   static DateTime _dateTimeFromString(String? date) =>
       date != null && date.isNotEmpty ? DateTime.parse(date) : DateTime.now();
+
   static String _dateTimeToString(DateTime date) => date.toIso8601String();
+
   static DateTime _dateTimeFromTimestamp(Timestamp? timestamp) =>
       timestamp?.toDate() ?? DateTime.now();
+
   static Timestamp _dateTimeToTimestamp(DateTime date) =>
       Timestamp.fromDate(date);
 }

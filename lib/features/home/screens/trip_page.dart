@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart' hide TransportationDetails;
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:triptide/core/common/error_text.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/features/home/provider/trips_home_provider.dart';
@@ -10,8 +9,10 @@ import 'package:triptide/features/home/screens/widgets/accomodation_card_widget.
 import 'package:triptide/features/home/screens/widgets/overview_widget.dart';
 import 'package:triptide/features/home/screens/widgets/timeline_widget.dart';
 import 'package:triptide/features/home/screens/widgets/transport_widget.dart';
+import 'package:triptide/features/home/screens/widgets/trip_map_widget.dart';
 
 import '../../weather/provider/weather_provider.dart';
+import '../../weather/widgets/weather_widget.dart';
 
 class TripPage extends ConsumerWidget {
   final String travelId;
@@ -162,126 +163,39 @@ class TripPage extends ConsumerWidget {
                   Consumer(
                     builder: (context, ref, _) {
                       final forecastAsync = ref.watch(
-                        weatherForecastProvider(77.0, 98.0),
+                        weatherForecastProvider(
+                          trip.destinationLat!,
+                          trip.destinationLng!,
+                        ),
                       );
 
                       return forecastAsync.when(
-                        data: (forecast) {
-                          if (forecast.isEmpty) {
-                            return SizedBox(); // No forecast data
-                          }
-
-                          final today =
-                              forecast
-                                  .first; // Show first day only (or customize)
-                          return Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.shade50,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.06),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.wb_sunny_rounded,
-                                  // Can be dynamic based on condition
-                                  size: 40,
-                                  color: Colors.orange.shade700,
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Weather in ${trip.destination}',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue.shade900,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 6),
-                                      Text(
-                                        '${today.condition} | ${today.minTemp}° / ${today.maxTemp}°',
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black87,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Rain: ${today.rainChance}% | Humidity: ${today.humidity}%',
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black54,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                        data: (forecastList) {
+                          if (forecastList.isEmpty) return const SizedBox();
+                          final today = forecastList.first;
+                          return WeatherCard(
+                            destination: trip.destination,
+                            forecast: today,
                           );
                         },
                         loading:
                             () => const Center(
                               child: CircularProgressIndicator(),
                             ),
-                        error: (err, _) => Text('Failed to load weather'),
+                        error: (err, _) => const Text('Failed to load weather'),
                       );
                     },
                   ),
                   // google map
                   const SizedBox(height: 20),
-                  Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(77.8, 98.0),
-                          // Destination coordinates for now its fake
-                          zoom: 12,
-                        ),
-                        markers: {
-                          Marker(
-                            markerId: MarkerId('destination'),
-                            position: LatLng(77.8, 98.0),
-                            infoWindow: InfoWindow(title: trip.destination),
-                          ),
-                        },
-                        zoomControlsEnabled: false,
-                        myLocationButtonEnabled: false,
-                        onMapCreated: (GoogleMapController controller) {
-                          // Optionally keep a controller reference if needed
-                        },
-                      ),
-                    ),
+                  TripMap(
+                    currentLat: trip.currentLat ?? 0.0,
+                    currentLng: trip.currentLng ?? 0.0,
+                    destinationLat: trip.destinationLat ?? 0.0,
+                    destinationLng: trip.destinationLng ?? 0.0,
+                    destinationName: trip.destination,
+                    height: 200
                   ),
-
                   const SizedBox(height: 10),
                   Container(
                     width: double.infinity,

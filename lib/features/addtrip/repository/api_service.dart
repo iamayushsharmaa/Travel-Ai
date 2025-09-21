@@ -37,7 +37,7 @@ class GeminiApiService {
         },
       );
 
-      // Parse the response
+
       final geminiResponse = GeminiResponse.fromJson(response.data);
       final rawText = geminiResponse.candidates.first.content.parts.first.text.trim();
 

@@ -11,6 +11,10 @@ TravelGeminiResponse _$TravelGeminiResponseFromJson(
 ) => TravelGeminiResponse(
   destination: json['destination'] as String,
   currentLocation: json['currentLocation'] as String,
+  destinationLat: (json['destinationLat'] as num).toDouble(),
+  destinationLng: (json['destinationLng'] as num).toDouble(),
+  currentLat: (json['currentLat'] as num).toDouble(),
+  currentLng: (json['currentLng'] as num).toDouble(),
   startDate: TravelGeminiResponse._dateTimeFromString(
     json['startDate'] as String?,
   ),
@@ -41,6 +45,7 @@ TravelGeminiResponse _$TravelGeminiResponseFromJson(
           .map((e) => e as String)
           .toList(),
   budget: json['budget'] as String,
+  images: (json['images'] as List<dynamic>).map((e) => e as String).toList(),
 );
 
 Map<String, dynamic> _$TravelGeminiResponseToJson(
@@ -48,12 +53,17 @@ Map<String, dynamic> _$TravelGeminiResponseToJson(
 ) => <String, dynamic>{
   'destination': instance.destination,
   'currentLocation': instance.currentLocation,
+  'destinationLat': instance.destinationLat,
+  'destinationLng': instance.destinationLng,
+  'currentLat': instance.currentLat,
+  'currentLng': instance.currentLng,
   'startDate': TravelGeminiResponse._dateTimeToString(instance.startDate),
   'endDate': TravelGeminiResponse._dateTimeToString(instance.endDate),
   'overview': instance.overview,
   'tripType': instance.tripType,
   'totalDays': instance.totalDays,
   'totalPeople': instance.totalPeople,
+  'images': instance.images,
   'dailyPlan': instance.dailyPlan.map((e) => e.toJson()).toList(),
   'accommodationSuggestions':
       instance.accommodationSuggestions.map((e) => e.toJson()).toList(),

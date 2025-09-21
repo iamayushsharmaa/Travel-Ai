@@ -6,8 +6,8 @@ class WeatherApiService {
   WeatherApiService({required this.dio});
 
   Future<Map<String, dynamic>> fetchWeather(
-    double lat,
-    double lon,
+    double? lat,
+    double? lon,
     String apiKey,
   ) async {
     const String url = 'https://api.openweathermap.org/data/2.5/onecall';
