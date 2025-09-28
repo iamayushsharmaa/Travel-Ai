@@ -16,7 +16,7 @@ class TripHistory extends ConsumerStatefulWidget {
 }
 
 class _TripHistoryState extends ConsumerState<TripHistory> {
-  void onFitlerSelected(TripFilter filter) {
+  void onFilterSelected(TripFilter filter) {
     ref.read(tripFilterNotifierProvider.notifier).setFilter(filter);
   }
 
@@ -30,7 +30,7 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
       appBar: AppBar(
         backgroundColor: Colors.grey.shade100,
         elevation: 1,
-        title: Text(
+        title: const Text(
           'History',
           style: TextStyle(
             color: Colors.black,
@@ -39,74 +39,74 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 12),
-            SizedBox(
-              height: 40,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: TripFilter.values.length,
-                separatorBuilder: (context, index) => const SizedBox(width: 8),
-                itemBuilder: (context, index) {
-                  final filter = TripFilter.values[index];
-                  final isSelected = filter == selectedFilter;
-                  return ChoiceChip(
-                    label: Text(filter.label),
-                    selected: isSelected,
-                    onSelected: (_) => onFitlerSelected(filter),
-                    selectedColor: Colors.blueAccent,
-                    backgroundColor: Colors.grey.shade300,
-                    labelStyle: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black,
+      body: Column(
+        children: [
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 40,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: TripFilter.values.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 8),
+              itemBuilder: (context, index) {
+                final filter = TripFilter.values[index];
+                final isSelected = filter == selectedFilter;
+                return ChoiceChip(
+                  label: Text(filter.label),
+                  selected: isSelected,
+                  onSelected: (_) => onFilterSelected(filter),
+                  selectedColor: Colors.blueAccent,
+                  backgroundColor: Colors.grey.shade300,
+                  labelStyle: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black,
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 12),
+          // Expanded list of trips
+          Expanded(
+            child: userHistoryTrips.when(
+              data: (data) {
+                if (data.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      'No Trip Yet!',
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        color: Colors.black54,
+                        fontSize: 18,
+                      ),
                     ),
                   );
-                },
-              ),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: userHistoryTrips.when(
-                data: (data) {
-                  if (data.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'No Trip Yet!',
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black54,
-                          fontSize: 18,
-                        ),
+                }
+
+                return ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    final trip = data[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: TripView(
+                        trip: trip,
+                        onTripClicked:
+                            (trip) => context.pushNamed(
+                              'trip',
+                              pathParameters: {'travelId': trip.travelId},
+                            ),
                       ),
                     );
-                  } else {
-                    return ListView.builder(
-                      itemCount: data.length,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final trip = data[index];
-                        return TripView(
-                          trip: trip,
-                          onTripClicked:
-                              (trip) => context.pushNamed(
-                                'trip',
-                                pathParameters: {'travelId': trip.travelId},
-                              ),
-                        );
-                      },
-                    );
-                  }
-                },
-                error:
-                    (error, stackTrace) => ErrorText(error: error.toString()),
-                loading: () => const Loader(),
-              ),
+                  },
+                );
+              },
+              loading: () => const Loader(),
+              error: (error, _) => ErrorText(error: error.toString()),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -6,7 +6,6 @@ import '../repository/trip_history_repository.dart';
 
 part 'trip_history_provider.g.dart';
 
-/// Notifier to manage the selected trip filter
 @riverpod
 class TripFilterNotifier extends _$TripFilterNotifier {
   @override
@@ -18,7 +17,6 @@ class TripFilterNotifier extends _$TripFilterNotifier {
   }
 }
 
-/// Provider to stream the user's previous trips based on selected filter
 @riverpod
 Stream<List<TravelDbModel>> userHistoryTrips(UserHistoryTripsRef ref) {
   final user = ref.watch(userInfoProvider);
