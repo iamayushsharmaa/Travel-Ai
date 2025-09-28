@@ -60,7 +60,7 @@ final weatherRepositoryProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef WeatherRepositoryRef = AutoDisposeProviderRef<WeatherRepository>;
-String _$weatherForecastHash() => r'f2a28118d33825a2e2ae7555c151a259336feedf';
+String _$weatherForecastHash() => r'969ddf4803cba84c106d84a8d989a83796e51bba';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -88,7 +88,7 @@ class _SystemHash {
 const weatherForecastProvider = WeatherForecastFamily();
 
 /// See also [weatherForecast].
-class WeatherForecastFamily extends Family<AsyncValue<List<WeatherEntity>>> {
+class WeatherForecastFamily extends Family<AsyncValue<WeatherEntity>> {
   /// See also [weatherForecast].
   const WeatherForecastFamily();
 
@@ -120,8 +120,7 @@ class WeatherForecastFamily extends Family<AsyncValue<List<WeatherEntity>>> {
 }
 
 /// See also [weatherForecast].
-class WeatherForecastProvider
-    extends AutoDisposeFutureProvider<List<WeatherEntity>> {
+class WeatherForecastProvider extends AutoDisposeFutureProvider<WeatherEntity> {
   /// See also [weatherForecast].
   WeatherForecastProvider(double lat, double lon)
     : this._internal(
@@ -155,7 +154,7 @@ class WeatherForecastProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<WeatherEntity>> Function(WeatherForecastRef provider) create,
+    FutureOr<WeatherEntity> Function(WeatherForecastRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -173,7 +172,7 @@ class WeatherForecastProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<WeatherEntity>> createElement() {
+  AutoDisposeFutureProviderElement<WeatherEntity> createElement() {
     return _WeatherForecastProviderElement(this);
   }
 
@@ -196,7 +195,7 @@ class WeatherForecastProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin WeatherForecastRef on AutoDisposeFutureProviderRef<List<WeatherEntity>> {
+mixin WeatherForecastRef on AutoDisposeFutureProviderRef<WeatherEntity> {
   /// The parameter `lat` of this provider.
   double get lat;
 
@@ -205,7 +204,7 @@ mixin WeatherForecastRef on AutoDisposeFutureProviderRef<List<WeatherEntity>> {
 }
 
 class _WeatherForecastProviderElement
-    extends AutoDisposeFutureProviderElement<List<WeatherEntity>>
+    extends AutoDisposeFutureProviderElement<WeatherEntity>
     with WeatherForecastRef {
   _WeatherForecastProviderElement(super.provider);
 

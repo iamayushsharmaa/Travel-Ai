@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../entity/weather_entity.dart';
 import '../remote/weather_api_service.dart';
-import '../repository/weather_repository_imp.dart';
 import '../repository/weather_repository.dart';
+import '../repository/weather_repository_imp.dart';
 
 part 'weather_provider.g.dart';
 
@@ -26,7 +25,11 @@ WeatherRepository weatherRepository(WeatherRepositoryRef ref) {
 }
 
 @riverpod
-Future<List<WeatherEntity>> weatherForecast(WeatherForecastRef ref, double? lat, double? lon) {
+Future<WeatherEntity> weatherForecast(
+  WeatherForecastRef ref,
+  double lat,
+  double lon,
+) {
   final repo = ref.read(weatherRepositoryProvider);
-  return repo.getWeatherForecast(lat, lon);
+  return repo.getCurrentWeather(lat, lon);
 }

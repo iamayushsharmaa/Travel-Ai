@@ -16,13 +16,13 @@ GeminiApiService geminiApiService(GeminiApiServiceRef ref) {
 
 class GeminiApiService {
   final Dio dio = Dio(BaseOptions(
-    baseUrl: dotenv.env['BASE_URL'] ?? 'https://generativelanguage.googleapis.com/v1beta/models/',
+    baseUrl: dotenv.env['BASE_URL'] ??
+        'https://generativelanguage.googleapis.com/v1beta/models/',
   ));
-  final String _apiKey = dotenv.env['API_KEY'] ?? '';
+  final String _apiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
 
   Future<TravelGeminiResponse> getGeminiComplete(String prompt) async {
     try {
-      // Make API call to Gemini
       final response = await dio.post(
         'gemini-1.5-flash:generateContent?key=$_apiKey',
         data: {
@@ -39,9 +39,9 @@ class GeminiApiService {
 
 
       final geminiResponse = GeminiResponse.fromJson(response.data);
-      final rawText = geminiResponse.candidates.first.content.parts.first.text.trim();
+      final rawText = geminiResponse.candidates.first.content.parts.first.text
+          .trim();
 
-      // Parse JSON response
       Map<String, dynamic> decodedJson;
       try {
         decodedJson = json.decode(rawText);
@@ -50,26 +50,26 @@ class GeminiApiService {
         throw Exception('Failed to parse response as JSON: $e');
       }
 
-      // Validate required fields
       if (!decodedJson.containsKey('destination') ||
           !decodedJson.containsKey('dailyPlan')) {
         throw Exception('Invalid response format: Missing required fields');
       }
 
-      // Compute totalDays and totalPeople if not provided
       final startDate = DateTime.parse(decodedJson['startDate'] as String);
       final endDate = DateTime.parse(decodedJson['endDate'] as String);
-      decodedJson['totalDays'] = decodedJson['totalDays'] ?? endDate.difference(startDate).inDays + 1;
+      decodedJson['totalDays'] = decodedJson['totalDays'] ?? endDate
+          .difference(startDate)
+          .inDays + 1;
       decodedJson['totalPeople'] = decodedJson['totalPeople'] ?? 1;
       decodedJson['tripType'] = decodedJson['tripType'] ?? 'Unknown';
       decodedJson['budget'] = decodedJson['budget'] ?? 'Unknown';
 
-      // Parse into TravelGeminiResponse
       final trip = TravelGeminiResponse.fromJson(decodedJson);
       return trip;
     } on DioException catch (e) {
       throw Exception(
-        'Dio error: ${e.response?.statusCode} - ${e.response?.data ?? e.message}',
+        'Dio error: ${e.response?.statusCode} - ${e.response?.data ??
+            e.message}',
       );
     } catch (e) {
       throw Exception('Error: $e');

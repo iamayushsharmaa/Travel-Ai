@@ -1,3 +1,15 @@
+def dotenvFile = rootProject.file(".env")
+def env = [:]
+if (dotenvFile.exists()) {
+    dotenvFile.eachLine { line ->
+        line = line.trim()
+        if (!line.startsWith("#") && line.contains("=")) {
+            def (key, value) = line.split("=", 2)
+            env[key.trim()] = value.trim()
+        }
+    }
+}
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
@@ -31,6 +43,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        manifestPlaceholders = [
+            GOOGLE_MAPS_API_KEY: env['GOOGLE_MAP_API_KEY'] ?: ""
+        ]
     }
 
     buildTypes {

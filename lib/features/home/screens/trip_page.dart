@@ -10,8 +10,8 @@ import 'package:triptide/features/home/screens/widgets/overview_widget.dart';
 import 'package:triptide/features/home/screens/widgets/timeline_widget.dart';
 import 'package:triptide/features/home/screens/widgets/transport_widget.dart';
 import 'package:triptide/features/home/screens/widgets/trip_map_widget.dart';
+import 'package:triptide/features/weather/provider/weather_provider.dart';
 
-import '../../weather/provider/weather_provider.dart';
 import '../../weather/widgets/weather_widget.dart';
 
 class TripPage extends ConsumerWidget {
@@ -159,6 +159,7 @@ class TripPage extends ConsumerWidget {
                     transportationDetails: trip.transportationDetails,
                   ),
                   //weather card
+                  // Weather card
                   const SizedBox(height: 20),
                   Consumer(
                     builder: (context, ref, _) {
@@ -170,12 +171,10 @@ class TripPage extends ConsumerWidget {
                       );
 
                       return forecastAsync.when(
-                        data: (forecastList) {
-                          if (forecastList.isEmpty) return const SizedBox();
-                          final today = forecastList.first;
+                        data: (forecast) {
                           return WeatherCard(
                             destination: trip.destination,
-                            forecast: today,
+                            forecast: forecast,
                           );
                         },
                         loading:
@@ -194,7 +193,7 @@ class TripPage extends ConsumerWidget {
                     destinationLat: trip.destinationLat ?? 0.0,
                     destinationLng: trip.destinationLng ?? 0.0,
                     destinationName: trip.destination,
-                    height: 200
+                    height: 200,
                   ),
                   const SizedBox(height: 10),
                   Container(

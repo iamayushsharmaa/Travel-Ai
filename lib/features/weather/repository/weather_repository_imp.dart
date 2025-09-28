@@ -11,13 +11,24 @@ class WeatherRepositoryImpl implements WeatherRepository {
   WeatherRepositoryImpl({required this.apiService, required this.apiKey});
 
   @override
-  Future<List<WeatherEntity>> getWeatherForecast(
-    double? lat,
-    double? lon,
-  ) async {
-    final jsonData = await apiService.fetchWeather(lat, lon, apiKey);
+  Future<WeatherEntity> getCurrentWeather(double lat, double lon) async {
+    final jsonData = await apiService.fetchCurrentWeather(lat: lat, lon: lon);
 
-    final List<dynamic> dailyData = jsonData['daily'];
-    return dailyData.map((e) => WeatherModel.fromJson(e)).toList();
+    final model = WeatherResponseModel.fromJson(jsonData);
+
+    final condition = model.weather.isNotEmpty ? model.weather.first : null;
+
+    return WeatherEntity(
+      locationName: model.name,
+      country: model.sys.country,
+      temperature: model.main.temp,
+      feelsLike: model.main.feelsLike,
+      tempMin: model.main.tempMin,
+      tempMax: model.main.tempMax,
+      humidity: model.main.humidity,
+      windSpeed: model.wind.speed,
+      description: condition?.description ?? '',
+      icon: condition?.icon ?? '',
+    );
   }
 }
