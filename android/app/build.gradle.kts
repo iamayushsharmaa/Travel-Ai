@@ -1,11 +1,16 @@
-def dotenvFile = rootProject.file(".env")
-def env = [:]
+val dotenvFile = rootProject.file(".env")
+val env = mutableMapOf<String, String>()
+
 if (dotenvFile.exists()) {
-    dotenvFile.eachLine { line ->
-        line = line.trim()
-        if (!line.startsWith("#") && line.contains("=")) {
-            def (key, value) = line.split("=", 2)
-            env[key.trim()] = value.trim()
+    dotenvFile.forEachLine { lineRaw ->
+        val line = lineRaw.trim()
+        if (line.isNotEmpty() && !line.startsWith("#") && line.contains("=")) {
+            val parts = line.split("=", limit = 2)
+            if (parts.size == 2) {
+                val key = parts[0].trim()
+                val value = parts[1].trim()
+                env[key] = value
+            }
         }
     }
 }
@@ -44,9 +49,7 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
 
-        manifestPlaceholders = [
-            GOOGLE_MAPS_API_KEY: env['GOOGLE_MAP_API_KEY'] ?: ""
-        ]
+        manifestPlaceholders.put("GOOGLE_MAPS_API_KEY", env["GOOGLE_MAP_API_KEY"] ?: "")
     }
 
     buildTypes {

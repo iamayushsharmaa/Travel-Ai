@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,6 +19,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   late TextEditingController passwordController;
 
   @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+
+  @override
   void dispose() {
     nameController.dispose();
     emailController.dispose();
@@ -28,34 +34,24 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    final user = ref.read(userInfoProvider)!;
-    nameController = TextEditingController(text: user.name);
-    emailController = TextEditingController(text: user.email);
-    passwordController = TextEditingController(text: user.password);
-  }
-
   void updateFields(UserModel user) {
-    nameController.text = user.name!;
-    emailController.text = user.email;
-    passwordController.text = user.password!;
+    nameController.text = user.name ?? '';
+    emailController.text = user.email ?? '';
+    passwordController.text = user.password ?? '';
   }
 
   void updateUserData() {
     final name = nameController.text.trim();
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
+
     ref
         .read(authStateNotifierProvider.notifier)
         .updateUserData(name, email, password);
 
-    print(isUpdating);
     setState(() {
       isUpdating = false;
     });
-    print(isUpdating);
   }
 
   void signOut() {
@@ -113,7 +109,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ),
       body: userDataAsync.when(
         data: (user) {
-          updateFields(user);
+          if (!isUpdating) {
+            // Only update controllers when not editing
+            updateFields(user);
+          }
+
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
@@ -160,26 +160,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   style: TextStyle(fontSize: 14, color: Colors.black54),
                 ),
                 const SizedBox(height: 8),
-                SizedBox(
+                Container(
                   height: 54,
                   width: double.infinity,
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        user.email,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Text(
+                    user.email ?? '',
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -189,11 +181,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ),
                 const SizedBox(height: 8),
                 TextField(
-                  controller: passwordController, // FIXED
+                  controller: passwordController,
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     filled: true,
-                    hintText: 'Enter your Password',
+                    hintText: '********',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
@@ -207,35 +199,34 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   readOnly: !isUpdating,
                 ),
                 const SizedBox(height: 25),
-                isUpdating
-                    ? const SizedBox()
-                    : SizedBox(
-                      height: 55,
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () => signOut(),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black87,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                if (!isUpdating)
+                  SizedBox(
+                    height: 55,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: signOut,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black87,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Text(
-                          'Sign out',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      ),
+                      child: const Text(
+                        'Sign out',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
+                  ),
               ],
             ),
           );
         },
-        error: (error, stackTrace) => Center(child: Text('Error: $error')),
         loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(child: Text('Error: $error')),
       ),
     );
   }

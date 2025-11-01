@@ -47,7 +47,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateNotifierProvider);
-
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       body: SafeArea(
@@ -90,6 +89,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           'Email',
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+
                         SizedBox(height: 6),
                         TextFormField(
                           controller: emailController,
@@ -126,6 +126,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           'Password',
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+
                         SizedBox(height: 6),
                         TextFormField(
                           controller: passwordController,
@@ -166,6 +167,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             return null;
                           },
                         ),
+
                         SizedBox(height: 25),
                         SizedBox(
                           height: 55,
@@ -188,6 +190,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             ),
                           ),
                         ),
+
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: TextButton(
