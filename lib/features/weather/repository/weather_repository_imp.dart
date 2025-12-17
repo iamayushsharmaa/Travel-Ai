@@ -6,9 +6,8 @@ import '../remote/weather_api_service.dart';
 
 class WeatherRepositoryImpl implements WeatherRepository {
   final WeatherApiService apiService;
-  final String apiKey;
 
-  WeatherRepositoryImpl({required this.apiService, required this.apiKey});
+  WeatherRepositoryImpl({required this.apiService});
 
   @override
   Future<WeatherEntity> getCurrentWeather(double lat, double lon) async {

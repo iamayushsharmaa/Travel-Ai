@@ -174,7 +174,7 @@ class TripPage extends ConsumerWidget {
                         data: (forecast) {
                           return WeatherCard(
                             destination: trip.destination,
-                            forecast: forecast,
+                            weather: forecast,
                           );
                         },
                         loading:

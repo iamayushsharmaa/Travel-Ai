@@ -1,139 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:triptide/features/weather/entity/weather_entity.dart';
+import 'package:triptide/features/weather/widgets/weather_metric_item.dart';
+
+import '../entity/weather_metric_data.dart';
+import 'header.dart';
 
 class WeatherCard extends StatelessWidget {
   final String destination;
-  final WeatherEntity forecast;
+  final WeatherEntity weather;
 
   const WeatherCard({
-    Key? key,
+    super.key,
     required this.destination,
-    required this.forecast,
-  }) : super(key: key);
-
-  IconData _getIcon(String label) {
-    switch (label.toLowerCase()) {
-      case 'humidity':
-        return Icons.opacity;
-      case 'feels like':
-        return Icons.thermostat_outlined;
-      case 'windspeed':
-        return Icons.air;
-      case 'temp min':
-        return Icons.arrow_downward;
-      case 'temp max':
-        return Icons.arrow_upward;
-      case 'temperature':
-        return Icons.thermostat;
-      default:
-        return Icons.wb_sunny_rounded;
-    }
-  }
-
-  Color _getIconColor(String label) {
-    switch (label.toLowerCase()) {
-      case 'humidity':
-        return Colors.blue;
-      case 'feels like':
-        return Colors.orange;
-      case 'windspeed':
-        return Colors.green;
-      case 'temp min':
-        return Colors.blueAccent;
-      case 'temp max':
-        return Colors.redAccent;
-      case 'temperature':
-        return Colors.deepOrange;
-      default:
-        return Colors.orange;
-    }
-  }
+    required this.weather,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final items = [
-      {'label': 'Temperature', 'value': '${forecast.temperature}°C'},
-      {'label': 'Feels Like', 'value': '${forecast.feelsLike}°C'},
-      {'label': 'Humidity', 'value': '${forecast.humidity}%'},
-      {'label': 'WindSpeed', 'value': '${forecast.windSpeed} m/s'},
-      {'label': 'Temp Min', 'value': '${forecast.tempMin}°C'},
-      {'label': 'Temp Max', 'value': '${forecast.tempMax}°C'},
-    ];
+    final metrics = _buildMetrics(weather);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Top container for title
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.blue.shade200,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: Text(
-            'Weather in $destination',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        // Card with grid
+        WeatherHeader(destination: destination),
         Card(
+          margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          margin: EdgeInsets.zero,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: items.length,
+              itemCount: metrics.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
                 childAspectRatio: 0.8,
               ),
-              itemBuilder: (context, index) {
-                final item = items[index];
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      _getIcon(item['label']!),
-                      size: 30,
-                      color: _getIconColor(item['label']!),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      item['value']!,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      item['label']!,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ],
-                );
+              itemBuilder: (_, index) {
+                return WeatherMetricItem(metric: metrics[index]);
               },
             ),
           ),
         ),
       ],
     );
+  }
+
+  List<WeatherMetricData> _buildMetrics(WeatherEntity w) {
+    return [
+      WeatherMetricData(
+        label: 'Temperature',
+        value: '${w.temperature}°C',
+        icon: Icons.thermostat,
+        color: Colors.deepOrange,
+      ),
+      WeatherMetricData(
+        label: 'Feels Like',
+        value: '${w.feelsLike}°C',
+        icon: Icons.thermostat_outlined,
+        color: Colors.orange,
+      ),
+      WeatherMetricData(
+        label: 'Humidity',
+        value: '${w.humidity}%',
+        icon: Icons.opacity,
+        color: Colors.blue,
+      ),
+      WeatherMetricData(
+        label: 'Wind Speed',
+        value: '${w.windSpeed} m/s',
+        icon: Icons.air,
+        color: Colors.green,
+      ),
+      WeatherMetricData(
+        label: 'Temp Min',
+        value: '${w.tempMin}°C',
+        icon: Icons.arrow_downward,
+        color: Colors.blueAccent,
+      ),
+      WeatherMetricData(
+        label: 'Temp Max',
+        value: '${w.tempMax}°C',
+        icon: Icons.arrow_upward,
+        color: Colors.redAccent,
+      ),
+    ];
   }
 }

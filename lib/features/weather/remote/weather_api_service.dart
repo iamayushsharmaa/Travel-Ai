@@ -11,7 +11,7 @@ class WeatherApiService {
     required double lon,
   }) async {
     const String url = 'https://api.openweathermap.org/data/2.5/weather';
-    final String _apiKey = dotenv.env['WEATHER_API_KEY'] ?? '';
+    final String apiKey = dotenv.env['WEATHER_API_KEY'] ?? '';
 
     try {
       final response = await dio.get(
@@ -19,7 +19,7 @@ class WeatherApiService {
         queryParameters: {
           'lat': lat,
           'lon': lon,
-          'appid': _apiKey,
+          'appid': apiKey,
           'units': 'metric',
         },
       );

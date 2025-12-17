@@ -20,7 +20,6 @@ WeatherApiService weatherApiService(WeatherApiServiceRef ref) {
 WeatherRepository weatherRepository(WeatherRepositoryRef ref) {
   return WeatherRepositoryImpl(
     apiService: ref.read(weatherApiServiceProvider),
-    apiKey: 'YOUR_API_KEY',
   );
 }
 
