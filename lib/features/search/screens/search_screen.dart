@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:triptide/features/home/screens/widgets/trip_view.dart';
 
-import '../providers/search_provider.dart'; // Optional if using GoRouter
+import '../../../core/common/trip_view.dart';
+import '../providers/search_provider.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  const SearchScreen({super.key});
 
   @override
   ConsumerState<SearchScreen> createState() => _SearchScreenState();
@@ -24,7 +24,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
     _debounce = Timer(const Duration(milliseconds: 400), () {
       setState(() => _query = value.trim().toLowerCase());
-      ref.invalidate(searchTripProvider); // reset cache
+      ref.invalidate(searchTripProvider);
     });
   }
 

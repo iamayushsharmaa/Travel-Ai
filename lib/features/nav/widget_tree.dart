@@ -6,7 +6,7 @@ class WidgetTree extends StatelessWidget {
 
   const WidgetTree({super.key, required this.child});
 
-  static const _navItems = ['/home', '/history', '/addtrip'];
+  static const _navItems = ['/trip', '/history', '/addtrip'];
 
   int _calculateSelectedIndex(BuildContext context) {
     final location =

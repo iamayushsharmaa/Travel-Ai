@@ -24,13 +24,19 @@ class WeatherApiService {
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.data != null) {
         return response.data as Map<String, dynamic>;
-      } else {
-        throw Exception('API Error: ${response.statusCode}');
       }
-    } catch (e) {
-      throw Exception('Failed to fetch weather data: $e');
+
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+      );
+    } on DioException {
+      rethrow;
+    } catch (_) {
+      rethrow;
     }
   }
 }

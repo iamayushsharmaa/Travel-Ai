@@ -1,10 +1,10 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:triptide/features/home/repository/trips_home_repository.dart';
 
 import '../../../core/failure.dart';
 import '../../addtrip/models/travel_db_model.dart';
 import '../../auth/provider/auth_providers.dart';
+import '../repository/trips_home_repository.dart';
 
 part 'trips_home_provider.g.dart';
 
@@ -52,13 +52,11 @@ Future<Map<String, List<TravelDbModel>>> categorizeTrips(
   return repositroy.categorizeTrips(trips, userId);
 }
 
-
-
 @riverpod
 Future<Either<Failure, Unit>> deleteTrip(
-    DeleteTripRef ref,
-    String travelId,
-    ) async {
+  DeleteTripRef ref,
+  String travelId,
+) async {
   final user = ref.read(userInfoProvider);
   if (user == null) {
     print('No user logged in, cannot delete trip $travelId');
@@ -66,8 +64,5 @@ Future<Either<Failure, Unit>> deleteTrip(
   }
   final repository = ref.read(tripsHomeRepositoryProvider);
   print('Deleting trip $travelId for user ${user.uid}');
-  return await repository.deleteTrip(
-    travelId: travelId,
-    userId: user.uid,
-  );
+  return await repository.deleteTrip(travelId: travelId, userId: user.uid);
 }

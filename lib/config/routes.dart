@@ -7,12 +7,12 @@ import 'package:triptide/features/search/screens/search_screen.dart';
 
 import '../features/auth/provider/auth_providers.dart';
 import '../features/auth/screens/onboarding_page.dart';
+import '../features/auth/screens/profile_screen.dart';
 import '../features/auth/screens/signin_page.dart';
 import '../features/auth/screens/signup_page.dart';
-import '../features/home/screens/home_page.dart';
-import '../features/home/screens/trip_page.dart';
 import '../features/nav/widget_tree.dart';
-import '../features/auth/screens/profile_screen.dart';
+import '../features/trip/screens/home_page.dart';
+import '../features/trip/screens/trip_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final listenable = ValueNotifier<bool>(false);
@@ -23,7 +23,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   final initialLocation =
       ref.read(firebaseAuthProvider).currentUser != null
-          ? '/home'
+          ? '/trip'
           : '/onBoarding';
 
   return GoRouter(
@@ -52,8 +52,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
         routes: [
           GoRoute(
-            path: '/home',
-            name: 'home',
+            path: '/trip',
+            name: 'trip',
             builder: (context, state) => const HomePage(),
           ),
           GoRoute(
@@ -101,7 +101,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         return null;
       }
       if (user != null && isPublicRoute) {
-        return '/home';
+        return '/trip';
       }
       if (user == null && !isPublicRoute) {
         return '/onBoarding';

@@ -4,15 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart' hide TransportationDetails;
 import 'package:triptide/core/common/error_text.dart';
 import 'package:triptide/core/common/loader.dart';
-import 'package:triptide/features/home/provider/trips_home_provider.dart';
-import 'package:triptide/features/home/screens/widgets/accomodation_card_widget.dart';
-import 'package:triptide/features/home/screens/widgets/overview_widget.dart';
-import 'package:triptide/features/home/screens/widgets/timeline_widget.dart';
-import 'package:triptide/features/home/screens/widgets/transport_widget.dart';
-import 'package:triptide/features/home/screens/widgets/trip_map_widget.dart';
+import 'package:triptide/features/trip/screens/widgets/accomodation_card_widget.dart';
+import 'package:triptide/features/trip/screens/widgets/overview_widget.dart';
+import 'package:triptide/features/trip/screens/widgets/timeline_widget.dart';
+import 'package:triptide/features/trip/screens/widgets/transport_widget.dart';
+import 'package:triptide/features/trip/screens/widgets/trip_map_widget.dart';
 import 'package:triptide/features/weather/provider/weather_provider.dart';
 
 import '../../weather/widgets/weather_widget.dart';
+import '../provider/trips_home_provider.dart';
 
 class TripPage extends ConsumerWidget {
   final String travelId;
@@ -42,11 +42,10 @@ class TripPage extends ConsumerWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              // icon color
               leading: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: IconButton(
-                  onPressed: () => context.goNamed('home'),
+                  onPressed: () => context.goNamed('trip'),
                   icon: const Icon(Icons.arrow_back_ios_new_outlined),
                 ),
               ),
@@ -158,7 +157,7 @@ class TripPage extends ConsumerWidget {
                   TransportWidget(
                     transportationDetails: trip.transportationDetails,
                   ),
-                  //weather card
+
                   // Weather card
                   const SizedBox(height: 20),
                   Consumer(
@@ -181,11 +180,12 @@ class TripPage extends ConsumerWidget {
                             () => const Center(
                               child: CircularProgressIndicator(),
                             ),
-                        error: (err, _) => const Text('Failed to load weather'),
+                        error: (err, _) => const SizedBox(height: 6),
                       );
                     },
                   ),
-                  // google map
+
+                  // Google map
                   const SizedBox(height: 20),
                   TripMap(
                     currentLat: trip.currentLat ?? 0.0,

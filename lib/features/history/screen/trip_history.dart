@@ -5,7 +5,7 @@ import 'package:triptide/core/common/error_text.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/enums/trip_filter.dart';
 
-import '../../home/screens/widgets/trip_view.dart';
+import '../../../core/common/trip_view.dart';
 import '../provider/trip_history_provider.dart';
 
 class TripHistory extends ConsumerStatefulWidget {

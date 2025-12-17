@@ -26,7 +26,7 @@ class WeatherRepositoryImpl implements WeatherRepository {
       tempMax: model.main.tempMax,
       humidity: model.main.humidity,
       windSpeed: model.wind.speed,
-      description: condition?.description ?? '',
+      description: condition?.description ?? 'Unknown',
       icon: condition?.icon ?? '',
     );
   }

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:triptide/core/common/loader.dart';
-import 'package:triptide/features/home/screens/widgets/month_widget.dart';
-import 'package:triptide/features/home/screens/widgets/trip_view.dart';
+import 'package:triptide/features/trip/screens/widgets/month_widget.dart';
 
 import '../../../core/common/error_text.dart';
+import '../../../core/common/trip_view.dart';
 import '../provider/trips_home_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
