@@ -3,6 +3,7 @@ import 'package:triptide/features/addtrip/screens/widgets/selectable_chip.dart';
 import 'package:triptide/features/addtrip/screens/widgets/step_title.dart';
 
 import '../../../../core/enums/trip_type.dart';
+import '../../../../core/utility/trip_utils.dart';
 import 'input_label.dart';
 
 class DestinationStep extends StatelessWidget {
@@ -33,7 +34,6 @@ class DestinationStep extends StatelessWidget {
           ),
           const SizedBox(height: 32),
 
-          // Destination input
           InputLabel(text: 'Destination'),
           const SizedBox(height: 8),
           CustomTextField(
@@ -43,7 +43,6 @@ class DestinationStep extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          // Current location input
           InputLabel(text: 'Starting from'),
           const SizedBox(height: 8),
           CustomTextField(
@@ -53,7 +52,6 @@ class DestinationStep extends StatelessWidget {
           ),
           const SizedBox(height: 32),
 
-          // Trip type selection
           InputLabel(text: 'Type of trip'),
           const SizedBox(height: 12),
           Wrap(
@@ -64,7 +62,7 @@ class DestinationStep extends StatelessWidget {
                   final isSelected = selectedTripType == type;
                   return SelectableChip(
                     label: type.label,
-                    icon: _getTripTypeIcon(type),
+                    icon: getTripTypeIcon(type.label),
                     isSelected: isSelected,
                     onTap: () => onTripTypeChanged(type),
                   );
@@ -73,20 +71,5 @@ class DestinationStep extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  IconData _getTripTypeIcon(TripType type) {
-    switch (type) {
-      case TripType.adventure:
-        return Icons.hiking_outlined;
-      case TripType.relaxation:
-        return Icons.spa_outlined;
-      case TripType.cultural:
-        return Icons.museum_outlined;
-      case TripType.business:
-        return Icons.business_center_outlined;
-      default:
-        return Icons.explore_outlined;
-    }
   }
 }
