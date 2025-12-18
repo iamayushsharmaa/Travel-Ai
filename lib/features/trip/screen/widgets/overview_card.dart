@@ -1,7 +1,5 @@
-
-
-
 import 'package:flutter/material.dart';
+import 'package:triptide/core/theme/app_colors.dart';
 
 import '../../../../core/utility/trip_utils.dart';
 import 'info_row.dart';
@@ -22,7 +20,7 @@ class TripOverviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = getTripTypeColor(tripType);
+    final color = AppColors.getTripTypeColor(tripType);
 
     return Container(
       width: double.infinity,
@@ -98,7 +96,8 @@ class TripOverviewCard extends StatelessWidget {
               Expanded(
                 child: InfoRow(
                   icon: Icons.people_outline,
-                  text: '$peopleCount ${peopleCount == 1 ? 'Person' : 'People'}',
+                  text:
+                      '$peopleCount ${peopleCount == 1 ? 'Person' : 'People'}',
                   iconColor: Colors.white,
                   textColor: Colors.white,
                 ),

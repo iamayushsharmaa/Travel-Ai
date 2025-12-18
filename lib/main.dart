@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:triptide/config/routes.dart';
 
+import 'core/theme/theme.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -20,7 +21,9 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.read(routerProvider);
     return MaterialApp.router(
-      theme: ThemeData(fontFamily: 'Poppins'),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       routerConfig: router,
     );

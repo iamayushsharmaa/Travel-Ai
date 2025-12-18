@@ -21,23 +21,3 @@ IconData getTripTypeIcon(String type) {
       return Icons.explore_outlined;
   }
 }
-
-Color getTripTypeColor(String type) {
-  switch (type.toLowerCase()) {
-    case 'business':
-      return const Color(0xFF5E35B1);
-    case 'leisure':
-    case 'relaxation':
-      return const Color(0xFF00ACC1);
-    case 'adventure':
-      return const Color(0xFFFF6F00);
-    case 'cultural':
-      return const Color(0xFFD81B60);
-    case 'romantic':
-      return const Color(0xFFE91E63);
-    case 'family':
-      return const Color(0xFF43A047);
-    default:
-      return const Color(0xFF2196F3);
-  }
-}
