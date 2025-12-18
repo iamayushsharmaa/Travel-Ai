@@ -1,20 +1,25 @@
-enum TripType { Business, Vacation, Romantic, Adventure, Roadtrip, Other }
+enum TripType {
+  adventure,
+  relaxation,
+  cultural,
+  business,
+  romantic,
+  family;
 
-extension TripTypeExtension on TripType {
   String get label {
     switch (this) {
-      case TripType.Adventure:
+      case TripType.adventure:
         return 'Adventure';
-      case TripType.Vacation:
-        return 'Vacation';
-      case TripType.Romantic:
-        return 'Romantic';
-      case TripType.Business:
+      case TripType.relaxation:
+        return 'Relaxation';
+      case TripType.cultural:
+        return 'Cultural';
+      case TripType.business:
         return 'Business';
-      case TripType.Roadtrip:
-        return 'Roadtrip';
-      case TripType.Other:
-        return 'Other';
+      case TripType.romantic:
+        return 'Romantic';
+      case TripType.family:
+        return 'Family';
     }
   }
 }

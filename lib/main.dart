@@ -20,9 +20,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.read(routerProvider);
     return MaterialApp.router(
-      theme: ThemeData(
-        fontFamily: 'Poppins',
-      ),
+      theme: ThemeData(fontFamily: 'Poppins'),
       debugShowCheckedModeBanner: false,
       routerConfig: router,
     );

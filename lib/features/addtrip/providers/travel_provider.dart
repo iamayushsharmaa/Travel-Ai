@@ -17,48 +17,61 @@ class SubmitLoading extends _$SubmitLoading {
 }
 
 @riverpod
-Future<String> generateAndStoreTrip(GenerateAndStoreTripRef ref,
-    TripPlanRequest tripPlanRequest,) async {
+Future<String> generateAndStoreTrip(
+  GenerateAndStoreTripRef ref,
+  TripPlanRequest tripPlanRequest,
+) async {
   final travelRepository = ref.read(travelRepositoryProvider);
   final userInfo = ref.read(userInfoProvider);
   if (userInfo == null) {
     throw Exception('User not logged in.');
   }
   final userId = userInfo.uid;
-  print('userId: $userId');
   final travelId = const Uuid().v4();
 
   final prompt = '''
-You are a travel planner assistant. Based on the following trip details, generate a complete trip plan in JSON format. Return only a valid, parsable JSON object matching the following structure, without any markdown or code block wrappers:
+You are an AI travel planner. Generate a complete, realistic trip plan as a STRICT JSON object.
 
+CRITICAL RULES:
+- Return ONLY a valid JSON object
+- Do NOT include markdown, comments, or explanations
+- Use EXACT field names and structure as provided
+- Do NOT add, remove, or rename fields
+- All coordinates must be REALISTIC latitude/longitude values
+
+JSON STRUCTURE (must match exactly):
 ${Constant.jsonResponseExample}
 
-Here are the trip details:
-- CurrentLocation: ${tripPlanRequest.currentLocation} (please also provide latitude and longitude)
-- Destination: ${tripPlanRequest.destination} (please also provide latitude and longitude)
-- Start Date: ${tripPlanRequest.startDate.toIso8601String()}
-- End Date: ${tripPlanRequest.endDate.toIso8601String()}
-- Trip Type: ${tripPlanRequest.tripType}
-- Budget: ${tripPlanRequest.budget} (${tripPlanRequest.budgetType})
-- Interests: ${tripPlanRequest.interests.join(', ')}
-- Companions: ${tripPlanRequest.companions}
-- Accommodation Type: ${tripPlanRequest.accommodationType}
-- Transport Preferences: ${tripPlanRequest.transportPreferences}
-- Pace: ${tripPlanRequest.pace}
-- Food Preferences: ${tripPlanRequest.food}
+TRIP INPUT DETAILS:
+- currentLocation: ${tripPlanRequest.currentLocation}
+- destination: ${tripPlanRequest.destination}
+- startDate: ${tripPlanRequest.startDate.toIso8601String()}
+- endDate: ${tripPlanRequest.endDate.toIso8601String()}
+- tripType: ${tripPlanRequest.tripType}
+- budget: ${tripPlanRequest.budget} (${tripPlanRequest.budgetType})
+- interests: ${tripPlanRequest.interests.join(', ')}
+- companions: ${tripPlanRequest.companions}
+- accommodationType: ${tripPlanRequest.accommodationType}
+- transportPreferences: ${tripPlanRequest.transportPreferences}
+- pace: ${tripPlanRequest.pace}
+- foodPreferences: ${tripPlanRequest.food}
 
-Include the following additional fields in the JSON:
-- tripType: String (from Trip Type)
-- budget: String (from Budget)
-- totalDays: int (calculated as the number of days between startDate and endDate, inclusive)
-- totalPeople: int (derived from Companions)
-- currentLat: double (latitude of CurrentLocation)
-- currentLng: double (longitude of CurrentLocation)
-- destinationLat: double (latitude of Destination)
-- destinationLng: double (longitude of Destination)
-- images: list of 3 to 5 URLs representing the destination (provide as "images": ["url1", "url2", "url3"])
+DERIVED FIELD RULES:
+- totalDays = number of days between startDate and endDate (inclusive)
+- totalPeople = ${_getPeopleCount(tripPlanRequest.companions)}
+- currentLat/currentLng = coordinates of currentLocation
+- destinationLat/destinationLng = coordinates of destination
+- images = 3 to 5 real, destination-relevant image URLs
 
-Return only the JSON object, nothing else.
+CONTENT GUIDELINES:
+- Daily plans must be realistic and paced according to "pace"
+- Activities should align with interests
+- Accommodation suggestions must match accommodationType and budget
+- Transportation tips should be location-specific
+- Budget should be realistic for the destination
+- Avoid generic or repetitive descriptions
+
+Return ONLY the JSON object.
 ''';
 
   final result = await travelRepository.generateTripAndStore(
@@ -68,11 +81,23 @@ Return only the JSON object, nothing else.
     createdAt: DateTime.now(),
   );
 
-  return result.fold(
-        (l) {
-      print('Error: ${l.message}');
-      throw Exception(l.message);
-    },
-        (r) => r.travelId,
-  );
+  return result.fold((l) {
+    print('Error: ${l.message}');
+    throw Exception(l.message);
+  }, (r) => r.travelId);
+}
+
+int _getPeopleCount(String companions) {
+  switch (companions.toLowerCase()) {
+    case 'solo':
+      return 1;
+    case 'partner':
+      return 2;
+    case 'family':
+      return 4; // Average family size
+    case 'friends':
+      return 3; // Average friend group
+    default:
+      return 1;
+  }
 }

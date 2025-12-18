@@ -16,7 +16,6 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     final usersTrip = ref.watch(userTripsProvider);
@@ -150,8 +149,6 @@ class _HomePageState extends ConsumerState<HomePage> {
               }
             },
             error: (error, stackTrace) {
-              print('error${error.toString()}');
-
               return SliverToBoxAdapter(
                 child: Center(child: ErrorText(error: error.toString())),
               );

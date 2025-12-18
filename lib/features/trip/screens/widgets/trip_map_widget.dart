@@ -1,8 +1,7 @@
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'dart:math';
-
 
 class TripMap extends StatefulWidget {
   final double currentLat;
@@ -13,14 +12,14 @@ class TripMap extends StatefulWidget {
   final double height;
 
   const TripMap({
-    Key? key,
+    super.key,
     required this.currentLat,
     required this.currentLng,
     required this.destinationLat,
     required this.destinationLng,
     required this.destinationName,
     this.height = 200,
-  }) : super(key: key);
+  });
 
   @override
   State<TripMap> createState() => _TripMapState();
@@ -31,10 +30,13 @@ class _TripMapState extends State<TripMap> {
 
   @override
   Widget build(BuildContext context) {
-    final LatLng currentPosition = LatLng(widget.currentLat, widget.currentLng);
-    final LatLng destinationPosition = LatLng(widget.destinationLat, widget.destinationLng);
+    final currentPosition = LatLng(widget.currentLat, widget.currentLng);
+    final destinationPosition = LatLng(
+      widget.destinationLat,
+      widget.destinationLng,
+    );
 
-    final markers = {
+    final markers = <Marker>{
       Marker(
         markerId: const MarkerId('current'),
         position: currentPosition,
@@ -47,7 +49,7 @@ class _TripMapState extends State<TripMap> {
       ),
     };
 
-    final polylines = {
+    final polylines = <Polyline>{
       Polyline(
         polylineId: const PolylineId('route'),
         points: [currentPosition, destinationPosition],
@@ -96,6 +98,13 @@ class _TripMapState extends State<TripMap> {
   void _fitMapToMarkers(LatLng current, LatLng destination) {
     if (mapController == null) return;
 
+    // Same location case
+    if (current.latitude == destination.latitude &&
+        current.longitude == destination.longitude) {
+      mapController!.animateCamera(CameraUpdate.newLatLngZoom(current, 14));
+      return;
+    }
+
     final bounds = LatLngBounds(
       southwest: LatLng(
         min(current.latitude, destination.latitude),
@@ -107,6 +116,14 @@ class _TripMapState extends State<TripMap> {
       ),
     );
 
-    mapController!.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+    Future.microtask(() {
+      mapController!.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+    });
+  }
+
+  @override
+  void dispose() {
+    mapController?.dispose();
+    super.dispose();
   }
 }

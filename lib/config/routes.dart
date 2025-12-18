@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:triptide/features/addtrip/screens/add_trip.dart';
+import 'package:triptide/features/addtrip/screens/add_trip_page.dart';
 import 'package:triptide/features/history/screen/trip_history.dart';
 import 'package:triptide/features/search/screens/search_screen.dart';
 
@@ -21,10 +21,10 @@ final routerProvider = Provider<GoRouter>((ref) {
     listenable.value = !listenable.value;
   });
 
-  final initialLocation =
-      ref.read(firebaseAuthProvider).currentUser != null
-          ? '/trip'
-          : '/onBoarding';
+  final initialLocation = '/plan-trip';
+  // ref.read(firebaseAuthProvider).currentUser != null
+  //     ? '/trip'
+  //     : '/onboarding';
 
   return GoRouter(
     debugLogDiagnostics: true,
@@ -32,9 +32,10 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: listenable,
     routes: [
       GoRoute(
-        path: '/onBoarding',
+        path: '/onboarding',
         builder: (context, state) => const OnBoardingPage(),
       ),
+
       GoRoute(
         path: '/signin',
         name: 'signin',
@@ -52,21 +53,27 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
         routes: [
           GoRoute(
-            path: '/trip',
-            name: 'trip',
+            path: '/home',
+            name: 'home',
             builder: (context, state) => const HomePage(),
-          ),
-          GoRoute(
-            path: '/addtrip',
-            name: 'addTrip',
-            builder: (context, state) => AddTripPage(),
           ),
           GoRoute(
             path: '/history',
             name: 'history',
             builder: (context, state) => TripHistory(),
           ),
+          GoRoute(
+            path: '/profile',
+            name: 'profile',
+            builder: (context, state) => ProfileScreen(),
+          ),
         ],
+      ),
+
+      GoRoute(
+        path: '/plan-trip',
+        name: 'planTrip',
+        builder: (context, state) => AddTripPage(),
       ),
 
       GoRoute(
@@ -82,17 +89,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'search',
         builder: (context, state) => SearchScreen(),
       ),
-      GoRoute(
-        path: '/profile',
-        name: 'profile',
-        builder: (context, state) => ProfileScreen(),
-      ),
     ],
     redirect: (BuildContext context, GoRouterState state) {
       final user = ref.read(userInfoProvider);
       final currentPath = state.uri.path;
       final isPublicRoute = [
-        '/onBoarding',
+        '/onboarding',
         '/signin',
         '/signup',
       ].contains(currentPath);
@@ -101,10 +103,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         return null;
       }
       if (user != null && isPublicRoute) {
-        return '/trip';
+        return '/home';
       }
       if (user == null && !isPublicRoute) {
-        return '/onBoarding';
+        return '/onboarding';
       }
       return null;
     },

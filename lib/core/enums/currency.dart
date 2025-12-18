@@ -1,26 +1,11 @@
 enum Currency {
   usd,
   eur,
-  inr,
-  jpy,
   gbp,
-}
-
-extension CurrencyExtension on Currency {
-  String get label {
-    switch (this) {
-      case Currency.usd:
-        return 'USD';
-      case Currency.eur:
-        return 'EUR';
-      case Currency.inr:
-        return 'INR';
-      case Currency.jpy:
-        return 'JPY';
-      case Currency.gbp:
-        return 'GBP';
-    }
-  }
+  jpy,
+  cad,
+  aud,
+  inr;
 
   String get symbol {
     switch (this) {
@@ -28,12 +13,35 @@ extension CurrencyExtension on Currency {
         return '\$';
       case Currency.eur:
         return '€';
-      case Currency.inr:
-        return '₹';
-      case Currency.jpy:
-        return '¥';
       case Currency.gbp:
         return '£';
+      case Currency.jpy:
+        return '¥';
+      case Currency.cad:
+        return 'C\$';
+      case Currency.aud:
+        return 'A\$';
+      case Currency.inr:
+        return '₹';
+    }
+  }
+
+  String get label {
+    switch (this) {
+      case Currency.usd:
+        return 'USD';
+      case Currency.eur:
+        return 'EUR';
+      case Currency.gbp:
+        return 'GBP';
+      case Currency.jpy:
+        return 'JPY';
+      case Currency.cad:
+        return 'CAD';
+      case Currency.aud:
+        return 'AUD';
+      case Currency.inr:
+        return 'INR';
     }
   }
 }
