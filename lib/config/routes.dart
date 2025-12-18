@@ -37,13 +37,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       GoRoute(
-        path: '/signin',
-        name: 'signin',
+        path: '/sign-in',
+        name: 'signIn',
         builder: (context, state) => SigninPage(),
       ),
       GoRoute(
-        path: '/signup',
-        name: 'signup',
+        path: '/sign-up',
+        name: 'signUp',
         builder: (context, state) => SignUpPage(),
       ),
 
@@ -95,8 +95,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       final currentPath = state.uri.path;
       final isPublicRoute = [
         '/onboarding',
-        '/signin',
-        '/signup',
+        '/sign-in',
+        '/sign-up',
       ].contains(currentPath);
       final firebaseUser = ref.read(firebaseAuthProvider).currentUser;
       if (firebaseUser != null && user == null) {
