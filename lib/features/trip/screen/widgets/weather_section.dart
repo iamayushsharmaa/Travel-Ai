@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:triptide/features/trip/test_screen/widgets/section_header.dart';
+import 'package:triptide/features/trip/screen/widgets/section_header.dart';
 
 import '../../../../core/utility/weather_utils.dart';
 import '../../../weather/provider/weather_provider.dart';

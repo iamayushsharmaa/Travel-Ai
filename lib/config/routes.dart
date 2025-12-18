@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:triptide/features/addtrip/screens/add_trip_page.dart';
 import 'package:triptide/features/history/screen/trip_history.dart';
 import 'package:triptide/features/search/screens/search_screen.dart';
+import 'package:triptide/features/trip/screen/trip_detail_page.dart';
 
 import '../features/auth/provider/auth_providers.dart';
 import '../features/auth/screens/onboarding_page.dart';
@@ -11,8 +12,7 @@ import '../features/auth/screens/profile_screen.dart';
 import '../features/auth/screens/signin_page.dart';
 import '../features/auth/screens/signup_page.dart';
 import '../features/nav/widget_tree.dart';
-import '../features/trip/screens/home_page.dart';
-import '../features/trip/screens/trip_page.dart';
+import '../features/trip/screen/home_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final listenable = ValueNotifier<bool>(false);
@@ -81,7 +81,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'trip',
         builder: (context, state) {
           final travelId = state.pathParameters['travelId']!;
-          return TripPage(travelId: travelId);
+          return TripDetailPage(travelId: travelId);
         },
       ),
       GoRoute(

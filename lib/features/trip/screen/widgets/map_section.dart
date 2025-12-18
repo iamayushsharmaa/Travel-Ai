@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:triptide/features/trip/test_screen/widgets/section_header.dart';
-import 'package:triptide/features/trip/test_screen/widgets/trip_map_widget.dart';
+import 'package:triptide/features/trip/screen/widgets/section_header.dart';
+import 'package:triptide/features/trip/screen/widgets/trip_map_widget.dart';
 
 class MapSection extends StatelessWidget {
   final double currentLat;

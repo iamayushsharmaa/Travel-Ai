@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:triptide/features/trip/test_screen/widgets/accomodation_section.dart';
-import 'package:triptide/features/trip/test_screen/widgets/budget_card.dart';
-import 'package:triptide/features/trip/test_screen/widgets/map_section.dart';
-import 'package:triptide/features/trip/test_screen/widgets/overview_card.dart';
-import 'package:triptide/features/trip/test_screen/widgets/section_header.dart';
-import 'package:triptide/features/trip/test_screen/widgets/transport_section.dart';
-import 'package:triptide/features/trip/test_screen/widgets/trip_hero_image.dart';
-import 'package:triptide/features/trip/test_screen/widgets/trip_timeline.dart';
-import 'package:triptide/features/trip/test_screen/widgets/weather_section.dart';
+import 'package:triptide/features/trip/screen/widgets/accomodation_section.dart';
+import 'package:triptide/features/trip/screen/widgets/budget_card.dart';
+import 'package:triptide/features/trip/screen/widgets/map_section.dart';
+import 'package:triptide/features/trip/screen/widgets/overview_card.dart';
+import 'package:triptide/features/trip/screen/widgets/section_header.dart';
+import 'package:triptide/features/trip/screen/widgets/transport_section.dart';
+import 'package:triptide/features/trip/screen/widgets/trip_hero_image.dart';
+import 'package:triptide/features/trip/screen/widgets/trip_timeline.dart';
+import 'package:triptide/features/trip/screen/widgets/weather_section.dart';
 
 import '../provider/trips_home_provider.dart';
 

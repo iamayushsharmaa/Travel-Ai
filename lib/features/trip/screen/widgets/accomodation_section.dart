@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:triptide/features/trip/test_screen/widgets/section_header.dart';
+import 'package:triptide/features/trip/screen/widgets/section_header.dart';
 
 import 'detail_row.dart';
 
