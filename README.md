@@ -1,4 +1,4 @@
-# 🌍 TripTide - AI-Powered Travel Planner
+# 🌍 Travel AI - AI-Powered Travel Planner
 
 <div align="center">
 
