@@ -153,13 +153,12 @@ class AuthStateNotifier extends _$AuthStateNotifier {
     }
   }
 
-  void updateUserData(String name, String email, String password) {
+  void updateUserData(String name, String email) {
     final user = ref.read(userInfoProvider);
     if (user != null) {
       final updatedUser = user.copyWith(
         name: name,
         email: email,
-        password: password,
       );
       ref.read(authRepositoryProvider).updateUserData(updatedUser);
     }

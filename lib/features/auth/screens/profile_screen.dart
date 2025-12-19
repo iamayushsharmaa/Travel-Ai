@@ -16,38 +16,31 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   bool isUpdating = false;
   late TextEditingController nameController;
   late TextEditingController emailController;
-  late TextEditingController passwordController;
 
   @override
   void initState() {
     super.initState();
     nameController = TextEditingController();
     emailController = TextEditingController();
-    passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
     nameController.dispose();
     emailController.dispose();
-    passwordController.dispose();
     super.dispose();
   }
 
   void updateFields(UserModel user) {
     nameController.text = user.name ?? '';
     emailController.text = user.email ?? '';
-    passwordController.text = user.password ?? '';
   }
 
   void updateUserData() {
     final name = nameController.text.trim();
     final email = emailController.text.trim();
-    final password = passwordController.text.trim();
 
-    ref
-        .read(authStateNotifierProvider.notifier)
-        .updateUserData(name, email, password);
+    ref.read(authStateNotifierProvider.notifier).updateUserData(name, email);
 
     setState(() {
       isUpdating = false;
@@ -178,25 +171,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 const Text(
                   'Password',
                   style: TextStyle(fontSize: 14, color: Colors.black54),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: '********',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  obscureText: true,
-                  readOnly: !isUpdating,
                 ),
                 const SizedBox(height: 25),
                 if (!isUpdating)

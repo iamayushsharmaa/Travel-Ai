@@ -1,7 +1,6 @@
 class UserModel {
   final String uid;
   final String email;
-  final String? password;
   final String? name;
   final String? profilePic;
   final bool isAuthenticated;
@@ -9,7 +8,6 @@ class UserModel {
   UserModel({
     required this.uid,
     required this.email,
-    required this.password,
     required this.name,
     required this.profilePic,
     required this.isAuthenticated,
@@ -19,7 +17,6 @@ class UserModel {
     return {
       'uid': this.uid,
       'email': this.email,
-      'password': this.password,
       'name': this.name,
       'profilePic': this.profilePic,
       'isAuthenticated': this.isAuthenticated,
@@ -30,7 +27,6 @@ class UserModel {
     return UserModel(
       uid: map['uid'] as String,
       email: map['email'] as String,
-      password: map['password'] as String?,
       name: map['name'] as String?,
       profilePic: map['profilePic'] as String?,
       isAuthenticated: map['isAuthenticated'] as bool,
@@ -39,7 +35,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel{uid: $uid, email: $email, password: $password, name: $name, profilePic: $profilePic, isAuthenticated: $isAuthenticated}';
+    return 'UserModel{uid: $uid, email: $email, name: $name, profilePic: $profilePic, isAuthenticated: $isAuthenticated}';
   }
 
   @override
@@ -49,7 +45,6 @@ class UserModel {
           runtimeType == other.runtimeType &&
           uid == other.uid &&
           email == other.email &&
-          password == other.password &&
           name == other.name &&
           profilePic == other.profilePic &&
           isAuthenticated == other.isAuthenticated;
@@ -58,7 +53,6 @@ class UserModel {
   int get hashCode =>
       uid.hashCode ^
       email.hashCode ^
-      password.hashCode ^
       name.hashCode ^
       profilePic.hashCode ^
       isAuthenticated.hashCode;
@@ -74,7 +68,6 @@ class UserModel {
     return UserModel(
       uid: uid ?? this.uid,
       email: email ?? this.email,
-      password: password ?? this.password,
       name: name ?? this.name,
       profilePic: profilePic ?? this.profilePic,
       isAuthenticated: isAuthenticated ?? this.isAuthenticated,
