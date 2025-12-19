@@ -8,9 +8,7 @@ part of 'trip_history_provider.dart';
 
 String _$userHistoryTripsHash() => r'7da271bb7ef420083a456cc733941c6c23e87278';
 
-/// Provider to stream the user's previous trips based on selected filter
-///
-/// Copied from [userHistoryTrips].
+/// See also [userHistoryTrips].
 @ProviderFor(userHistoryTrips)
 final userHistoryTripsProvider =
     AutoDisposeStreamProvider<List<TravelDbModel>>.internal(
@@ -30,9 +28,7 @@ typedef UserHistoryTripsRef = AutoDisposeStreamProviderRef<List<TravelDbModel>>;
 String _$tripFilterNotifierHash() =>
     r'491167c6a7afcc58cc551a9f72555528e6b7b10e';
 
-/// Notifier to manage the selected trip filter
-///
-/// Copied from [TripFilterNotifier].
+/// See also [TripFilterNotifier].
 @ProviderFor(TripFilterNotifier)
 final tripFilterNotifierProvider =
     AutoDisposeNotifierProvider<TripFilterNotifier, TripFilter>.internal(

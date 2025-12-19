@@ -105,6 +105,7 @@ class AppColors {
     }
   }
 
+
   // Get trip type gradient
   static List<Color> getTripTypeGradient(String type) {
     final baseColor = getTripTypeColor(type);

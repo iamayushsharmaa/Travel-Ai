@@ -8,15 +8,14 @@ void showSnackBar(BuildContext context, String text) {
     ..showSnackBar(SnackBar(content: Text(text)));
 }
 
-
 class NumberInputFormatter extends TextInputFormatter {
   final NumberFormat _formatter = NumberFormat.decimalPattern();
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     String newText = newValue.text.replaceAll(',', '');
 
     if (newText.isEmpty) return newValue;
@@ -33,7 +32,6 @@ class NumberInputFormatter extends TextInputFormatter {
     );
   }
 }
-
 
 IconData getTripTypeIcon(String tripType) {
   switch (tripType.toLowerCase()) {

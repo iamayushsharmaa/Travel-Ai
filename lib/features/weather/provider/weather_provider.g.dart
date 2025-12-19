@@ -41,7 +41,7 @@ final weatherApiServiceProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef WeatherApiServiceRef = AutoDisposeProviderRef<WeatherApiService>;
-String _$weatherRepositoryHash() => r'fda674c3d4cfc1df6573730bdf6e2756227d3c0e';
+String _$weatherRepositoryHash() => r'd178c78931763b948be5a7bcb9a2b7b7c2748f11';
 
 /// See also [weatherRepository].
 @ProviderFor(weatherRepository)

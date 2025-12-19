@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/core/constant/constant.dart';
 import 'package:triptide/features/addtrip/models/TripPlanRequest.dart';
-import 'package:triptide/features/addtrip/repository/gemini_repository.dart';
+import 'package:triptide/features/addtrip/repository/travel_repository.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../auth/provider/auth_providers.dart';
@@ -78,11 +78,9 @@ Return ONLY the JSON object.
     prompt: prompt,
     userId: userId,
     travelId: travelId,
-    createdAt: DateTime.now(),
   );
 
   return result.fold((l) {
-    print('Error: ${l.message}');
     throw Exception(l.message);
   }, (r) => r.travelId);
 }

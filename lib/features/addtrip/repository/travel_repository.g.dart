@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'gemini_repository.dart';
+part of 'travel_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator

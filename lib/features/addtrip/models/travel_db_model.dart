@@ -3,6 +3,8 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:triptide/features/addtrip/models/travel_gemini_response.dart';
 
+import '../../../core/enums/trip_status.dart';
+
 part 'travel_db_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -35,7 +37,16 @@ class TravelDbModel extends Equatable {
   final String? budget;
   final bool isFavorite;
 
-  TravelDbModel({
+  @JsonKey(fromJson: _tripStatusFromJson, toJson: _tripStatusToJson)
+  final TripStatus status;
+
+  @JsonKey(
+    fromJson: _dateTimeFromTimestampNullable,
+    toJson: _dateTimeToTimestampNullable,
+  )
+  final DateTime? visitedAt;
+
+  const TravelDbModel({
     required this.travelId,
     required this.userId,
     required this.createdAt,
@@ -60,6 +71,8 @@ class TravelDbModel extends Equatable {
     this.additionalTips = const [],
     this.budget,
     this.isFavorite = false,
+    required this.status,
+    this.visitedAt,
   });
 
   factory TravelDbModel.fromJson(Map<String, dynamic> json) {
@@ -118,7 +131,14 @@ class TravelDbModel extends Equatable {
     budget,
     images,
     isFavorite,
+    status,
+    visitedAt,
   ];
+
+  static TripStatus _tripStatusFromJson(String? value) =>
+      TripStatus.values.byName(value ?? TripStatus.planned.name);
+
+  static String _tripStatusToJson(TripStatus status) => status.name;
 
   static DateTime _dateTimeFromString(String? date) =>
       date != null && date.isNotEmpty ? DateTime.parse(date) : DateTime.now();
@@ -130,4 +150,10 @@ class TravelDbModel extends Equatable {
 
   static Timestamp _dateTimeToTimestamp(DateTime date) =>
       Timestamp.fromDate(date);
+
+  static DateTime? _dateTimeFromTimestampNullable(Timestamp? timestamp) =>
+      timestamp?.toDate();
+
+  static Timestamp? _dateTimeToTimestampNullable(DateTime? date) =>
+      date != null ? Timestamp.fromDate(date) : null;
 }
