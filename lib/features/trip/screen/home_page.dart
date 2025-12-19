@@ -6,7 +6,7 @@ import 'package:triptide/features/trip/screen/widgets/month_widget.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../core/common/trip_view.dart';
-import '../provider/trips_home_provider.dart';
+import '../provider/user_trips_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});

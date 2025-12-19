@@ -7,7 +7,7 @@ part of 'travel_provider.dart';
 // **************************************************************************
 
 String _$generateAndStoreTripHash() =>
-    r'fab3c85dd322f46a40116d39d0f1573c28576d64';
+    r'029876093b5efe8b2615f4d592e9844e89c3f415';
 
 /// Copied from Dart SDK
 class _SystemHash {

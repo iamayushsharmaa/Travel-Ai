@@ -6,7 +6,6 @@ import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/enums/trip_filter.dart';
 
 import '../../../core/common/trip_view.dart';
-import '../provider/trip_history_provider.dart';
 
 class TripHistory extends ConsumerStatefulWidget {
   const TripHistory({super.key});

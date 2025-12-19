@@ -12,7 +12,7 @@ import 'package:triptide/features/trip/screen/widgets/trip_hero_image.dart';
 import 'package:triptide/features/trip/screen/widgets/trip_timeline.dart';
 import 'package:triptide/features/trip/screen/widgets/weather_section.dart';
 
-import '../provider/trips_home_provider.dart';
+import '../provider/user_trips_provider.dart';
 
 class TripDetailPage extends ConsumerWidget {
   final String travelId;
@@ -108,7 +108,6 @@ class TripDetailPage extends ConsumerWidget {
 
                   const SizedBox(height: 24),
 
-                  // Budget
                   BudgetCard(budget: trip.budget?.toString() ?? '0'),
 
                   const SizedBox(height: 32),
