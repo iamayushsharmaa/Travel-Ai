@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/features/auth/provider/auth_providers.dart';
@@ -8,7 +7,7 @@ import '../../../core/constant/firebase_constant.dart';
 import '../../../core/enums/trip_filter.dart';
 import '../../../core/enums/trip_status.dart';
 import '../../../core/failure.dart';
-import '../../addtrip/models/travel_db_model.dart';
+import '../../../shared/models/travel_db_model.dart';
 
 part 'user_trips_repository.g.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:triptide/core/theme/app_colors.dart';
 
-import '../../../../core/utility/trip_utils.dart';
+import '../../../../core/utilities/trip_utils.dart';
 import 'info_row.dart';
 
 class TripOverviewCard extends StatelessWidget {

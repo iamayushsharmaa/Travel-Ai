@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:triptide/features/addtrip/models/travel_gemini_response.dart';
 
-import '../../../core/enums/trip_status.dart';
+import '../../core/enums/trip_status.dart';
 
 part 'travel_db_model.g.dart';
 

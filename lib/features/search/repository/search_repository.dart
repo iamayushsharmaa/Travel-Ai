@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/core/constant/firebase_constant.dart';
 import 'package:triptide/core/failure.dart';
 import 'package:triptide/core/type_def.dart';
-import 'package:triptide/features/addtrip/models/travel_db_model.dart';
+import 'package:triptide/shared/models/travel_db_model.dart';
 import 'package:triptide/features/auth/provider/auth_providers.dart';
 
 part 'search_repository.g.dart';

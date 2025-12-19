@@ -19,7 +19,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final usersTrip = ref.watch(userTripsProvider);
-    final categorizedAsync = ref.watch(categorizeTripsProvider);
+    final monthCountAsync = ref.watch(monthTripCountProvider);
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -79,14 +79,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 8),
-                  categorizedAsync.when(
-                    data: (categorized) {
-                      final thisMonthTrips =
-                          (categorized['This Month'] ?? []).length;
-                      final lastMonthTrips =
-                          (categorized['Last Month'] ?? []).length;
-
-                      return MonthWidget(thisMonthTrips, lastMonthTrips);
+                  monthCountAsync.when(
+                    data: (count) {
+                      return MonthWidget(count.thisMonth, count.lastMonth);
                     },
                     error:
                         (error, stackTrace) =>

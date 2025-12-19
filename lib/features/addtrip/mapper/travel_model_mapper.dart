@@ -1,5 +1,5 @@
 import '../../../core/enums/trip_status.dart';
-import '../models/travel_db_model.dart';
+import '../../../shared/models/travel_db_model.dart';
 import '../models/travel_gemini_response.dart';
 
 class TravelDbMapper {

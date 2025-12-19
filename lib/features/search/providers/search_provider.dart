@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/features/auth/provider/auth_providers.dart';
 import 'package:triptide/features/search/repository/search_repository.dart';
 
-import '../../addtrip/models/travel_db_model.dart';
+import '../../../shared/models/travel_db_model.dart';
 
 part 'search_provider.g.dart';
 

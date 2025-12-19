@@ -1,23 +1,12 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/enums/trip_filter.dart';
-import '../../addtrip/models/travel_db_model.dart';
+import '../../../shared/models/travel_db_model.dart';
 import '../../auth/provider/auth_providers.dart';
+import '../model/month_this_count.dart';
 import '../repository/user_trips_repository.dart';
 
 part 'user_trips_provider.g.dart';
-
-@riverpod
-class TripHistoryNotifier extends _$TripHistoryNotifier {
-  @override
-  TripFilter build() {
-    return TripFilter.all;
-  }
-
-  void changeFilter(TripFilter filter) {
-    state = filter;
-  }
-}
 
 @riverpod
 Stream<List<TravelDbModel>> userTrips(UserTripsRef ref) {
@@ -36,15 +25,6 @@ Future<TravelDbModel> tripById(TripByIdRef ref, String travelId) async {
   return result.fold((f) => throw Exception(f.message), (trip) => trip);
 }
 
-@riverpod
-Stream<List<TravelDbModel>> userTripsByFilter(
-  UserTripsByFilterRef ref, {
-  required String userId,
-  required TripFilter filter,
-}) {
-  final repo = ref.watch(userTripsRepositoryProvider);
-  return repo.getUserTripsByFilter(userId: userId, filter: filter);
-}
 
 @riverpod
 Future<void> deleteTrip(DeleteTripRef ref, String travelId) async {
@@ -52,16 +32,35 @@ Future<void> deleteTrip(DeleteTripRef ref, String travelId) async {
   await repo.deleteTrip(travelId);
 }
 
-// @riverpod
-// Future<Map<String, List<TravelDbModel>>> categorizeTrips(
-//   CategorizeTripsRef ref,
-// ) async {
-//   final trips = ref.watch(userTripsProvider).valueOrNull ?? [];
-//
-//   final userInfo = ref.watch(userInfoProvider);
-//   if (userInfo == null) return {'This Month': [], 'Last Month': []};
-//
-//   final userId = userInfo.uid;
-//   final repositroy = ref.read(userTripsRepositoryProvider);
-//   return repositroy.categorizeTrips(trips, userId);
-// }
+@riverpod
+AsyncValue<MonthTripCount> monthTripCount(MonthTripCountRef ref) {
+  final tripsAsync = ref.watch(userTripsProvider);
+
+  return tripsAsync.when(
+    loading: () => const AsyncValue.loading(),
+    error: (e, st) => AsyncValue.error(e, st),
+    data: (trips) {
+      final now = DateTime.now();
+
+      final thisMonthStart = DateTime(now.year, now.month, 1);
+      final lastMonthStart = DateTime(now.year, now.month - 1, 1);
+      final lastMonthEnd = DateTime(now.year, now.month, 0);
+
+      final thisMonthCount =
+          trips.where((trip) {
+            return trip.startDate.isAfter(thisMonthStart) ||
+                trip.startDate.isAtSameMomentAs(thisMonthStart);
+          }).length;
+
+      final lastMonthCount =
+          trips.where((trip) {
+            return trip.startDate.isAfter(lastMonthStart) &&
+                trip.startDate.isBefore(lastMonthEnd);
+          }).length;
+
+      return AsyncValue.data(
+        MonthTripCount(thisMonth: thisMonthCount, lastMonth: lastMonthCount),
+      );
+    },
+  );
+}

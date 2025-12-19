@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:triptide/features/addtrip/models/travel_db_model.dart';
+import 'package:triptide/shared/models/travel_db_model.dart';
 
 class TripView extends StatelessWidget {
   final TravelDbModel trip;

@@ -3,7 +3,7 @@ import 'package:triptide/features/addtrip/screens/widgets/selectable_chip.dart';
 import 'package:triptide/features/addtrip/screens/widgets/step_title.dart';
 
 import '../../../../core/enums/trip_type.dart';
-import '../../../../core/utility/trip_utils.dart';
+import '../../../../core/utilities/trip_utils.dart';
 import 'input_label.dart';
 
 class DestinationStep extends StatelessWidget {
