@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:triptide/core/common/error_text.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/enums/trip_filter.dart';
+import 'package:triptide/features/history/screen/widgets/trip_filter_chip.dart';
 
 import '../../../shared/widgets/trip_card.dart';
 import '../provider/trip_history_provider.dart';
-import '../widgets/trip_filter_chip.dart';
 
 class TripHistory extends ConsumerStatefulWidget {
   const TripHistory({super.key});

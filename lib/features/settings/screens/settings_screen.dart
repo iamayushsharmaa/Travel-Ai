@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:triptide/features/settings/screens/widgets/edit_profile_bottom_sheet.dart';
+import 'package:triptide/features/settings/screens/widgets/language_tile.dart';
+import 'package:triptide/features/settings/screens/widgets/settings_header.dart';
+import 'package:triptide/features/settings/screens/widgets/settings_section.dart';
+import 'package:triptide/features/settings/screens/widgets/settings_tile.dart';
+import 'package:triptide/features/settings/screens/widgets/theme_mode_tile.dart';
 
 import '../../auth/provider/auth_providers.dart';
 import '../provider/settings_provider.dart';
-import '../widgets/edit_profile_bottom_sheet.dart';
-import '../widgets/language_tile.dart';
-import '../widgets/settings_header.dart';
-import '../widgets/settings_section.dart';
-import '../widgets/settings_tile.dart';
-import '../widgets/theme_mode_tile.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
