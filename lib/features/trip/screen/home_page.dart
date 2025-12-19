@@ -5,7 +5,7 @@ import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/features/trip/screen/widgets/month_widget.dart';
 
 import '../../../core/common/error_text.dart';
-import '../../../core/common/trip_view.dart';
+import '../../../shared/widgets/trip_view.dart';
 import '../provider/user_trips_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
