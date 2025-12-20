@@ -84,7 +84,6 @@ class AppColors {
     Color(0xFF66BB6A),
   ];
 
-  // Get trip type color
   static Color getTripTypeColor(String type) {
     switch (type.toLowerCase()) {
       case 'business':
@@ -105,8 +104,6 @@ class AppColors {
     }
   }
 
-
-  // Get trip type gradient
   static List<Color> getTripTypeGradient(String type) {
     final baseColor = getTripTypeColor(type);
     return [baseColor, baseColor.withOpacity(0.7)];

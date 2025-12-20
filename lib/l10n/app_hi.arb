@@ -310,5 +310,7 @@
   "food_fast_food": "फास्ट फूड",
   "food_fine_dining": "प्रीमियम डाइनिंग",
 
+  "search_trips_hint": "यात्रा खोजें",
+  "search_error": "कुछ गलत हो गया"
 
 }

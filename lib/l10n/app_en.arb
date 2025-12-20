@@ -316,6 +316,8 @@
   "food_vegetarian": "Vegetarian",
   "food_vegan": "Vegan",
   "food_fast_food": "Fast Food",
-  "food_fine_dining": "Fine Dining"
+  "food_fine_dining": "Fine Dining",
 
+  "search_trips_hint": "Search trips",
+  "search_error": "Something went wrong"
 }
