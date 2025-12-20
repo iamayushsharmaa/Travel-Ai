@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 import 'package:triptide/features/trip/screen/widgets/section_header.dart';
 
 import '../../../../core/utilities/weather_utils.dart';
@@ -28,9 +29,9 @@ class WeatherSection extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SectionHeader(
+            SectionHeader(
               icon: Icons.wb_sunny_outlined,
-              title: 'Weather Forecast',
+              title: context.l10n.weatherForecast,
             ),
             const SizedBox(height: 16),
             WeatherCard(destination: destination, weather: forecast),
@@ -112,7 +113,7 @@ class WeatherCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    weather?.condition ?? 'Loading...',
+                    weather?.condition ?? context.l10n.loading,
                     style: const TextStyle(fontSize: 16, color: Colors.white70),
                   ),
                 ],
@@ -130,18 +131,18 @@ class WeatherCard extends StatelessWidget {
             children: [
               _buildWeatherDetail(
                 Icons.water_drop_outlined,
-                'Humidity',
+                context.l10n.humidity,
                 '${weather?.humidity ?? '--'}%',
               ),
               _buildWeatherDetail(
                 Icons.air,
-                'Wind',
-                '${weather?.windSpeed ?? '--'} km/h',
+                context.l10n.wind,
+                '${weather?.windSpeed ?? '--'} ${context.l10n.kmh}',
               ),
               _buildWeatherDetail(
                 Icons.visibility_outlined,
-                'Visibility',
-                '${weather?.visibility ?? '--'} km',
+                context.l10n.visibility,
+                '${weather?.visibility ?? '--'} ${context.l10n.km}',
               ),
             ],
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 import 'package:triptide/features/trip/screen/widgets/section_header.dart';
 
 class TransportationSection extends StatelessWidget {
@@ -11,9 +12,9 @@ class TransportationSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeader(
+        SectionHeader(
           icon: Icons.directions_car_outlined,
-          title: 'Transportation',
+          title: context.l10n.transportation,
         ),
         const SizedBox(height: 16),
         Container(
@@ -52,8 +53,8 @@ class TransportationSection extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  const Text(
-                    'Local Transport',
+                  Text(
+                    context.l10n.localTransport,
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
@@ -64,7 +65,7 @@ class TransportationSection extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                details.localTransport ?? 'No information available',
+                details.localTransport ?? context.l10n.noInfoAvailable,
                 style: TextStyle(
                   fontSize: 15,
                   height: 1.6,
@@ -96,7 +97,7 @@ class TransportationSection extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Tips',
+                            context.l10n.tips,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -105,7 +106,7 @@ class TransportationSection extends StatelessWidget {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            details.tips ?? 'No tips available',
+                            details.tips ?? context.l10n.noTipsAvailable,
                             style: TextStyle(
                               fontSize: 14,
                               height: 1.5,

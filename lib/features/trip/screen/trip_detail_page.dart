@@ -12,6 +12,7 @@ import 'package:triptide/features/trip/screen/widgets/trip_hero_image.dart';
 import 'package:triptide/features/trip/screen/widgets/trip_timeline.dart';
 import 'package:triptide/features/trip/screen/widgets/weather_section.dart';
 
+import '../../../core/extensions/context_l10n.dart';
 import '../provider/user_trips_provider.dart';
 
 class TripDetailPage extends ConsumerWidget {
@@ -25,9 +26,6 @@ class TripDetailPage extends ConsumerWidget {
 
     return tripAsync.when(
       data: (trip) {
-        if (trip == null) {
-          return _buildEmptyState(context);
-        }
         return _buildTripContent(context, ref, trip);
       },
       error: (error, stackTrace) => _buildErrorState(context, error),
@@ -54,26 +52,23 @@ class TripDetailPage extends ConsumerWidget {
                 children: [
                   TripOverviewCard(
                     route: '${trip.currentLocation} → ${trip.destination}',
-                    tripType: trip.tripType ?? 'Adventure',
+                    tripType: trip.tripType,
                     peopleCount: trip.totalPeople ?? 1,
                     duration: trip.totalDays ?? 1,
                   ),
 
                   const SizedBox(height: 32),
 
-                  // Section Header
-                  const SectionHeader(
+                  SectionHeader(
                     icon: Icons.calendar_today_outlined,
-                    title: 'Daily Itinerary',
+                    title: context.l10n.dailyItinerary,
                   ),
                   const SizedBox(height: 16),
 
-                  // Timeline
                   TripTimeline(dailyPlans: trip.dailyPlan ?? []),
 
                   const SizedBox(height: 32),
 
-                  // Accommodation
                   if (trip.accommodationSuggestions != null &&
                       trip.accommodationSuggestions.isNotEmpty)
                     AccommodationSection(
@@ -82,13 +77,11 @@ class TripDetailPage extends ConsumerWidget {
 
                   const SizedBox(height: 24),
 
-                  // Transportation
                   if (trip.transportationDetails != null)
                     TransportationSection(details: trip.transportationDetails),
 
                   const SizedBox(height: 24),
 
-                  // Weather
                   WeatherSection(
                     destination: trip.destination,
                     latitude: trip.destinationLat ?? 0.0,
@@ -190,12 +183,12 @@ class TripDetailPage extends ConsumerWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
-            title: const Text(
-              'Delete Trip?',
+            title: Text(
+              context.l10n.deleteTrip,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
             content: Text(
-              'Are you sure you want to delete your trip to ${trip.destination}? This action cannot be undone.',
+              '${context.l10n.deleteConfirmation} ${trip.destination}? ${context.l10n.actionUndone}',
               style: TextStyle(
                 fontSize: 15,
                 color: Colors.grey.shade700,
@@ -206,7 +199,7 @@ class TripDetailPage extends ConsumerWidget {
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
                 child: Text(
-                  'Cancel',
+                  context.l10n.cancel,
                   style: TextStyle(
                     color: Colors.grey.shade600,
                     fontWeight: FontWeight.w600,
@@ -226,7 +219,7 @@ class TripDetailPage extends ConsumerWidget {
                   ),
                 ),
                 child: Text(
-                  'Delete',
+                  context.l10n.delete,
                   style: TextStyle(
                     color: Colors.red.shade700,
                     fontWeight: FontWeight.w600,
@@ -250,7 +243,7 @@ class TripDetailPage extends ConsumerWidget {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Trip deleted successfully'),
+          content: Text(context.l10n.deleteSuccess),
           backgroundColor: Colors.green.shade400,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
@@ -266,7 +259,7 @@ class TripDetailPage extends ConsumerWidget {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to delete trip'),
+          content: Text(context.l10n.failedDeleteTrip),
           backgroundColor: Colors.red.shade400,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
@@ -288,8 +281,8 @@ class TripDetailPage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
           onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Trip Details',
+        title: Text(
+          context.l10n.tripDetail,
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -304,7 +297,7 @@ class TripDetailPage extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'No trip found',
+              context.l10n.noTripFound,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -313,7 +306,7 @@ class TripDetailPage extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'This trip may have been deleted',
+              context.l10n.tripMayHaveBeenDeleted,
               style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
             ),
           ],
@@ -332,7 +325,10 @@ class TripDetailPage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Error', style: TextStyle(color: Colors.black87)),
+        title: Text(
+          context.l10n.error,
+          style: TextStyle(color: Colors.black87),
+        ),
       ),
       body: Center(
         child: Padding(
@@ -343,7 +339,7 @@ class TripDetailPage extends ConsumerWidget {
               Icon(Icons.error_outline, size: 80, color: Colors.red.shade300),
               const SizedBox(height: 16),
               Text(
-                'Something went wrong',
+                context.l10n.somethingWentWrong,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -373,8 +369,8 @@ class TripDetailPage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
           onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Loading...',
+        title: Text(
+          context.l10n.loading,
           style: TextStyle(color: Colors.black87),
         ),
       ),

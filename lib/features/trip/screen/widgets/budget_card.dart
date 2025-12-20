@@ -1,15 +1,10 @@
-
-
-
 import 'package:flutter/material.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 
 class BudgetCard extends StatelessWidget {
   final String budget;
 
-  const BudgetCard({
-    super.key,
-    required this.budget,
-  });
+  const BudgetCard({super.key, required this.budget});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +13,7 @@ class BudgetCard extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            const Color(0xFF4CAF50),
-            const Color(0xFF66BB6A),
-          ],
+          colors: [const Color(0xFF4CAF50), const Color(0xFF66BB6A)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -53,8 +45,8 @@ class BudgetCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Estimated Budget',
+                Text(
+                  context.l10n.estimatedBudget,
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.white70,

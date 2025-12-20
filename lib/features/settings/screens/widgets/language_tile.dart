@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 
 import '../../../../core/l10n/app_language.dart';
 
@@ -41,12 +42,12 @@ class LanguageSelectorTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 14),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Language',
+                      context.l10n.language,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -56,7 +57,7 @@ class LanguageSelectorTile extends StatelessWidget {
                     ),
                     SizedBox(height: 2),
                     Text(
-                      'Choose your preferred language',
+                      context.l10n.languageDescription,
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
@@ -118,12 +119,12 @@ class LanguageSelectorTile extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
                     children: [
                       Text(
-                        'Select Language',
+                        context.l10n.selectLanguage,
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w700,

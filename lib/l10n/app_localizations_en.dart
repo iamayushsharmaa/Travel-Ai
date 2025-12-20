@@ -159,6 +159,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile => 'Profile';
 
   @override
+  String get user => 'User';
+
+  @override
   String get preferences => 'Preferences';
 
   @override
@@ -204,7 +207,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emailAddress => 'Email Address';
 
   @override
-  String get phoneNumber => 'Phone Number';
+  String get enterNameError => 'Please enter your name';
+
+  @override
+  String get enterEmailError => 'Please enter your email';
+
+  @override
+  String get invalidEmailError => 'Please enter a valid email';
 
   @override
   String get saveChanges => 'Save Changes';
@@ -319,6 +328,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get overview => 'Overview';
+
+  @override
+  String get tripOverview => 'Trip Overview';
 
   @override
   String get itinerary => 'Itinerary';
@@ -442,4 +454,189 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get download => 'Download';
+
+  @override
+  String get na => 'N/A';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get priceRange => 'Price Range';
+
+  @override
+  String get tripDetail => 'Trip Detail';
+
+  @override
+  String get localTransport => 'Local Transport';
+
+  @override
+  String get noInfoAvailable => 'No information available';
+
+  @override
+  String get person => 'Person';
+
+  @override
+  String get people => 'People';
+
+  @override
+  String get imageUnavailable => 'Image Unavailable';
+
+  @override
+  String get noItinerayAvailable => 'No Itinerary Available';
+
+  @override
+  String get noTripFound => 'No Trip Found';
+
+  @override
+  String get activity => 'Activity';
+
+  @override
+  String get dailyItinerary => 'Daily Itinerary';
+
+  @override
+  String get accommodationSuggestions => 'Accommodation Suggestions';
+
+  @override
+  String get transportationDetails => 'Transportation Details';
+
+  @override
+  String get failedDeleteTrip => 'Failed to delete trip';
+
+  @override
+  String get deleteTrip => 'Delete Trip?';
+
+  @override
+  String get tripDeleted => 'Trip deleted successfully';
+
+  @override
+  String get deleteConfirmation => 'Are you sure you want to delete your trip to';
+
+  @override
+  String get actionUndone => 'This action cannot be undone.';
+
+  @override
+  String get deleteSuccess => 'Trip deleted successfully';
+
+  @override
+  String get deleteError => 'Failed to delete trip';
+
+  @override
+  String get tripMayHaveBeenDeleted => 'This trip may have been deleted';
+
+  @override
+  String get tips => 'Tips';
+
+  @override
+  String get noTipsAvailable => 'No tips available';
+
+  @override
+  String get weatherForecast => 'Weather Forecast';
+
+  @override
+  String get humidity => 'Humidity';
+
+  @override
+  String get wind => 'Wind';
+
+  @override
+  String get visibility => 'Visibility';
+
+  @override
+  String get km => 'km';
+
+  @override
+  String get kmh => 'km/h';
+
+  @override
+  String get noWeatherData => 'No weather data available';
+
+  @override
+  String get routeMap => 'Route Map';
+
+  @override
+  String get estimatedBudget => 'Estimated Budget';
+
+  @override
+  String get weatherIn => 'Weather in';
+
+  @override
+  String get temperature => 'Temperature';
+
+  @override
+  String get feelsLike => 'Feels Like';
+
+  @override
+  String get windSpeed => 'Wind Speed';
+
+  @override
+  String get tempMin => 'Temp Min';
+
+  @override
+  String get tempMax => 'Temp Max';
+
+  @override
+  String get ms => 'm/s';
+
+  @override
+  String get celsius => '°C';
+
+  @override
+  String get planYourTrip => 'Plan Your Trip';
+
+  @override
+  String get creatingPerfectTrip => 'Creating your perfect trip...';
+
+  @override
+  String stepOf(Object current, Object total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get datesAndBudget => 'Dates & Budget';
+
+  @override
+  String get travelDetails => 'Travel Details';
+
+  @override
+  String get validationEnterDestination => 'Please enter a destination';
+
+  @override
+  String get validationSelectTripType => 'Please select a trip type';
+
+  @override
+  String get validationSelectStartDate => 'Please select a start date';
+
+  @override
+  String get validationSelectEndDate => 'Please select an end date';
+
+  @override
+  String get validationEnterBudget => 'Please enter your budget';
+
+  @override
+  String get validationSelectInterest => 'Please select at least one interest';
+
+  @override
+  String get validationSelectCompanion => 'Please select your travel companion';
+
+  @override
+  String get validationSelectAccommodation => 'Please select accommodation type';
+
+  @override
+  String get validationSelectTransport => 'Please select transport preference';
+
+  @override
+  String get validationSelectPace => 'Please select your preferred pace';
+
+  @override
+  String get validationSelectFood => 'Please select food preference';
+
+  @override
+  String get validationCompleteAll => 'Please complete all fields';
+
+  @override
+  String get failedCreateTrip => 'Failed to create trip';
+
+  @override
+  String get createTrip => 'Create Trip';
 }

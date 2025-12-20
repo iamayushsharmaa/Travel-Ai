@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/extensions/context_l10n.dart';
+
 class EditProfileBottomSheet extends StatefulWidget {
   final String currentName;
   final String currentEmail;
@@ -54,31 +56,33 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHeader(),
+                _buildHeader(context),
                 const SizedBox(height: 24),
                 _buildTextField(
+                  context: context,
                   controller: nameController,
-                  label: 'Full Name',
+                  label: context.l10n.fullName,
                   icon: Icons.person_outline_rounded,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
+                      return context.l10n.enterNameError;
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 16),
                 _buildTextField(
+                  context: context,
                   controller: emailController,
-                  label: 'Email Address',
+                  label: context.l10n.emailAddress,
                   icon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return context.l10n.enterEmailError;
                     }
                     if (!value.contains('@')) {
-                      return 'Please enter a valid email';
+                      return context.l10n.invalidEmailError;
                     }
                     return null;
                   },
@@ -94,7 +98,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Row(
       children: [
         Container(
@@ -110,10 +114,10 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
           ),
         ),
         const SizedBox(width: 12),
-        const Expanded(
+        Expanded(
           child: Text(
-            'Edit Profile',
-            style: TextStyle(
+            context.l10n.editProfile,
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w700,
               color: Color(0xFF1E293B),
@@ -130,6 +134,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
   }
 
   Widget _buildTextField({
+    required BuildContext context,
     required TextEditingController controller,
     required String label,
     required IconData icon,
@@ -145,7 +150,6 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             fontSize: 14,
             fontWeight: FontWeight.w600,
             color: Color(0xFF64748B),
-            letterSpacing: 0.2,
           ),
         ),
         const SizedBox(height: 8),
@@ -153,38 +157,13 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
           controller: controller,
           keyboardType: keyboardType,
           validator: validator,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF1E293B),
-          ),
           decoration: InputDecoration(
-            prefixIcon: Icon(icon, color: const Color(0xFF6366F1), size: 22),
+            prefixIcon: Icon(icon, color: const Color(0xFF6366F1)),
             filled: true,
             fillColor: const Color(0xFFF8F9FD),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: Color(0xFF6366F1), width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: Color(0xFFEF4444), width: 1),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: Color(0xFFEF4444), width: 2),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
             ),
           ),
         ),
@@ -198,44 +177,14 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
         Expanded(
           child: TextButton(
             onPressed: () => Navigator.pop(context),
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: const Color(0xFFF1F5F9),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-            ),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF64748B),
-              ),
-            ),
+            child: Text(context.l10n.cancel),
           ),
         ),
         const SizedBox(width: 12),
         Expanded(
           child: ElevatedButton(
             onPressed: _handleSave,
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: const Color(0xFF6366F1),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-              shadowColor: const Color(0xFF6366F1).withOpacity(0.3),
-            ),
-            child: const Text(
-              'Save Changes',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
+            child: Text(context.l10n.saveChanges),
           ),
         ),
       ],
@@ -249,22 +198,14 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Row(
+          content: Row(
             children: [
-              Icon(Icons.check_circle, color: Colors.white),
-              SizedBox(width: 12),
-              Text(
-                'Profile updated successfully',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-              ),
+              const Icon(Icons.check_circle, color: Colors.white),
+              const SizedBox(width: 12),
+              Text(context.l10n.profileUpdated),
             ],
           ),
           backgroundColor: const Color(0xFF10B981),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          margin: const EdgeInsets.all(16),
         ),
       );
     }

@@ -395,6 +395,12 @@ abstract class AppLocalizations {
   /// **'Profile'**
   String get profile;
 
+  /// No description provided for @user.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get user;
+
   /// No description provided for @preferences.
   ///
   /// In en, this message translates to:
@@ -485,11 +491,23 @@ abstract class AppLocalizations {
   /// **'Email Address'**
   String get emailAddress;
 
-  /// No description provided for @phoneNumber.
+  /// No description provided for @enterNameError.
   ///
   /// In en, this message translates to:
-  /// **'Phone Number'**
-  String get phoneNumber;
+  /// **'Please enter your name'**
+  String get enterNameError;
+
+  /// No description provided for @enterEmailError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get enterEmailError;
+
+  /// No description provided for @invalidEmailError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email'**
+  String get invalidEmailError;
 
   /// No description provided for @saveChanges.
   ///
@@ -718,6 +736,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Overview'**
   String get overview;
+
+  /// No description provided for @tripOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip Overview'**
+  String get tripOverview;
 
   /// No description provided for @itinerary.
   ///
@@ -964,6 +988,372 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download'**
   String get download;
+
+  /// No description provided for @na.
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get na;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @priceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Range'**
+  String get priceRange;
+
+  /// No description provided for @tripDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip Detail'**
+  String get tripDetail;
+
+  /// No description provided for @localTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Transport'**
+  String get localTransport;
+
+  /// No description provided for @noInfoAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No information available'**
+  String get noInfoAvailable;
+
+  /// No description provided for @person.
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get person;
+
+  /// No description provided for @people.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get people;
+
+  /// No description provided for @imageUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Image Unavailable'**
+  String get imageUnavailable;
+
+  /// No description provided for @noItinerayAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No Itinerary Available'**
+  String get noItinerayAvailable;
+
+  /// No description provided for @noTripFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Trip Found'**
+  String get noTripFound;
+
+  /// No description provided for @activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get activity;
+
+  /// No description provided for @dailyItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Itinerary'**
+  String get dailyItinerary;
+
+  /// No description provided for @accommodationSuggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Accommodation Suggestions'**
+  String get accommodationSuggestions;
+
+  /// No description provided for @transportationDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Transportation Details'**
+  String get transportationDetails;
+
+  /// No description provided for @failedDeleteTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete trip'**
+  String get failedDeleteTrip;
+
+  /// No description provided for @deleteTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Trip?'**
+  String get deleteTrip;
+
+  /// No description provided for @tripDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip deleted successfully'**
+  String get tripDeleted;
+
+  /// No description provided for @deleteConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your trip to'**
+  String get deleteConfirmation;
+
+  /// No description provided for @actionUndone.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get actionUndone;
+
+  /// No description provided for @deleteSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip deleted successfully'**
+  String get deleteSuccess;
+
+  /// No description provided for @deleteError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete trip'**
+  String get deleteError;
+
+  /// No description provided for @tripMayHaveBeenDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'This trip may have been deleted'**
+  String get tripMayHaveBeenDeleted;
+
+  /// No description provided for @tips.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips'**
+  String get tips;
+
+  /// No description provided for @noTipsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No tips available'**
+  String get noTipsAvailable;
+
+  /// No description provided for @weatherForecast.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather Forecast'**
+  String get weatherForecast;
+
+  /// No description provided for @humidity.
+  ///
+  /// In en, this message translates to:
+  /// **'Humidity'**
+  String get humidity;
+
+  /// No description provided for @wind.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind'**
+  String get wind;
+
+  /// No description provided for @visibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Visibility'**
+  String get visibility;
+
+  /// No description provided for @km.
+  ///
+  /// In en, this message translates to:
+  /// **'km'**
+  String get km;
+
+  /// No description provided for @kmh.
+  ///
+  /// In en, this message translates to:
+  /// **'km/h'**
+  String get kmh;
+
+  /// No description provided for @noWeatherData.
+  ///
+  /// In en, this message translates to:
+  /// **'No weather data available'**
+  String get noWeatherData;
+
+  /// No description provided for @routeMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Route Map'**
+  String get routeMap;
+
+  /// No description provided for @estimatedBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated Budget'**
+  String get estimatedBudget;
+
+  /// No description provided for @weatherIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather in'**
+  String get weatherIn;
+
+  /// No description provided for @temperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature'**
+  String get temperature;
+
+  /// No description provided for @feelsLike.
+  ///
+  /// In en, this message translates to:
+  /// **'Feels Like'**
+  String get feelsLike;
+
+  /// No description provided for @windSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind Speed'**
+  String get windSpeed;
+
+  /// No description provided for @tempMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Temp Min'**
+  String get tempMin;
+
+  /// No description provided for @tempMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Temp Max'**
+  String get tempMax;
+
+  /// No description provided for @ms.
+  ///
+  /// In en, this message translates to:
+  /// **'m/s'**
+  String get ms;
+
+  /// No description provided for @celsius.
+  ///
+  /// In en, this message translates to:
+  /// **'°C'**
+  String get celsius;
+
+  /// No description provided for @planYourTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan Your Trip'**
+  String get planYourTrip;
+
+  /// No description provided for @creatingPerfectTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating your perfect trip...'**
+  String get creatingPerfectTrip;
+
+  /// No description provided for @stepOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String stepOf(Object current, Object total);
+
+  /// No description provided for @datesAndBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Dates & Budget'**
+  String get datesAndBudget;
+
+  /// No description provided for @travelDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel Details'**
+  String get travelDetails;
+
+  /// No description provided for @validationEnterDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a destination'**
+  String get validationEnterDestination;
+
+  /// No description provided for @validationSelectTripType.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a trip type'**
+  String get validationSelectTripType;
+
+  /// No description provided for @validationSelectStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a start date'**
+  String get validationSelectStartDate;
+
+  /// No description provided for @validationSelectEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select an end date'**
+  String get validationSelectEndDate;
+
+  /// No description provided for @validationEnterBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your budget'**
+  String get validationEnterBudget;
+
+  /// No description provided for @validationSelectInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least one interest'**
+  String get validationSelectInterest;
+
+  /// No description provided for @validationSelectCompanion.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your travel companion'**
+  String get validationSelectCompanion;
+
+  /// No description provided for @validationSelectAccommodation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select accommodation type'**
+  String get validationSelectAccommodation;
+
+  /// No description provided for @validationSelectTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select transport preference'**
+  String get validationSelectTransport;
+
+  /// No description provided for @validationSelectPace.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your preferred pace'**
+  String get validationSelectPace;
+
+  /// No description provided for @validationSelectFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select food preference'**
+  String get validationSelectFood;
+
+  /// No description provided for @validationCompleteAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Please complete all fields'**
+  String get validationCompleteAll;
+
+  /// No description provided for @failedCreateTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create trip'**
+  String get failedCreateTrip;
+
+  /// No description provided for @createTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Trip'**
+  String get createTrip;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

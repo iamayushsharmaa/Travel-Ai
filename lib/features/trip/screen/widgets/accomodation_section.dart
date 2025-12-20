@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 import 'package:triptide/features/trip/screen/widgets/section_header.dart';
 
 import 'detail_row.dart';
@@ -6,10 +7,7 @@ import 'detail_row.dart';
 class AccommodationSection extends StatelessWidget {
   final List<dynamic> suggestions;
 
-  const AccommodationSection({
-    super.key,
-    required this.suggestions,
-  });
+  const AccommodationSection({super.key, required this.suggestions});
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +18,19 @@ class AccommodationSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeader(
+        SectionHeader(
           icon: Icons.hotel_outlined,
-          title: 'Accommodation',
+          title: context.l10n.accommodation,
         ),
         const SizedBox(height: 16),
         ...suggestions.map((suggestion) {
           return AccommodationCard(
-            name: suggestion.name ?? 'N/A',
-            type: suggestion.type ?? 'N/A',
-            location: suggestion.location ?? 'N/A',
-            priceRange: suggestion.priceRange ?? 'N/A',
+            name: suggestion.name,
+            type: suggestion.type,
+            location: suggestion.location,
+            priceRange: suggestion.priceRange,
           );
-        }).toList(),
+        }),
       ],
     );
   }
@@ -120,13 +118,13 @@ class AccommodationCard extends StatelessWidget {
           const SizedBox(height: 16),
           DetailRow(
             icon: Icons.location_on_outlined,
-            label: 'Location',
+            label: context.l10n.location,
             value: location,
           ),
           const SizedBox(height: 8),
           DetailRow(
             icon: Icons.attach_money,
-            label: 'Price Range',
+            label: context.l10n.priceRange,
             value: priceRange,
           ),
         ],

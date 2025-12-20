@@ -159,6 +159,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get profile => 'प्रोफ़ाइल';
 
   @override
+  String get user => 'User';
+
+  @override
   String get preferences => 'प्राथमिकताएं';
 
   @override
@@ -204,7 +207,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get emailAddress => 'ईमेल पता';
 
   @override
-  String get phoneNumber => 'फ़ोन नंबर';
+  String get enterNameError => 'कृपया अपना नाम दर्ज करें';
+
+  @override
+  String get enterEmailError => 'कृपया अपना ईमेल दर्ज करें';
+
+  @override
+  String get invalidEmailError => 'कृपया एक मान्य ईमेल दर्ज करें';
 
   @override
   String get saveChanges => 'परिवर्तन सहेजें';
@@ -319,6 +328,9 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get overview => 'सारांश';
+
+  @override
+  String get tripOverview => 'Trip Overview';
 
   @override
   String get itinerary => 'यात्रा कार्यक्रम';
@@ -442,4 +454,189 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get download => 'डाउनलोड करें';
+
+  @override
+  String get na => 'उपलब्ध नहीं';
+
+  @override
+  String get location => 'स्थान';
+
+  @override
+  String get priceRange => 'मूल्य सीमा';
+
+  @override
+  String get tripDetail => 'यात्रा विवरण';
+
+  @override
+  String get localTransport => 'स्थानीय परिवहन';
+
+  @override
+  String get noInfoAvailable => 'कोई जानकारी उपलब्ध नहीं है';
+
+  @override
+  String get person => 'व्यक्ति';
+
+  @override
+  String get people => 'लोग';
+
+  @override
+  String get imageUnavailable => 'छवि उपलब्ध नहीं है';
+
+  @override
+  String get noItinerayAvailable => 'कोई यात्रा कार्यक्रम उपलब्ध नहीं है';
+
+  @override
+  String get noTripFound => 'कोई यात्रा नहीं मिली';
+
+  @override
+  String get activity => 'गतिविधि';
+
+  @override
+  String get dailyItinerary => 'दैनिक यात्रा कार्यक्रम';
+
+  @override
+  String get accommodationSuggestions => 'आवास सुझाव';
+
+  @override
+  String get transportationDetails => 'परिवहन विवरण';
+
+  @override
+  String get failedDeleteTrip => 'यात्रा हटाने में विफल';
+
+  @override
+  String get deleteTrip => 'यात्रा हटाएँ?';
+
+  @override
+  String get tripDeleted => 'यात्रा सफलतापूर्वक हटाई गई';
+
+  @override
+  String get deleteConfirmation => 'क्या आप अपनी यात्रा हटाना चाहते हैं:';
+
+  @override
+  String get actionUndone => 'यह क्रिया पूर्ववत नहीं की जा सकती।';
+
+  @override
+  String get deleteSuccess => 'यात्रा सफलतापूर्वक हटाई गई';
+
+  @override
+  String get deleteError => 'यात्रा हटाने में त्रुटि हुई';
+
+  @override
+  String get tripMayHaveBeenDeleted => 'यह यात्रा पहले ही हटाई जा चुकी हो सकती है';
+
+  @override
+  String get tips => 'सुझाव';
+
+  @override
+  String get noTipsAvailable => 'कोई सुझाव उपलब्ध नहीं है';
+
+  @override
+  String get weatherForecast => 'मौसम पूर्वानुमान';
+
+  @override
+  String get humidity => 'नमी';
+
+  @override
+  String get wind => 'हवा';
+
+  @override
+  String get visibility => 'दृश्यता';
+
+  @override
+  String get km => 'किमी';
+
+  @override
+  String get kmh => 'किमी/घंटा';
+
+  @override
+  String get noWeatherData => 'कोई मौसम डेटा उपलब्ध नहीं है';
+
+  @override
+  String get routeMap => 'मार्ग मानचित्र';
+
+  @override
+  String get estimatedBudget => 'अनुमानित बजट';
+
+  @override
+  String get weatherIn => 'Weather in';
+
+  @override
+  String get temperature => 'Temperature';
+
+  @override
+  String get feelsLike => 'Feels Like';
+
+  @override
+  String get windSpeed => 'Wind Speed';
+
+  @override
+  String get tempMin => 'Temp Min';
+
+  @override
+  String get tempMax => 'Temp Max';
+
+  @override
+  String get ms => 'm/s';
+
+  @override
+  String get celsius => '°C';
+
+  @override
+  String get planYourTrip => 'अपनी यात्रा की योजना बनाएँ';
+
+  @override
+  String get creatingPerfectTrip => 'आपकी आदर्श यात्रा बनाई जा रही है...';
+
+  @override
+  String stepOf(Object current, Object total) {
+    return 'चरण $current / $total';
+  }
+
+  @override
+  String get datesAndBudget => 'तिथियाँ और बजट';
+
+  @override
+  String get travelDetails => 'यात्रा विवरण';
+
+  @override
+  String get validationEnterDestination => 'कृपया गंतव्य दर्ज करें';
+
+  @override
+  String get validationSelectTripType => 'कृपया यात्रा का प्रकार चुनें';
+
+  @override
+  String get validationSelectStartDate => 'कृपया प्रारंभ तिथि चुनें';
+
+  @override
+  String get validationSelectEndDate => 'कृपया समाप्ति तिथि चुनें';
+
+  @override
+  String get validationEnterBudget => 'कृपया अपना बजट दर्ज करें';
+
+  @override
+  String get validationSelectInterest => 'कम से कम एक रुचि चुनें';
+
+  @override
+  String get validationSelectCompanion => 'कृपया अपने यात्रा साथी का चयन करें';
+
+  @override
+  String get validationSelectAccommodation => 'कृपया आवास का प्रकार चुनें';
+
+  @override
+  String get validationSelectTransport => 'कृपया परिवहन पसंद चुनें';
+
+  @override
+  String get validationSelectPace => 'कृपया यात्रा की गति चुनें';
+
+  @override
+  String get validationSelectFood => 'कृपया भोजन पसंद चुनें';
+
+  @override
+  String get validationCompleteAll => 'कृपया सभी फ़ील्ड पूरी करें';
+
+  @override
+  String get failedCreateTrip => 'यात्रा बनाने में विफल';
+
+  @override
+  String get createTrip => 'यात्रा बनाएँ';
 }

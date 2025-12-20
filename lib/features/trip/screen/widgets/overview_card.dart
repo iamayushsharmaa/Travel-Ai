@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 import 'package:triptide/core/theme/app_colors.dart';
 
 import '../../../../core/utilities/trip_utils.dart';
@@ -62,8 +63,8 @@ class TripOverviewCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Trip Overview',
+                     Text(
+                      context.l10n.tripOverview,
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.white70,
@@ -97,7 +98,7 @@ class TripOverviewCard extends StatelessWidget {
                 child: InfoRow(
                   icon: Icons.people_outline,
                   text:
-                      '$peopleCount ${peopleCount == 1 ? 'Person' : 'People'}',
+                      '$peopleCount ${peopleCount == 1 ? context.l10n.person : context.l10n.people}',
                   iconColor: Colors.white,
                   textColor: Colors.white,
                 ),
@@ -105,7 +106,7 @@ class TripOverviewCard extends StatelessWidget {
               Expanded(
                 child: InfoRow(
                   icon: Icons.calendar_today_outlined,
-                  text: '$duration ${duration == 1 ? 'Day' : 'Days'}',
+                  text: '$duration ${duration == 1 ? context.l10n.day : context.l10n.days}',
                   iconColor: Colors.white,
                   textColor: Colors.white,
                 ),

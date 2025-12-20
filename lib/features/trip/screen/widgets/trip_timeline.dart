@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/extensions/context_l10n.dart';
 import 'empty_state.dart';
 
 class TripTimeline extends StatelessWidget {
@@ -11,9 +12,9 @@ class TripTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (dailyPlans.isEmpty) {
-      return const EmptyState(
+      return EmptyState(
         icon: Icons.event_busy_outlined,
-        title: 'No itinerary available',
+        title: context.l10n.noItinerayAvailable,
       );
     }
 
@@ -177,7 +178,7 @@ class TimelineItem extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              activity.description ?? 'Activity',
+                              activity.description ?? context.l10n.activity,
                               style: TextStyle(
                                 fontSize: 15,
                                 height: 1.5,

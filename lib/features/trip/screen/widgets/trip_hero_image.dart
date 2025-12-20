@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 
 class TripHeroImage extends StatelessWidget {
   final List<String> images;
@@ -18,7 +19,6 @@ class TripHeroImage extends StatelessWidget {
       height: 280,
       child: Stack(
         children: [
-          // Image Carousel
           PageView.builder(
             itemCount: images.length > 5 ? 5 : images.length,
             itemBuilder: (context, index) {
@@ -53,7 +53,7 @@ class TripHeroImage extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Image unavailable',
+                          context.l10n.imageUnavailable,
                           style: TextStyle(color: Colors.grey.shade500),
                         ),
                       ],

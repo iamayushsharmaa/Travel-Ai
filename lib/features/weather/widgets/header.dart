@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 
 class WeatherHeader extends StatelessWidget {
   final String destination;
@@ -15,7 +16,7 @@ class WeatherHeader extends StatelessWidget {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Text(
-        'Weather in $destination',
+        '${context.l10n.weatherIn} $destination',
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
           color: Colors.white,
           fontWeight: FontWeight.bold,

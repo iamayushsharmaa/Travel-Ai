@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 import 'package:triptide/features/weather/entity/weather_entity.dart';
 import 'package:triptide/features/weather/widgets/weather_metric_item.dart';
 
@@ -17,7 +20,7 @@ class WeatherCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final metrics = _buildMetrics(weather);
+    final metrics = _buildMetrics(weather, context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,41 +53,40 @@ class WeatherCard extends StatelessWidget {
     );
   }
 
-  List<WeatherMetricData> _buildMetrics(WeatherEntity w) {
+  List<WeatherMetricData> _buildMetrics(WeatherEntity w, BuildContext context) {
     return [
       WeatherMetricData(
-        label: 'Temperature',
+        label: context.l10n.temperature,
         value: '${w.temperature}°C',
         icon: Icons.thermostat,
         color: Colors.deepOrange,
       ),
       WeatherMetricData(
-        label: 'Feels Like',
-        value: '${w.feelsLike}°C',
+        label: context.l10n.feelsLike,
+        value: '${w.feelsLike}${context.l10n.celsius}',
         icon: Icons.thermostat_outlined,
         color: Colors.orange,
       ),
       WeatherMetricData(
-        label: 'Humidity',
+        label: context.l10n.humidity,
         value: '${w.humidity}%',
         icon: Icons.opacity,
         color: Colors.blue,
       ),
       WeatherMetricData(
-        label: 'Wind Speed',
-        value: '${w.windSpeed} m/s',
+        label: context.l10n.windSpeed,
+        value: '${w.windSpeed} ${context.l10n.ms}',
         icon: Icons.air,
         color: Colors.green,
       ),
       WeatherMetricData(
-        label: 'Temp Min',
-        value: '${w.tempMin}°C',
-        icon: Icons.arrow_downward,
+        label: context.l10n.tempMin,         value: '${w.tempMin}${context.l10n.celsius}',
+      icon: Icons.arrow_downward,
         color: Colors.blueAccent,
       ),
       WeatherMetricData(
-        label: 'Temp Max',
-        value: '${w.tempMax}°C',
+        label: context.l10n.tempMax,
+        value: '${w.tempMax}${context.l10n.celsius}',
         icon: Icons.arrow_upward,
         color: Colors.redAccent,
       ),

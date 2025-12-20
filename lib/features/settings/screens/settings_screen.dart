@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 import 'package:triptide/features/settings/screens/widgets/edit_profile_bottom_sheet.dart';
 import 'package:triptide/features/settings/screens/widgets/language_tile.dart';
 import 'package:triptide/features/settings/screens/widgets/settings_header.dart';
@@ -32,7 +33,7 @@ class SettingsScreen extends ConsumerWidget {
       backgroundColor: const Color(0xFFF8F9FD),
       body: CustomScrollView(
         slivers: [
-          _buildSliverAppBar(),
+          _buildSliverAppBar(context),
           SliverToBoxAdapter(
             child: Column(
               children: [
@@ -45,7 +46,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 24),
                 SettingsSection(
-                  title: 'Preferences',
+                  title: context.l10n.preferences,
                   children: [
                     themeAsync.when(
                       loading: () => const SizedBox(),
@@ -82,12 +83,12 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 24),
                 SettingsSection(
-                  title: 'Account',
+                  title: context.l10n.account,
                   children: [
                     SettingsTile(
                       icon: Icons.lock_outline_rounded,
-                      title: 'Privacy & Security',
-                      subtitle: 'Manage your privacy settings',
+                      title: context.l10n.privacySecurity,
+                      subtitle: context.l10n.privacySecurityDescription,
                       onTap: () {
                         // Navigate to privacy settings
                       },
@@ -95,8 +96,8 @@ class SettingsScreen extends ConsumerWidget {
                     const SizedBox(height: 12),
                     SettingsTile(
                       icon: Icons.notifications_outlined,
-                      title: 'Notifications',
-                      subtitle: 'Configure notification preferences',
+                      title: context.l10n.notifications,
+                      subtitle: context.l10n.notificationsDescription,
                       onTap: () {
                         // Navigate to notification settings
                       },
@@ -105,12 +106,12 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 24),
                 SettingsSection(
-                  title: 'Support',
+                  title: context.l10n.support,
                   children: [
                     SettingsTile(
                       icon: Icons.help_outline_rounded,
-                      title: 'Help & Support',
-                      subtitle: 'Get help with the app',
+                      title: context.l10n.helpSupport,
+                      subtitle: context.l10n.helpSupportDescription,
                       onTap: () {
                         // Navigate to help
                       },
@@ -118,8 +119,8 @@ class SettingsScreen extends ConsumerWidget {
                     const SizedBox(height: 12),
                     SettingsTile(
                       icon: Icons.info_outline_rounded,
-                      title: 'About',
-                      subtitle: 'App version and information',
+                      title: context.l10n.about,
+                      subtitle: context.l10n.aboutDescription,
                       onTap: () {
                         // Show about dialog
                       },
@@ -128,12 +129,12 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 24),
                 SettingsSection(
-                  title: 'Actions',
+                  title: context.l10n.actions,
                   children: [
                     SettingsTile(
                       icon: Icons.logout_rounded,
-                      title: 'Log Out',
-                      subtitle: 'Sign out of your account',
+                      title: context.l10n.logOut,
+                      subtitle: context.l10n.logOutDescription,
                       iconColor: const Color(0xFFEF4444),
                       titleColor: const Color(0xFFEF4444),
                       onTap: () => _showLogoutDialog(context, ref),
@@ -149,7 +150,7 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSliverAppBar() {
+  Widget _buildSliverAppBar(BuildContext context) {
     return SliverAppBar(
       floating: true,
       snap: true,
@@ -183,8 +184,8 @@ class SettingsScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  const Text(
-                    'Settings',
+                  Text(
+                    context.l10n.settings,
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
@@ -248,8 +249,8 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'Log Out',
+                Text(
+                  context.l10n.logOut,
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
@@ -257,8 +258,8 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Are you sure you want to log out of your account?',
+                Text(
+                  context.l10n.logOutConfirmation,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,
@@ -279,8 +280,8 @@ class SettingsScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          'Cancel',
+                        child: Text(
+                          context.l10n.cancel,
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -308,8 +309,8 @@ class SettingsScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          'Log Out',
+                        child: Text(
+                          context.l10n.logOut,
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
