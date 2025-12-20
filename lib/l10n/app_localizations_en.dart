@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'TripTide';
+  String get appName => 'Travel AI';
 
   @override
   String get cancel => 'Cancel';
@@ -97,6 +97,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favorite => 'Favorite';
+
+  @override
+  String get yourTrips => 'Your Trips';
+
+  @override
+  String get yourTravelHistory => 'Your Travel History';
 
   @override
   String get thisMonth => 'This Month';
@@ -256,30 +262,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get english => 'English';
-
-  @override
-  String get spanish => 'Spanish';
-
-  @override
-  String get french => 'French';
-
-  @override
-  String get german => 'German';
-
-  @override
-  String get italian => 'Italian';
-
-  @override
-  String get portuguese => 'Portuguese';
-
-  @override
-  String get japanese => 'Japanese';
-
-  @override
-  String get korean => 'Korean';
-
-  @override
-  String get chinese => 'Chinese';
 
   @override
   String get hindi => 'Hindi';

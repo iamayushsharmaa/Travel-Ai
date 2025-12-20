@@ -6,7 +6,6 @@ import 'app_colors.dart';
 class AppTheme {
   AppTheme._();
 
-  // Light Theme
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',

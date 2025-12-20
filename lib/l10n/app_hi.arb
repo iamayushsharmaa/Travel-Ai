@@ -1,7 +1,6 @@
 {
   "@@locale": "hi",
-
-  "appName": "ट्रिपटाइड",
+  "appName": "ट्रैवल एआई",
   "cancel": "रद्द करें",
   "save": "सहेजें",
   "delete": "हटाएं",
@@ -16,7 +15,6 @@
   "back": "वापस",
   "next": "आगे",
   "skip": "छोड़ें",
-
   "signIn": "साइन इन करें",
   "signUp": "साइन अप करें",
   "signOut": "साइन आउट करें",
@@ -27,12 +25,13 @@
   "dontHaveAccount": "खाता नहीं है?",
   "alreadyHaveAccount": "पहले से खाता है?",
   "signInWithGoogle": "Google से साइन इन करें",
-
   "history": "इतिहास",
   "travelHistory": "यात्रा इतिहास",
   "filterBy": "फ़िल्टर करें",
   "all": "सभी",
   "favorite": "पसंदीदा",
+  "yourTrips": "आपकी यात्राएँ",
+  "yourTravelHistory": "आपका यात्रा इतिहास",
   "thisMonth": "इस महीने",
   "lastMonth": "पिछले महीने",
   "noTripsYet": "अभी तक कोई यात्रा नहीं",
@@ -49,14 +48,12 @@
   "business": "व्यापार",
   "family": "परिवार",
   "solo": "एकल",
-
   "settings": "सेटिंग्स",
   "profile": "प्रोफ़ाइल",
   "preferences": "प्राथमिकताएं",
   "account": "खाता",
   "support": "सहायता",
   "actions": "क्रियाएं",
-
   "themeMode": "थीम मोड",
   "themeModeDescription": "लाइट और डार्क मोड के बीच स्विच करें",
   "lightMode": "लाइट मोड",
@@ -65,7 +62,6 @@
   "language": "भाषा",
   "languageDescription": "अपनी पसंदीदा भाषा चुनें",
   "selectLanguage": "भाषा चुनें",
-
   "editProfile": "प्रोफ़ाइल संपादित करें",
   "fullName": "पूरा नाम",
   "emailAddress": "ईमेल पता",
@@ -76,7 +72,6 @@
   "pleaseEnterEmail": "कृपया अपना ईमेल दर्ज करें",
   "pleaseEnterValidEmail": "कृपया एक मान्य ईमेल दर्ज करें",
   "pleaseEnterPhone": "कृपया अपना फ़ोन नंबर दर्ज करें",
-
   "privacySecurity": "गोपनीयता और सुरक्षा",
   "privacySecurityDescription": "अपनी गोपनीयता सेटिंग्स प्रबंधित करें",
   "notifications": "सूचनाएं",
@@ -85,12 +80,10 @@
   "helpSupportDescription": "ऐप के साथ सहायता प्राप्त करें",
   "about": "के बारे में",
   "aboutDescription": "ऐप संस्करण और जानकारी",
-
   "logOut": "लॉग आउट",
   "logOutDescription": "अपने खाते से साइन आउट करें",
   "logOutConfirmation": "क्या आप वाकई अपने खाते से लॉग आउट करना चाहते हैं?",
   "logOutSuccess": "सफलतापूर्वक लॉग आउट हुआ",
-
   "english": "अंग्रेज़ी",
   "spanish": "स्पेनिश",
   "french": "फ्रेंच",
@@ -101,7 +94,6 @@
   "korean": "कोरियाई",
   "chinese": "चीनी",
   "hindi": "हिंदी",
-
   "somethingWentWrong": "कुछ गलत हो गया",
   "networkError": "नेटवर्क त्रुटि। कृपया अपना कनेक्शन जांचें",
   "authenticationFailed": "प्रमाणीकरण विफल",
@@ -110,18 +102,15 @@
   "emailAlreadyInUse": "ईमेल पहले से उपयोग में है",
   "weakPassword": "पासवर्ड बहुत कमजोर है",
   "tryAgain": "कृपया पुनः प्रयास करें",
-
   "fieldRequired": "यह फ़ील्ड आवश्यक है",
   "invalidEmail": "अमान्य ईमेल पता",
   "passwordTooShort": "पासवर्ड कम से कम 6 अक्षर का होना चाहिए",
   "passwordsDontMatch": "पासवर्ड मेल नहीं खाते",
   "invalidPhoneNumber": "अमान्य फ़ोन नंबर",
-
   "home": "होम",
   "explore": "खोजें",
   "trips": "यात्राएं",
   "favorites": "पसंदीदा",
-
   "overview": "सारांश",
   "itinerary": "यात्रा कार्यक्रम",
   "accommodation": "आवास",
@@ -132,13 +121,11 @@
   "afternoon": "दोपहर",
   "evening": "शाम",
   "night": "रात",
-
   "searchDestination": "गंतव्य खोजें...",
   "enterDestination": "गंतव्य दर्ज करें",
   "selectDate": "तिथि चुनें",
   "selectBudget": "बजट चुनें",
   "addNote": "नोट जोड़ें...",
-
   "or": "या",
   "and": "और",
   "word_with": "के साथ",

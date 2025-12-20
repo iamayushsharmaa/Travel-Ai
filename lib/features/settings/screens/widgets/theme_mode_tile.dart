@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 
 class ThemeModeTile extends StatelessWidget {
   final bool isDarkMode;
@@ -29,12 +30,12 @@ class ThemeModeTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Theme Mode',
+                  context.l10n.themeMode,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -44,7 +45,7 @@ class ThemeModeTile extends StatelessWidget {
                 ),
                 SizedBox(height: 2),
                 Text(
-                  'Switch between light and dark mode',
+                  context.l10n.themeModeDescription,
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,

@@ -9,7 +9,7 @@ class AppLocalizationsHi extends AppLocalizations {
   AppLocalizationsHi([String locale = 'hi']) : super(locale);
 
   @override
-  String get appName => 'ट्रिपटाइड';
+  String get appName => 'ट्रैवल एआई';
 
   @override
   String get cancel => 'रद्द करें';
@@ -97,6 +97,12 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get favorite => 'पसंदीदा';
+
+  @override
+  String get yourTrips => 'आपकी यात्राएँ';
+
+  @override
+  String get yourTravelHistory => 'आपका यात्रा इतिहास';
 
   @override
   String get thisMonth => 'इस महीने';
@@ -256,30 +262,6 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get english => 'अंग्रेज़ी';
-
-  @override
-  String get spanish => 'स्पेनिश';
-
-  @override
-  String get french => 'फ्रेंच';
-
-  @override
-  String get german => 'जर्मन';
-
-  @override
-  String get italian => 'इतालवी';
-
-  @override
-  String get portuguese => 'पुर्तगाली';
-
-  @override
-  String get japanese => 'जापानी';
-
-  @override
-  String get korean => 'कोरियाई';
-
-  @override
-  String get chinese => 'चीनी';
 
   @override
   String get hindi => 'हिंदी';

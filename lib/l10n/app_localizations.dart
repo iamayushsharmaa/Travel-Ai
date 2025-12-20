@@ -98,7 +98,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In en, this message translates to:
-  /// **'TripTide'**
+  /// **'Travel AI'**
   String get appName;
 
   /// No description provided for @cancel.
@@ -274,6 +274,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Favorite'**
   String get favorite;
+
+  /// No description provided for @yourTrips.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Trips'**
+  String get yourTrips;
+
+  /// No description provided for @yourTravelHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Travel History'**
+  String get yourTravelHistory;
 
   /// No description provided for @thisMonth.
   ///
@@ -592,54 +604,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'English'**
   String get english;
-
-  /// No description provided for @spanish.
-  ///
-  /// In en, this message translates to:
-  /// **'Spanish'**
-  String get spanish;
-
-  /// No description provided for @french.
-  ///
-  /// In en, this message translates to:
-  /// **'French'**
-  String get french;
-
-  /// No description provided for @german.
-  ///
-  /// In en, this message translates to:
-  /// **'German'**
-  String get german;
-
-  /// No description provided for @italian.
-  ///
-  /// In en, this message translates to:
-  /// **'Italian'**
-  String get italian;
-
-  /// No description provided for @portuguese.
-  ///
-  /// In en, this message translates to:
-  /// **'Portuguese'**
-  String get portuguese;
-
-  /// No description provided for @japanese.
-  ///
-  /// In en, this message translates to:
-  /// **'Japanese'**
-  String get japanese;
-
-  /// No description provided for @korean.
-  ///
-  /// In en, this message translates to:
-  /// **'Korean'**
-  String get korean;
-
-  /// No description provided for @chinese.
-  ///
-  /// In en, this message translates to:
-  /// **'Chinese'**
-  String get chinese;
 
   /// No description provided for @hindi.
   ///

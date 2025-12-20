@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:triptide/shared/models/travel_db_model.dart';
+import 'package:triptide/core/theme/app_colors.dart';
+
+import '../models/travel_db_model.dart';
 
 class TripView extends StatelessWidget {
   final TravelDbModel trip;
@@ -10,6 +12,8 @@ class TripView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: () => onTripClicked(trip),
       child: Container(
@@ -17,11 +21,11 @@ class TripView extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 7),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.07),
+              color: AppColors.shadowMedium,
               blurRadius: 12,
               offset: const Offset(0, 6),
             ),
@@ -29,102 +33,159 @@ class TripView extends StatelessWidget {
         ),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                'assets/images/travel.jpg',
-                height: double.infinity,
-                width: 130,
-                fit: BoxFit.cover,
-              ),
-            ),
+            _buildTripImage(),
             const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        '${trip.totalDays} days',
-                        style: TextStyle(fontSize: 13, color: Colors.black54),
-                      ),
-                      const Spacer(),
-                      Flexible(
-                        child: Text(
-                          '${DateFormat('MMM d').format(trip.startDate)} - ${DateFormat('MMM d').format(trip.endDate)}',
-                          style: TextStyle(fontSize: 13, color: Colors.black54),
-                          textAlign: TextAlign.right,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    trip.destination,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Text(
-                        'Budget: ',
-                        style: TextStyle(fontSize: 14, color: Colors.black54),
-                      ),
-                      Expanded(
-                        child: Text(
-                          trip.budget!,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.teal.shade400,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.teal.shade200.withOpacity(0.6),
-                            blurRadius: 6,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        trip.tripType!,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            Expanded(child: _buildTripDetails(theme)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTripImage() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Image.asset(
+        'assets/images/travel.jpg',
+        height: double.infinity,
+        width: 130,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _buildTripDetails(ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _TripMetadata(
+          days: trip.totalDays,
+          startDate: trip.startDate,
+          endDate: trip.endDate,
+        ),
+        const SizedBox(height: 8),
+        _TripDestination(destination: trip.destination),
+        const SizedBox(height: 12),
+        _TripBudget(budget: trip.budget),
+        const Spacer(),
+        _TripTypeTag(tripType: trip.tripType ?? ''),
+      ],
+    );
+  }
+}
+
+class _TripMetadata extends StatelessWidget {
+  final int days;
+  final DateTime startDate;
+  final DateTime endDate;
+
+  const _TripMetadata({
+    required this.days,
+    required this.startDate,
+    required this.endDate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Row(
+      children: [
+        Text('$days days', style: theme.textTheme.labelMedium),
+        const Spacer(),
+        Flexible(
+          child: Text(
+            '${DateFormat('MMM d').format(startDate)} - ${DateFormat('MMM d').format(endDate)}',
+            style: theme.textTheme.labelMedium,
+            textAlign: TextAlign.right,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TripDestination extends StatelessWidget {
+  final String destination;
+
+  const _TripDestination({required this.destination});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Text(
+      destination,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: theme.textTheme.headlineMedium?.copyWith(
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+}
+
+class _TripBudget extends StatelessWidget {
+  final String? budget;
+
+  const _TripBudget({this.budget});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    if (budget == null) return const SizedBox.shrink();
+
+    return Row(
+      children: [
+        Text('Budget: ', style: theme.textTheme.bodySmall),
+        Expanded(
+          child: Text(
+            budget!,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TripTypeTag extends StatelessWidget {
+  final String tripType;
+
+  const _TripTypeTag({required this.tripType});
+
+  @override
+  Widget build(BuildContext context) {
+    final tripTypeColor = AppColors.getTripTypeColor(tripType);
+
+    return Align(
+      alignment: Alignment.bottomLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+        decoration: BoxDecoration(
+          color: tripTypeColor,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: tripTypeColor.withOpacity(0.4),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
             ),
           ],
+        ),
+        child: Text(
+          tripType,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
