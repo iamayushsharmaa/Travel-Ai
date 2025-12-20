@@ -1,6 +1,6 @@
-# 🌍 TripTide - AI-Powered Travel Planner
+# 🌍 Travel AI - AI-Powered Travel Planner
 
-<div align="center">
+<div align="start">
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.0+-02569B?style=for-the-badge&logo=flutter&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
@@ -17,7 +17,7 @@
 
 ## 📱 Screenshots
 
-<div align="center">
+<div align="start">
 
 <!-- Add your screenshots here -->
 | Home Screen | Trip Planning | History | Settings |
@@ -205,15 +205,8 @@ lib/
         - Android: `android/app/google-services.json`
         - iOS: `ios/Runner/GoogleService-Info.plist`
 
-4. **Configure environment variables**
 
-   Create a `.env` file in the project root:
-   ```env
-   GEMINI_API_KEY=your_gemini_api_key_here
-   WEATHER_API_KEY=your_weather_api_key_here
-   ```
-
-5. **Generate code**
+4. **Generate code**
    ```bash
    # Generate Riverpod providers
    flutter pub run build_runner build --delete-conflicting-outputs
@@ -222,7 +215,7 @@ lib/
    flutter gen-l10n
    ```
 
-6. **Run the app**
+5. **Run the app**
    ```bash
    # For development
    flutter run
@@ -244,7 +237,6 @@ users/
       ├── email: String
       ├── name: String
       ├── profilePic: String (optional)
-      ├── phone: String (optional)
       └── isAuthenticated: Boolean
 
 trips/
