@@ -1,35 +1,14 @@
 import 'package:flutter/material.dart';
 
-class ThemeModeTile extends StatefulWidget {
-  final bool initialValue;
-  final Function(bool isDark) onChanged;
+class ThemeModeTile extends StatelessWidget {
+  final bool isDarkMode;
+  final VoidCallback onToggle;
 
   const ThemeModeTile({
     super.key,
-    required this.initialValue,
-    required this.onChanged,
+    required this.isDarkMode,
+    required this.onToggle,
   });
-
-  @override
-  State<ThemeModeTile> createState() => _ThemeModeTileState();
-}
-
-class _ThemeModeTileState extends State<ThemeModeTile> {
-  late bool isDarkMode;
-
-  @override
-  void initState() {
-    super.initState();
-    isDarkMode = widget.initialValue;
-  }
-
-  @override
-  void didUpdateWidget(ThemeModeTile oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.initialValue != widget.initialValue) {
-      isDarkMode = widget.initialValue;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,20 +54,23 @@ class _ThemeModeTileState extends State<ThemeModeTile> {
               ],
             ),
           ),
-          _buildThemeSwitch(),
+          _ThemeSwitch(isDarkMode: isDarkMode, onToggle: onToggle),
         ],
       ),
     );
   }
+}
 
-  Widget _buildThemeSwitch() {
+class _ThemeSwitch extends StatelessWidget {
+  final bool isDarkMode;
+  final VoidCallback onToggle;
+
+  const _ThemeSwitch({required this.isDarkMode, required this.onToggle});
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          isDarkMode = !isDarkMode;
-        });
-        widget.onChanged(isDarkMode);
-      },
+      onTap: onToggle,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeInOut,
@@ -134,17 +116,13 @@ class _ThemeModeTileState extends State<ThemeModeTile> {
                     ),
                   ],
                 ),
-                child: Center(
-                  child: Icon(
-                    isDarkMode
-                        ? Icons.nightlight_round
-                        : Icons.wb_sunny_rounded,
-                    size: 14,
-                    color:
-                        isDarkMode
-                            ? const Color(0xFF1E293B)
-                            : const Color(0xFF6366F1),
-                  ),
+                child: Icon(
+                  isDarkMode ? Icons.nightlight_round : Icons.wb_sunny_rounded,
+                  size: 14,
+                  color:
+                      isDarkMode
+                          ? const Color(0xFF1E293B)
+                          : const Color(0xFF6366F1),
                 ),
               ),
             ),

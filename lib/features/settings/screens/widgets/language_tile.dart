@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/l10n/app_language.dart';
+
 class LanguageSelectorTile extends StatelessWidget {
-  final String currentLanguage;
-  final Function(String language) onLanguageSelected;
+  final Locale currentLocale;
+  final ValueChanged<Locale> onLanguageSelected;
 
   const LanguageSelectorTile({
     super.key,
-    required this.currentLanguage,
+    required this.currentLocale,
     required this.onLanguageSelected,
   });
+
+  AppLanguage get _currentLanguage => supportedLanguages.firstWhere(
+    (l) => l.locale.languageCode == currentLocale.languageCode,
+    orElse: () => supportedLanguages.first,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +69,7 @@ class LanguageSelectorTile extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    currentLanguage,
+                    _currentLanguage.label,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -85,19 +92,6 @@ class LanguageSelectorTile extends StatelessWidget {
   }
 
   void _showLanguageBottomSheet(BuildContext context) {
-    final languages = [
-      {'name': 'English', 'flag': '🇺🇸'},
-      {'name': 'Spanish', 'flag': '🇪🇸'},
-      {'name': 'French', 'flag': '🇫🇷'},
-      {'name': 'German', 'flag': '🇩🇪'},
-      {'name': 'Italian', 'flag': '🇮🇹'},
-      {'name': 'Portuguese', 'flag': '🇵🇹'},
-      {'name': 'Japanese', 'flag': '🇯🇵'},
-      {'name': 'Korean', 'flag': '🇰🇷'},
-      {'name': 'Chinese', 'flag': '🇨🇳'},
-      {'name': 'Hindi', 'flag': '🇮🇳'},
-    ];
-
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -148,17 +142,19 @@ class LanguageSelectorTile extends StatelessWidget {
                       horizontal: 24,
                       vertical: 8,
                     ),
-                    itemCount: languages.length,
+                    itemCount: supportedLanguages.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 8),
                     itemBuilder: (context, index) {
-                      final language = languages[index];
-                      final isSelected = language['name'] == currentLanguage;
+                      final lang = supportedLanguages[index];
+                      final isSelected =
+                          lang.locale.languageCode ==
+                          currentLocale.languageCode;
 
                       return Material(
                         color: Colors.transparent,
                         child: InkWell(
                           onTap: () {
-                            onLanguageSelected(language['name']!);
+                            onLanguageSelected(lang.locale);
                             Navigator.pop(context);
                           },
                           borderRadius: BorderRadius.circular(14),
@@ -185,13 +181,13 @@ class LanguageSelectorTile extends StatelessWidget {
                             child: Row(
                               children: [
                                 Text(
-                                  language['flag']!,
+                                  lang.flag,
                                   style: const TextStyle(fontSize: 28),
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Text(
-                                    language['name']!,
+                                    lang.label,
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight:

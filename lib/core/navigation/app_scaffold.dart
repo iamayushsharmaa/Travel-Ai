@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class WidgetTree extends StatelessWidget {
+class AppScaffold extends StatelessWidget {
   final Widget child;
 
-  const WidgetTree({super.key, required this.child});
+  const AppScaffold({super.key, required this.child});
 
   static const _navItems = ['/home', '/history', '/profile'];
 

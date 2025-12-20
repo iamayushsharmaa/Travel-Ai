@@ -16,8 +16,8 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userInfoProvider);
-    final currentLanguage = ref.watch(languageNotifierProvider);
-    final themeMode = ref.watch(themeModeNotifierProvider);
+    final localeAsync = ref.watch(languageNotifierProvider);
+    final themeAsync = ref.watch(themeModeNotifierProvider);
 
     if (user == null) {
       return const Scaffold(
@@ -47,21 +47,35 @@ class SettingsScreen extends ConsumerWidget {
                 SettingsSection(
                   title: 'Preferences',
                   children: [
-                    ThemeModeTile(
-                      initialValue: themeMode == ThemeMode.dark,
-                      onChanged: (isDark) {
-                        ref
-                            .read(themeModeNotifierProvider.notifier)
-                            .toggleTheme();
+                    themeAsync.when(
+                      loading: () => const SizedBox(),
+                      error: (_, __) => const SizedBox(),
+                      data: (themeMode) {
+                        final isDark = themeMode == ThemeMode.dark;
+
+                        return ThemeModeTile(
+                          isDarkMode: isDark,
+                          onToggle: () {
+                            ref
+                                .read(themeModeNotifierProvider.notifier)
+                                .toggleTheme();
+                          },
+                        );
                       },
                     ),
                     const SizedBox(height: 12),
-                    LanguageSelectorTile(
-                      currentLanguage: currentLanguage,
-                      onLanguageSelected: (language) {
-                        ref
-                            .read(languageNotifierProvider.notifier)
-                            .changeLanguage(language);
+                    localeAsync.when(
+                      loading: () => const SizedBox(),
+                      error: (_, __) => const SizedBox(),
+                      data: (locale) {
+                        return LanguageSelectorTile(
+                          currentLocale: locale,
+                          onLanguageSelected: (newLocale) {
+                            ref
+                                .read(languageNotifierProvider.notifier)
+                                .changeLanguage(newLocale);
+                          },
+                        );
                       },
                     ),
                   ],

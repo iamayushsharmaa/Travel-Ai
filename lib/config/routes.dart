@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triptide/core/navigation/app_scaffold.dart';
 import 'package:triptide/features/addtrip/screens/add_trip_page.dart';
 import 'package:triptide/features/history/screen/trip_history.dart';
 import 'package:triptide/features/search/screens/search_screen.dart';
@@ -11,7 +12,6 @@ import '../features/auth/screens/onboarding_page.dart';
 import '../features/auth/screens/profile_screen.dart';
 import '../features/auth/screens/signin_page.dart';
 import '../features/auth/screens/signup_page.dart';
-import '../features/nav/widget_tree.dart';
 import '../features/trip/screen/home_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -21,10 +21,10 @@ final routerProvider = Provider<GoRouter>((ref) {
     listenable.value = !listenable.value;
   });
 
-  final initialLocation = '/plan-trip';
-  // ref.read(firebaseAuthProvider).currentUser != null
-  //     ? '/trip'
-  //     : '/onboarding';
+  final initialLocation =
+      ref.read(firebaseAuthProvider).currentUser != null
+          ? '/trip'
+          : '/onboarding';
 
   return GoRouter(
     debugLogDiagnostics: true,
@@ -49,7 +49,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       ShellRoute(
         builder: (context, state, child) {
-          return WidgetTree(child: child);
+          return AppScaffold(child: child);
         },
         routes: [
           GoRoute(

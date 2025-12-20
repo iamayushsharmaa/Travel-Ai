@@ -7,43 +7,33 @@ part 'settings_provider.g.dart';
 @Riverpod(keepAlive: true)
 class ThemeModeNotifier extends _$ThemeModeNotifier {
   @override
-  ThemeMode build() {
-    _loadSavedTheme();
-    return ThemeMode.light;
-  }
-
-  void setTheme(ThemeMode mode) {
-    state = mode;
-    _saveTheme(mode);
-  }
-
-  void toggleTheme() {
-    final newMode = state == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-    state = newMode;
-    _saveTheme(newMode);
-  }
-
-  bool get isDarkMode => state == ThemeMode.dark;
-
-  Future<void> _saveTheme(ThemeMode mode) async {
+  Future<ThemeMode> build() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('theme_mode', mode.toString());
+    final saved = prefs.getString('theme_mode');
+
+    return _parseThemeMode(saved);
   }
 
-  Future<void> _loadSavedTheme() async {
+  Future<void> setTheme(ThemeMode mode) async {
     final prefs = await SharedPreferences.getInstance();
-    final savedTheme = prefs.getString('theme_mode');
-    state = _parseThemeMode(savedTheme);
+    await prefs.setString('theme_mode', mode.name);
+    state = AsyncData(mode);
+  }
+
+  Future<void> toggleTheme() async {
+    final current = state.value ?? ThemeMode.light;
+    final next = current == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+
+    await setTheme(next);
   }
 
   ThemeMode _parseThemeMode(String? value) {
     switch (value) {
-      case 'ThemeMode.dark':
+      case 'dark':
         return ThemeMode.dark;
-      case 'ThemeMode.light':
-        return ThemeMode.light;
-      case 'ThemeMode.system':
+      case 'system':
         return ThemeMode.system;
+      case 'light':
       default:
         return ThemeMode.light;
     }
@@ -53,48 +43,15 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
 @Riverpod(keepAlive: true)
 class LanguageNotifier extends _$LanguageNotifier {
   @override
-  String build() {
-    _loadSavedLanguage();
-    return 'English';
-  }
-
-  void changeLanguage(String language) {
-    state = language;
-    _saveLanguage(language);
-  }
-
-  Future<void> _saveLanguage(String language) async {
+  Future<Locale> build() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language', language);
+    final code = prefs.getString('language') ?? 'en';
+    return Locale(code);
   }
 
-  Future<void> _loadSavedLanguage() async {
+  Future<void> changeLanguage(Locale locale) async {
     final prefs = await SharedPreferences.getInstance();
-    state = prefs.getString('language') ?? 'English';
+    await prefs.setString('language', locale.languageCode);
+    state = AsyncData(locale);
   }
-
-  Locale getLocaleFromLanguage(String language) {
-    switch (language) {
-      case 'Spanish':
-        return const Locale('es');
-      case 'Hindi':
-        return const Locale('hi');
-      default:
-        return const Locale('en');
-    }
-  }
-}
-
-@riverpod
-bool isDarkMode(IsDarkModeRef ref) {
-  final themeMode = ref.watch(themeModeNotifierProvider);
-  return themeMode == ThemeMode.dark;
-}
-
-@riverpod
-Locale currentLocale(CurrentLocaleRef ref) {
-  final language = ref.watch(languageNotifierProvider);
-  return ref
-      .read(languageNotifierProvider.notifier)
-      .getLocaleFromLanguage(language);
 }
