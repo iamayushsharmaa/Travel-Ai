@@ -101,6 +101,84 @@ abstract class AppLocalizations {
   /// **'Travel AI'**
   String get appName;
 
+  /// No description provided for @onboarding_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Go plan with Travel AI.'**
+  String get onboarding_title;
+
+  /// No description provided for @continue_with_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with email'**
+  String get continue_with_email;
+
+  /// No description provided for @sign_in_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in.'**
+  String get sign_in_title;
+
+  /// No description provided for @sign_in_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter all the information to sign in.'**
+  String get sign_in_subtitle;
+
+  /// No description provided for @email_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email_label;
+
+  /// No description provided for @email_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter email'**
+  String get email_hint;
+
+  /// No description provided for @email_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get email_required;
+
+  /// No description provided for @email_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email'**
+  String get email_invalid;
+
+  /// No description provided for @password_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password_label;
+
+  /// No description provided for @password_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter password'**
+  String get password_hint;
+
+  /// No description provided for @password_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get password_invalid;
+
+  /// No description provided for @sign_in_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get sign_in_button;
+
+  /// No description provided for @no_account_signup.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? Sign up!'**
+  String get no_account_signup;
+
   /// No description provided for @cancel.
   ///
   /// In en, this message translates to:
@@ -328,6 +406,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Budget'**
   String get budget;
+
+  /// No description provided for @budgetType.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget Type'**
+  String get budgetType;
 
   /// No description provided for @destination.
   ///
@@ -749,18 +833,6 @@ abstract class AppLocalizations {
   /// **'Itinerary'**
   String get itinerary;
 
-  /// No description provided for @accommodation.
-  ///
-  /// In en, this message translates to:
-  /// **'Accommodation'**
-  String get accommodation;
-
-  /// No description provided for @transportation.
-  ///
-  /// In en, this message translates to:
-  /// **'Transportation'**
-  String get transportation;
-
   /// No description provided for @activities.
   ///
   /// In en, this message translates to:
@@ -1043,11 +1115,11 @@ abstract class AppLocalizations {
   /// **'Image Unavailable'**
   String get imageUnavailable;
 
-  /// No description provided for @noItinerayAvailable.
+  /// No description provided for @noItineraryAvailable.
   ///
   /// In en, this message translates to:
   /// **'No Itinerary Available'**
-  String get noItinerayAvailable;
+  String get noItineraryAvailable;
 
   /// No description provided for @noTripFound.
   ///
@@ -1257,7 +1329,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Step {current} of {total}'**
-  String stepOf(Object current, Object total);
+  String stepOf(int current, int total);
 
   /// No description provided for @datesAndBudget.
   ///
@@ -1354,6 +1426,318 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create Trip'**
   String get createTrip;
+
+  /// No description provided for @select.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get select;
+
+  /// No description provided for @whenHowMuch.
+  ///
+  /// In en, this message translates to:
+  /// **'When & How Much?'**
+  String get whenHowMuch;
+
+  /// No description provided for @whenHowMuchDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your dates and budget'**
+  String get whenHowMuchDescription;
+
+  /// No description provided for @travelDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel dates'**
+  String get travelDates;
+
+  /// No description provided for @pleaseSelectStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a start date first'**
+  String get pleaseSelectStartDate;
+
+  /// No description provided for @pleaseSelectEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select an end date'**
+  String get pleaseSelectEndDate;
+
+  /// No description provided for @destination_step_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Where are you headed?'**
+  String get destination_step_title;
+
+  /// No description provided for @destination_step_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your destination'**
+  String get destination_step_subtitle;
+
+  /// No description provided for @destination_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination'**
+  String get destination_label;
+
+  /// No description provided for @destination_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Paris, France'**
+  String get destination_hint;
+
+  /// No description provided for @starting_from_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting from'**
+  String get starting_from_label;
+
+  /// No description provided for @starting_from_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., New York, USA'**
+  String get starting_from_hint;
+
+  /// No description provided for @trip_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of trip'**
+  String get trip_type_label;
+
+  /// No description provided for @personal_preferences_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Preferences'**
+  String get personal_preferences_title;
+
+  /// No description provided for @personal_preferences_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us personalize your trip'**
+  String get personal_preferences_subtitle;
+
+  /// No description provided for @traveling_with.
+  ///
+  /// In en, this message translates to:
+  /// **'Traveling with'**
+  String get traveling_with;
+
+  /// No description provided for @interests.
+  ///
+  /// In en, this message translates to:
+  /// **'Interests'**
+  String get interests;
+
+  /// No description provided for @select_all_that_apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all that apply'**
+  String get select_all_that_apply;
+
+  /// No description provided for @interest_nature.
+  ///
+  /// In en, this message translates to:
+  /// **'Nature'**
+  String get interest_nature;
+
+  /// No description provided for @interest_history.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get interest_history;
+
+  /// No description provided for @interest_adventure.
+  ///
+  /// In en, this message translates to:
+  /// **'Adventure'**
+  String get interest_adventure;
+
+  /// No description provided for @interest_shopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get interest_shopping;
+
+  /// No description provided for @interest_food.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get interest_food;
+
+  /// No description provided for @interest_art.
+  ///
+  /// In en, this message translates to:
+  /// **'Art'**
+  String get interest_art;
+
+  /// No description provided for @companion_solo.
+  ///
+  /// In en, this message translates to:
+  /// **'Solo'**
+  String get companion_solo;
+
+  /// No description provided for @companion_partner.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner'**
+  String get companion_partner;
+
+  /// No description provided for @companion_family.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get companion_family;
+
+  /// No description provided for @companion_friends.
+  ///
+  /// In en, this message translates to:
+  /// **'Friends'**
+  String get companion_friends;
+
+  /// No description provided for @travel_preferences_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel Style'**
+  String get travel_preferences_title;
+
+  /// No description provided for @travel_preferences_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finalize your preferences'**
+  String get travel_preferences_subtitle;
+
+  /// No description provided for @accommodation.
+  ///
+  /// In en, this message translates to:
+  /// **'Accommodation'**
+  String get accommodation;
+
+  /// No description provided for @transportation.
+  ///
+  /// In en, this message translates to:
+  /// **'Transportation'**
+  String get transportation;
+
+  /// No description provided for @trip_pace.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip Pace'**
+  String get trip_pace;
+
+  /// No description provided for @food_preference.
+  ///
+  /// In en, this message translates to:
+  /// **'Food Preference'**
+  String get food_preference;
+
+  /// No description provided for @accommodation_hotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel'**
+  String get accommodation_hotel;
+
+  /// No description provided for @accommodation_hostel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hostel'**
+  String get accommodation_hostel;
+
+  /// No description provided for @accommodation_airbnb.
+  ///
+  /// In en, this message translates to:
+  /// **'Airbnb'**
+  String get accommodation_airbnb;
+
+  /// No description provided for @accommodation_resort.
+  ///
+  /// In en, this message translates to:
+  /// **'Resort'**
+  String get accommodation_resort;
+
+  /// No description provided for @accommodation_camping.
+  ///
+  /// In en, this message translates to:
+  /// **'Camping'**
+  String get accommodation_camping;
+
+  /// No description provided for @transport_public.
+  ///
+  /// In en, this message translates to:
+  /// **'Public Transport'**
+  String get transport_public;
+
+  /// No description provided for @transport_rental.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Car'**
+  String get transport_rental;
+
+  /// No description provided for @transport_taxi.
+  ///
+  /// In en, this message translates to:
+  /// **'Taxi / Uber'**
+  String get transport_taxi;
+
+  /// No description provided for @transport_walking.
+  ///
+  /// In en, this message translates to:
+  /// **'Walking'**
+  String get transport_walking;
+
+  /// No description provided for @transport_bicycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bicycle'**
+  String get transport_bicycle;
+
+  /// No description provided for @pace_relaxed.
+  ///
+  /// In en, this message translates to:
+  /// **'Relaxed'**
+  String get pace_relaxed;
+
+  /// No description provided for @pace_moderate.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get pace_moderate;
+
+  /// No description provided for @pace_fast.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast-paced'**
+  String get pace_fast;
+
+  /// No description provided for @food_local.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Cuisine'**
+  String get food_local;
+
+  /// No description provided for @food_vegetarian.
+  ///
+  /// In en, this message translates to:
+  /// **'Vegetarian'**
+  String get food_vegetarian;
+
+  /// No description provided for @food_vegan.
+  ///
+  /// In en, this message translates to:
+  /// **'Vegan'**
+  String get food_vegan;
+
+  /// No description provided for @food_fast_food.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast Food'**
+  String get food_fast_food;
+
+  /// No description provided for @food_fine_dining.
+  ///
+  /// In en, this message translates to:
+  /// **'Fine Dining'**
+  String get food_fine_dining;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

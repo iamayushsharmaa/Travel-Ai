@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/shared/widgets/signin_button.dart';
 
+import '../../../core/extensions/context_l10n.dart';
 import '../provider/auth_providers.dart';
-
 
 class OnBoardingPage extends ConsumerWidget {
   const OnBoardingPage({super.key});
@@ -13,8 +13,10 @@ class OnBoardingPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authStateNotifierProvider);
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child:
@@ -26,11 +28,11 @@ class OnBoardingPage extends ConsumerWidget {
                     const Spacer(flex: 2),
                     const CenterText(),
                     const Spacer(flex: 2),
-                    SignInButton(),
-                    continueWithEmailButton(
+                    const SignInButton(),
+                    ContinueWithEmailButton(
                       onPressed: () => context.go('/signin'),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                   ],
                 ),
       ),
@@ -43,26 +45,27 @@ class CenterText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
       child: Text(
-        'Go plan with Travel AI.',
-        style: TextStyle(
-          fontSize: 24,
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
+        context.l10n.onboarding_title,
+        textAlign: TextAlign.center,
+        style: theme.textTheme.headlineMedium,
       ),
     );
   }
 }
 
-class continueWithEmailButton extends StatelessWidget {
+class ContinueWithEmailButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const continueWithEmailButton({super.key, required this.onPressed});
+  const ContinueWithEmailButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
@@ -70,24 +73,15 @@ class continueWithEmailButton extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.email, color: Colors.white, size: 27),
-              SizedBox(width: 8),
-              const Text(
-                'Continue with email',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+              const Icon(Icons.email, size: 24),
+              const SizedBox(width: 8),
+              Text(
+                context.l10n.continue_with_email,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: theme.colorScheme.onPrimary,
                 ),
               ),
             ],

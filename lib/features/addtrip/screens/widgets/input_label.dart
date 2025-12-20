@@ -7,14 +7,9 @@ class InputLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontSize: 15,
-        fontWeight: FontWeight.w600,
-        color: Colors.black87,
-      ),
-    );
+    final theme = Theme.of(context);
+
+    return Text(text, style: theme.textTheme.labelLarge);
   }
 }
 
@@ -25,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   final int maxLines;
 
   const CustomTextField({
+    super.key,
     required this.controller,
     required this.hintText,
     this.prefixIcon,
@@ -33,35 +29,20 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return TextField(
       controller: controller,
       maxLines: maxLines,
-      style: const TextStyle(fontSize: 16),
+      style: theme.textTheme.bodyLarge,
+
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey.shade400),
+
         prefixIcon:
             prefixIcon != null
-                ? Icon(prefixIcon, color: Colors.grey.shade400)
+                ? Icon(prefixIcon, color: theme.iconTheme.color)
                 : null,
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF2196F3), width: 2),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
       ),
     );
   }

@@ -14,7 +14,7 @@ class TripTimeline extends StatelessWidget {
     if (dailyPlans.isEmpty) {
       return EmptyState(
         icon: Icons.event_busy_outlined,
-        title: context.l10n.noItinerayAvailable,
+        title: context.l10n.noItineraryAvailable,
       );
     }
 

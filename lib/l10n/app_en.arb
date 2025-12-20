@@ -1,6 +1,24 @@
 {
   "@@locale": "en",
   "appName": "Travel AI",
+  "onboarding_title": "Go plan with Travel AI.",
+  "continue_with_email": "Continue with email",
+
+  "sign_in_title": "Sign in.",
+  "sign_in_subtitle": "Please enter all the information to sign in.",
+
+  "email_label": "Email",
+  "email_hint": "Enter email",
+  "email_required": "Email is required",
+  "email_invalid": "Enter a valid email",
+
+  "password_label": "Password",
+  "password_hint": "Enter password",
+  "password_invalid": "Password must be at least 6 characters",
+
+  "sign_in_button": "Sign in",
+  "no_account_signup": "Don't have an account? Sign up!",
+
   "cancel": "Cancel",
   "save": "Save",
   "delete": "Delete",
@@ -42,6 +60,7 @@
   },
   "duration": "Duration",
   "budget": "Budget",
+  "budgetType": "Budget Type",
   "destination": "Destination",
   "startDate": "Start Date",
   "endDate": "End Date",
@@ -112,8 +131,6 @@
   "overview": "Overview",
   "tripOverview": "Trip Overview",
   "itinerary": "Itinerary",
-  "accommodation": "Accommodation",
-  "transportation": "Transportation",
   "activities": "Activities",
   "day": "Day",
   "@day": {
@@ -164,7 +181,7 @@
   "person": "Person",
   "people": "People",
   "imageUnavailable": "Image Unavailable",
-  "noItinerayAvailable": "No Itinerary Available",
+  "noItineraryAvailable": "No Itinerary Available",
   "noTripFound": "No Trip Found",
   "activity": "Activity",
   "dailyItinerary": "Daily Itinerary",
@@ -198,10 +215,19 @@
   "ms": "m/s",
   "celsius": "°C",
 
-
   "planYourTrip": "Plan Your Trip",
   "creatingPerfectTrip": "Creating your perfect trip...",
   "stepOf": "Step {current} of {total}",
+  "@stepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "datesAndBudget": "Dates & Budget",
   "travelDetails": "Travel Details",
 
@@ -220,5 +246,69 @@
 
   "failedCreateTrip": "Failed to create trip",
 
-  "createTrip": "Create Trip"
+  "createTrip": "Create Trip",
+
+  "select": "Select",
+  "whenHowMuch": "When & How Much?",
+  "whenHowMuchDescription": "Set your dates and budget",
+  "travelDates": "Travel dates",
+  "pleaseSelectStartDate": "Please select a start date first",
+  "pleaseSelectEndDate": "Please select an end date",
+
+  "destination_step_title": "Where are you headed?",
+  "destination_step_subtitle": "Tell us about your destination",
+  "destination_label": "Destination",
+  "destination_hint": "e.g., Paris, France",
+  "starting_from_label": "Starting from",
+  "starting_from_hint": "e.g., New York, USA",
+  "trip_type_label": "Type of trip",
+
+  "personal_preferences_title": "Your Preferences",
+  "personal_preferences_subtitle": "Help us personalize your trip",
+
+  "traveling_with": "Traveling with",
+  "interests": "Interests",
+  "select_all_that_apply": "Select all that apply",
+
+  "interest_nature": "Nature",
+  "interest_history": "History",
+  "interest_adventure": "Adventure",
+  "interest_shopping": "Shopping",
+  "interest_food": "Food",
+  "interest_art": "Art",
+
+  "companion_solo": "Solo",
+  "companion_partner": "Partner",
+  "companion_family": "Family",
+  "companion_friends": "Friends",
+
+  "travel_preferences_title": "Travel Style",
+  "travel_preferences_subtitle": "Finalize your preferences",
+
+  "accommodation": "Accommodation",
+  "transportation": "Transportation",
+  "trip_pace": "Trip Pace",
+  "food_preference": "Food Preference",
+
+  "accommodation_hotel": "Hotel",
+  "accommodation_hostel": "Hostel",
+  "accommodation_airbnb": "Airbnb",
+  "accommodation_resort": "Resort",
+  "accommodation_camping": "Camping",
+
+  "transport_public": "Public Transport",
+  "transport_rental": "Rental Car",
+  "transport_taxi": "Taxi / Uber",
+  "transport_walking": "Walking",
+  "transport_bicycle": "Bicycle",
+
+  "pace_relaxed": "Relaxed",
+  "pace_moderate": "Moderate",
+  "pace_fast": "Fast-paced",
+
+  "food_local": "Local Cuisine",
+  "food_vegetarian": "Vegetarian",
+  "food_vegan": "Vegan",
+  "food_fast_food": "Fast Food",
+  "food_fine_dining": "Fine Dining"
 }

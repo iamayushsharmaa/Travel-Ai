@@ -12,6 +12,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Travel AI';
 
   @override
+  String get onboarding_title => 'Go plan with Travel AI.';
+
+  @override
+  String get continue_with_email => 'Continue with email';
+
+  @override
+  String get sign_in_title => 'Sign in.';
+
+  @override
+  String get sign_in_subtitle => 'Please enter all the information to sign in.';
+
+  @override
+  String get email_label => 'Email';
+
+  @override
+  String get email_hint => 'Enter email';
+
+  @override
+  String get email_required => 'Email is required';
+
+  @override
+  String get email_invalid => 'Enter a valid email';
+
+  @override
+  String get password_label => 'Password';
+
+  @override
+  String get password_hint => 'Enter password';
+
+  @override
+  String get password_invalid => 'Password must be at least 6 characters';
+
+  @override
+  String get sign_in_button => 'Sign in';
+
+  @override
+  String get no_account_signup => 'Don\'t have an account? Sign up!';
+
+  @override
   String get cancel => 'Cancel';
 
   @override
@@ -124,6 +163,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get budget => 'Budget';
+
+  @override
+  String get budgetType => 'Budget Type';
 
   @override
   String get destination => 'Destination';
@@ -336,12 +378,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get itinerary => 'Itinerary';
 
   @override
-  String get accommodation => 'Accommodation';
-
-  @override
-  String get transportation => 'Transportation';
-
-  @override
   String get activities => 'Activities';
 
   @override
@@ -483,7 +519,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get imageUnavailable => 'Image Unavailable';
 
   @override
-  String get noItinerayAvailable => 'No Itinerary Available';
+  String get noItineraryAvailable => 'No Itinerary Available';
 
   @override
   String get noTripFound => 'No Trip Found';
@@ -588,7 +624,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get creatingPerfectTrip => 'Creating your perfect trip...';
 
   @override
-  String stepOf(Object current, Object total) {
+  String stepOf(int current, int total) {
     return 'Step $current of $total';
   }
 
@@ -639,4 +675,160 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get createTrip => 'Create Trip';
+
+  @override
+  String get select => 'Select';
+
+  @override
+  String get whenHowMuch => 'When & How Much?';
+
+  @override
+  String get whenHowMuchDescription => 'Set your dates and budget';
+
+  @override
+  String get travelDates => 'Travel dates';
+
+  @override
+  String get pleaseSelectStartDate => 'Please select a start date first';
+
+  @override
+  String get pleaseSelectEndDate => 'Please select an end date';
+
+  @override
+  String get destination_step_title => 'Where are you headed?';
+
+  @override
+  String get destination_step_subtitle => 'Tell us about your destination';
+
+  @override
+  String get destination_label => 'Destination';
+
+  @override
+  String get destination_hint => 'e.g., Paris, France';
+
+  @override
+  String get starting_from_label => 'Starting from';
+
+  @override
+  String get starting_from_hint => 'e.g., New York, USA';
+
+  @override
+  String get trip_type_label => 'Type of trip';
+
+  @override
+  String get personal_preferences_title => 'Your Preferences';
+
+  @override
+  String get personal_preferences_subtitle => 'Help us personalize your trip';
+
+  @override
+  String get traveling_with => 'Traveling with';
+
+  @override
+  String get interests => 'Interests';
+
+  @override
+  String get select_all_that_apply => 'Select all that apply';
+
+  @override
+  String get interest_nature => 'Nature';
+
+  @override
+  String get interest_history => 'History';
+
+  @override
+  String get interest_adventure => 'Adventure';
+
+  @override
+  String get interest_shopping => 'Shopping';
+
+  @override
+  String get interest_food => 'Food';
+
+  @override
+  String get interest_art => 'Art';
+
+  @override
+  String get companion_solo => 'Solo';
+
+  @override
+  String get companion_partner => 'Partner';
+
+  @override
+  String get companion_family => 'Family';
+
+  @override
+  String get companion_friends => 'Friends';
+
+  @override
+  String get travel_preferences_title => 'Travel Style';
+
+  @override
+  String get travel_preferences_subtitle => 'Finalize your preferences';
+
+  @override
+  String get accommodation => 'Accommodation';
+
+  @override
+  String get transportation => 'Transportation';
+
+  @override
+  String get trip_pace => 'Trip Pace';
+
+  @override
+  String get food_preference => 'Food Preference';
+
+  @override
+  String get accommodation_hotel => 'Hotel';
+
+  @override
+  String get accommodation_hostel => 'Hostel';
+
+  @override
+  String get accommodation_airbnb => 'Airbnb';
+
+  @override
+  String get accommodation_resort => 'Resort';
+
+  @override
+  String get accommodation_camping => 'Camping';
+
+  @override
+  String get transport_public => 'Public Transport';
+
+  @override
+  String get transport_rental => 'Rental Car';
+
+  @override
+  String get transport_taxi => 'Taxi / Uber';
+
+  @override
+  String get transport_walking => 'Walking';
+
+  @override
+  String get transport_bicycle => 'Bicycle';
+
+  @override
+  String get pace_relaxed => 'Relaxed';
+
+  @override
+  String get pace_moderate => 'Moderate';
+
+  @override
+  String get pace_fast => 'Fast-paced';
+
+  @override
+  String get food_local => 'Local Cuisine';
+
+  @override
+  String get food_vegetarian => 'Vegetarian';
+
+  @override
+  String get food_vegan => 'Vegan';
+
+  @override
+  String get food_fast_food => 'Fast Food';
+
+  @override
+  String get food_fine_dining => 'Fine Dining';
 }

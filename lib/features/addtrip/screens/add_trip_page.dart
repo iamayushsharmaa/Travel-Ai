@@ -10,6 +10,7 @@ import 'package:triptide/features/addtrip/screens/widgets/travel_preference_step
 import '../../../core/enums/budget_type.dart';
 import '../../../core/enums/currency.dart';
 import '../../../core/enums/trip_type.dart';
+import '../../../core/extensions/context_l10n.dart';
 import '../models/TripPlanRequest.dart';
 import '../providers/travel_provider.dart';
 
@@ -81,34 +82,33 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
     switch (_currentStep) {
       case 0:
         if (_destinationController.text.isEmpty)
-          return 'Please enter a destination';
-        if (_selectedTripType == null) return 'Please select a trip type';
+          return context.l10n.validationEnterDestination;
+        if (_selectedTripType == null)
+          return context.l10n.validationSelectTripType;
         return '';
       case 1:
-        if (_startDate == null) return 'Please select a start date';
-        if (_endDate == null) return 'Please select an end date';
-        if (_budgetController.text.isEmpty) return 'Please enter your budget';
+        if (_startDate == null) return context.l10n.validationSelectStartDate;
+        if (_endDate == null) return context.l10n.validationSelectEndDate;
+        if (_budgetController.text.isEmpty)
+          return context.l10n.validationEnterBudget;
         return '';
       case 2:
         if (_selectedInterests.isEmpty)
-          return 'Please select at least one interest';
+          return context.l10n.validationSelectInterest;
         if (_selectedCompanion.isEmpty)
-          return 'Please select your travel companion';
+          return context.l10n.validationSelectCompanion;
         return '';
       case 3:
-        if (_accommodation.isEmpty) return 'Please select accommodation type';
-        if (_transport.isEmpty) return 'Please select transport preference';
-        if (_pace.isEmpty) return 'Please select your preferred pace';
-        if (_food.isEmpty) return 'Please select food preference';
+        if (_accommodation.isEmpty)
+          return context.l10n.validationSelectAccommodation;
+        if (_transport.isEmpty) return context.l10n.validationSelectTransport;
+        if (_pace.isEmpty) return context.l10n.validationSelectPace;
+        if (_food.isEmpty) return context.l10n.validationSelectFood;
         return '';
       default:
-        return 'Please complete all fields';
+        return context.l10n.validationCompleteAll;
     }
   }
-
-  // ============================================================================
-  // NAVIGATION
-  // ============================================================================
 
   void _nextStep() {
     FocusScope.of(context).unfocus();
@@ -193,7 +193,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to create trip: $e'),
+            content: Text('${context.l10n.failedCreateTrip}: $e'),
             backgroundColor: Colors.red.shade400,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
@@ -229,9 +229,9 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
         icon: const Icon(Icons.arrow_back, color: Colors.black87),
         onPressed: () => Navigator.of(context).pop(),
       ),
-      title: const Text(
-        'Plan Your Trip',
-        style: TextStyle(
+      title: Text(
+        context.l10n.planYourTrip,
+        style: const TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.w600,
           color: Colors.black87,
@@ -252,7 +252,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
           const CircularProgressIndicator(),
           const SizedBox(height: 24),
           Text(
-            'Creating your perfect trip...',
+            context.l10n.creatingPerfectTrip,
             style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
           ),
         ],
@@ -303,7 +303,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Step ${_currentStep + 1} of $_totalSteps',
+            context.l10n.stepOf(_currentStep + 1, _totalSteps),
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -327,13 +327,13 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
   String _getStepTitle() {
     switch (_currentStep) {
       case 0:
-        return 'Destination';
+        return context.l10n.destination;
       case 1:
-        return 'Dates & Budget';
+        return context.l10n.datesAndBudget;
       case 2:
-        return 'Preferences';
+        return context.l10n.preferences;
       case 3:
-        return 'Travel Details';
+        return context.l10n.travelDetails;
       default:
         return '';
     }
@@ -418,7 +418,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
             if (_currentStep > 0) ...[
               Expanded(
                 child: _NavigationButton(
-                  label: 'Back',
+                  label: context.l10n.back,
                   onPressed: _previousStep,
                   isSecondary: true,
                 ),
@@ -428,7 +428,10 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
             Expanded(
               flex: _currentStep == 0 ? 1 : 1,
               child: _NavigationButton(
-                label: _currentStep == _totalSteps - 1 ? 'Create Trip' : 'Next',
+                label:
+                    _currentStep == _totalSteps - 1
+                        ? context.l10n.createTrip
+                        : context.l10n.next,
                 onPressed: _nextStep,
                 icon:
                     _currentStep == _totalSteps - 1

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class SelectableChip extends StatelessWidget {
@@ -8,7 +6,8 @@ class SelectableChip extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const SelectableChip({super.key,
+  const SelectableChip({
+    super.key,
     required this.label,
     required this.icon,
     required this.isSelected,
@@ -17,6 +16,13 @@ class SelectableChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    final bgColor = isSelected ? cs.primary : cs.surface;
+    final borderColor = isSelected ? cs.primary : cs.outline;
+    final contentColor = isSelected ? cs.onPrimary : cs.onSurface;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
@@ -24,28 +30,20 @@ class SelectableChip extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF2196F3) : Colors.white,
+          color: bgColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? const Color(0xFF2196F3) : Colors.grey.shade300,
-            width: isSelected ? 2 : 1,
-          ),
+          border: Border.all(color: borderColor, width: isSelected ? 2 : 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              size: 20,
-              color: isSelected ? Colors.white : Colors.grey.shade700,
-            ),
+            Icon(icon, size: 20, color: contentColor),
             const SizedBox(width: 8),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 15,
+              style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.white : Colors.black87,
+                color: contentColor,
               ),
             ),
           ],
@@ -54,4 +52,3 @@ class SelectableChip extends StatelessWidget {
     );
   }
 }
-

@@ -1,6 +1,24 @@
 {
   "@@locale": "hi",
   "appName": "ट्रैवल एआई",
+  "onboarding_title": "Travel AI के साथ अपनी यात्रा की योजना बनाएं।",
+  "continue_with_email": "ईमेल से जारी रखें",
+
+  "sign_in_title": "साइन इन करें",
+  "sign_in_subtitle": "साइन इन करने के लिए जानकारी दर्ज करें।",
+
+  "email_label": "ईमेल",
+  "email_hint": "ईमेल दर्ज करें",
+  "email_required": "ईमेल आवश्यक है",
+  "email_invalid": "मान्य ईमेल दर्ज करें",
+
+  "password_label": "पासवर्ड",
+  "password_hint": "पासवर्ड दर्ज करें",
+  "password_invalid": "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए",
+
+  "sign_in_button": "साइन इन",
+  "no_account_signup": "खाता नहीं है? साइन अप करें!",
+
   "cancel": "रद्द करें",
   "save": "सहेजें",
   "delete": "हटाएं",
@@ -15,6 +33,8 @@
   "back": "वापस",
   "next": "आगे",
   "skip": "छोड़ें",
+
+
   "signIn": "साइन इन करें",
   "signUp": "साइन अप करें",
   "signOut": "साइन आउट करें",
@@ -115,8 +135,6 @@
   "favorites": "पसंदीदा",
   "overview": "सारांश",
   "itinerary": "यात्रा कार्यक्रम",
-  "accommodation": "आवास",
-  "transportation": "परिवहन",
   "activities": "गतिविधियां",
   "day": "दिन",
   "morning": "सुबह",
@@ -155,7 +173,6 @@
   "update": "अपडेट करें",
   "upload": "अपलोड करें",
   "download": "डाउनलोड करें",
-
   "na": "उपलब्ध नहीं",
   "location": "स्थान",
   "priceRange": "मूल्य सीमा",
@@ -165,7 +182,7 @@
   "person": "व्यक्ति",
   "people": "लोग",
   "imageUnavailable": "छवि उपलब्ध नहीं है",
-  "noItinerayAvailable": "कोई यात्रा कार्यक्रम उपलब्ध नहीं है",
+  "noItineraryAvailable": "कोई यात्रा कार्यक्रम उपलब्ध नहीं है",
   "noTripFound": "कोई यात्रा नहीं मिली",
   "activity": "गतिविधि",
   "dailyItinerary": "दैनिक यात्रा कार्यक्रम",
@@ -190,14 +207,21 @@
   "noWeatherData": "कोई मौसम डेटा उपलब्ध नहीं है",
   "routeMap": "मार्ग मानचित्र",
   "estimatedBudget": "अनुमानित बजट",
-
-
   "planYourTrip": "अपनी यात्रा की योजना बनाएँ",
   "creatingPerfectTrip": "आपकी आदर्श यात्रा बनाई जा रही है...",
   "stepOf": "चरण {current} / {total}",
+  "@stepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "datesAndBudget": "तिथियाँ और बजट",
   "travelDetails": "यात्रा विवरण",
-
   "validationEnterDestination": "कृपया गंतव्य दर्ज करें",
   "validationSelectTripType": "कृपया यात्रा का प्रकार चुनें",
   "validationSelectStartDate": "कृपया प्रारंभ तिथि चुनें",
@@ -210,10 +234,73 @@
   "validationSelectPace": "कृपया यात्रा की गति चुनें",
   "validationSelectFood": "कृपया भोजन पसंद चुनें",
   "validationCompleteAll": "कृपया सभी फ़ील्ड पूरी करें",
-
   "failedCreateTrip": "यात्रा बनाने में विफल",
+  "createTrip": "यात्रा बनाएँ",
+  "select": "चुनें",
+  "whenHowMuch": "कब और कितना?",
+  "whenHowMuchDescription": "अपनी तारीखें और बजट सेट करें",
+  "travelDates": "यात्रा की तारीखें",
+  "pleaseSelectStartDate": "कृपया पहले प्रारंभ तिथि चुनें",
+  "pleaseSelectEndDate": "कृपया अंतिम तिथि चुनें",
+  "budgetType": "बजट का प्रकार",
 
-  "createTrip": "यात्रा बनाएँ"
+  "destination_step_title": "आप कहाँ जा रहे हैं?",
+  "destination_step_subtitle": "हमें अपने गंतव्य के बारे में बताएं",
 
+  "destination_label": "गंतव्य",
+  "destination_hint": "जैसे, पेरिस, फ्रांस",
 
+  "starting_from_label": "कहाँ से शुरू",
+  "starting_from_hint": "जैसे, न्यूयॉर्क, अमेरिका",
+
+  "trip_type_label": "यात्रा का प्रकार",
+
+  "personal_preferences_title": "आपकी पसंद",
+  "personal_preferences_subtitle": "हम आपकी यात्रा को बेहतर बनाने में मदद करेंगे",
+
+  "traveling_with": "आप किसके साथ यात्रा कर रहे हैं",
+  "interests": "रुचियाँ",
+  "select_all_that_apply": "जो लागू हों उन्हें चुनें",
+
+  "interest_nature": "प्रकृति",
+  "interest_history": "इतिहास",
+  "interest_adventure": "रोमांच",
+  "interest_shopping": "खरीदारी",
+  "interest_food": "खाना",
+  "interest_art": "कला",
+
+  "companion_solo": "अकेले",
+  "companion_partner": "साथी",
+  "companion_family": "परिवार",
+  "companion_friends": "दोस्त",
+
+  "travel_preferences_title": "यात्रा की शैली",
+  "travel_preferences_subtitle": "अपनी पसंद को अंतिम रूप दें",
+
+  "accommodation": "रहने की व्यवस्था",
+  "transportation": "यातायात",
+  "trip_pace": "यात्रा की गति",
+  "food_preference": "खाने की पसंद",
+
+  "accommodation_hotel": "होटल",
+  "accommodation_hostel": "होस्टल",
+  "accommodation_airbnb": "एयरबीएनबी",
+  "accommodation_resort": "रिसॉर्ट",
+  "accommodation_camping": "कैंपिंग",
+
+  "transport_public": "सार्वजनिक परिवहन",
+  "transport_rental": "किराये की गाड़ी",
+  "transport_taxi": "टैक्सी / उबर",
+  "transport_walking": "पैदल",
+  "transport_bicycle": "साइकिल",
+
+  "pace_relaxed": "आरामदायक",
+  "pace_moderate": "सामान्य",
+  "pace_fast": "तेज़",
+
+  "food_local": "स्थानीय भोजन",
+  "food_vegetarian": "शाकाहारी",
+  "food_vegan": "वीगन",
+  "food_fast_food": "फास्ट फूड",
+  "food_fine_dining": "प्रीमियम डाइनिंग"
 }

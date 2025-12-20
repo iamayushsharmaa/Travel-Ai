@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptide/core/extensions/context_l10n.dart';
 
 class DurationChip extends StatelessWidget {
   final int days;
@@ -7,23 +8,25 @@ class DurationChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF2196F3).withOpacity(0.1),
+        color: cs.primary.withOpacity(0.12),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.calendar_today, size: 16, color: Color(0xFF2196F3)),
+          Icon(Icons.calendar_today, size: 16, color: cs.primary),
           const SizedBox(width: 6),
           Text(
-            '$days ${days == 1 ? 'day' : 'days'}',
-            style: const TextStyle(
-              fontSize: 13,
+            '$days ${days == 1 ? context.l10n.day : context.l10n.days}',
+            style: theme.textTheme.labelSmall?.copyWith(
               fontWeight: FontWeight.w600,
-              color: Color(0xFF2196F3),
+              color: cs.primary,
             ),
           ),
         ],

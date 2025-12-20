@@ -12,6 +12,45 @@ class AppLocalizationsHi extends AppLocalizations {
   String get appName => 'ट्रैवल एआई';
 
   @override
+  String get onboarding_title => 'Travel AI के साथ अपनी यात्रा की योजना बनाएं।';
+
+  @override
+  String get continue_with_email => 'ईमेल से जारी रखें';
+
+  @override
+  String get sign_in_title => 'साइन इन करें';
+
+  @override
+  String get sign_in_subtitle => 'साइन इन करने के लिए जानकारी दर्ज करें।';
+
+  @override
+  String get email_label => 'ईमेल';
+
+  @override
+  String get email_hint => 'ईमेल दर्ज करें';
+
+  @override
+  String get email_required => 'ईमेल आवश्यक है';
+
+  @override
+  String get email_invalid => 'मान्य ईमेल दर्ज करें';
+
+  @override
+  String get password_label => 'पासवर्ड';
+
+  @override
+  String get password_hint => 'पासवर्ड दर्ज करें';
+
+  @override
+  String get password_invalid => 'पासवर्ड कम से कम 6 अक्षरों का होना चाहिए';
+
+  @override
+  String get sign_in_button => 'साइन इन';
+
+  @override
+  String get no_account_signup => 'खाता नहीं है? साइन अप करें!';
+
+  @override
   String get cancel => 'रद्द करें';
 
   @override
@@ -124,6 +163,9 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get budget => 'बजट';
+
+  @override
+  String get budgetType => 'बजट का प्रकार';
 
   @override
   String get destination => 'गंतव्य';
@@ -336,12 +378,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get itinerary => 'यात्रा कार्यक्रम';
 
   @override
-  String get accommodation => 'आवास';
-
-  @override
-  String get transportation => 'परिवहन';
-
-  @override
   String get activities => 'गतिविधियां';
 
   @override
@@ -483,7 +519,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get imageUnavailable => 'छवि उपलब्ध नहीं है';
 
   @override
-  String get noItinerayAvailable => 'कोई यात्रा कार्यक्रम उपलब्ध नहीं है';
+  String get noItineraryAvailable => 'कोई यात्रा कार्यक्रम उपलब्ध नहीं है';
 
   @override
   String get noTripFound => 'कोई यात्रा नहीं मिली';
@@ -588,7 +624,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get creatingPerfectTrip => 'आपकी आदर्श यात्रा बनाई जा रही है...';
 
   @override
-  String stepOf(Object current, Object total) {
+  String stepOf(int current, int total) {
     return 'चरण $current / $total';
   }
 
@@ -639,4 +675,160 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get createTrip => 'यात्रा बनाएँ';
+
+  @override
+  String get select => 'चुनें';
+
+  @override
+  String get whenHowMuch => 'कब और कितना?';
+
+  @override
+  String get whenHowMuchDescription => 'अपनी तारीखें और बजट सेट करें';
+
+  @override
+  String get travelDates => 'यात्रा की तारीखें';
+
+  @override
+  String get pleaseSelectStartDate => 'कृपया पहले प्रारंभ तिथि चुनें';
+
+  @override
+  String get pleaseSelectEndDate => 'कृपया अंतिम तिथि चुनें';
+
+  @override
+  String get destination_step_title => 'आप कहाँ जा रहे हैं?';
+
+  @override
+  String get destination_step_subtitle => 'हमें अपने गंतव्य के बारे में बताएं';
+
+  @override
+  String get destination_label => 'गंतव्य';
+
+  @override
+  String get destination_hint => 'जैसे, पेरिस, फ्रांस';
+
+  @override
+  String get starting_from_label => 'कहाँ से शुरू';
+
+  @override
+  String get starting_from_hint => 'जैसे, न्यूयॉर्क, अमेरिका';
+
+  @override
+  String get trip_type_label => 'यात्रा का प्रकार';
+
+  @override
+  String get personal_preferences_title => 'आपकी पसंद';
+
+  @override
+  String get personal_preferences_subtitle => 'हम आपकी यात्रा को बेहतर बनाने में मदद करेंगे';
+
+  @override
+  String get traveling_with => 'आप किसके साथ यात्रा कर रहे हैं';
+
+  @override
+  String get interests => 'रुचियाँ';
+
+  @override
+  String get select_all_that_apply => 'जो लागू हों उन्हें चुनें';
+
+  @override
+  String get interest_nature => 'प्रकृति';
+
+  @override
+  String get interest_history => 'इतिहास';
+
+  @override
+  String get interest_adventure => 'रोमांच';
+
+  @override
+  String get interest_shopping => 'खरीदारी';
+
+  @override
+  String get interest_food => 'खाना';
+
+  @override
+  String get interest_art => 'कला';
+
+  @override
+  String get companion_solo => 'अकेले';
+
+  @override
+  String get companion_partner => 'साथी';
+
+  @override
+  String get companion_family => 'परिवार';
+
+  @override
+  String get companion_friends => 'दोस्त';
+
+  @override
+  String get travel_preferences_title => 'यात्रा की शैली';
+
+  @override
+  String get travel_preferences_subtitle => 'अपनी पसंद को अंतिम रूप दें';
+
+  @override
+  String get accommodation => 'रहने की व्यवस्था';
+
+  @override
+  String get transportation => 'यातायात';
+
+  @override
+  String get trip_pace => 'यात्रा की गति';
+
+  @override
+  String get food_preference => 'खाने की पसंद';
+
+  @override
+  String get accommodation_hotel => 'होटल';
+
+  @override
+  String get accommodation_hostel => 'होस्टल';
+
+  @override
+  String get accommodation_airbnb => 'एयरबीएनबी';
+
+  @override
+  String get accommodation_resort => 'रिसॉर्ट';
+
+  @override
+  String get accommodation_camping => 'कैंपिंग';
+
+  @override
+  String get transport_public => 'सार्वजनिक परिवहन';
+
+  @override
+  String get transport_rental => 'किराये की गाड़ी';
+
+  @override
+  String get transport_taxi => 'टैक्सी / उबर';
+
+  @override
+  String get transport_walking => 'पैदल';
+
+  @override
+  String get transport_bicycle => 'साइकिल';
+
+  @override
+  String get pace_relaxed => 'आरामदायक';
+
+  @override
+  String get pace_moderate => 'सामान्य';
+
+  @override
+  String get pace_fast => 'तेज़';
+
+  @override
+  String get food_local => 'स्थानीय भोजन';
+
+  @override
+  String get food_vegetarian => 'शाकाहारी';
+
+  @override
+  String get food_vegan => 'वीगन';
+
+  @override
+  String get food_fast_food => 'फास्ट फूड';
+
+  @override
+  String get food_fine_dining => 'प्रीमियम डाइनिंग';
 }

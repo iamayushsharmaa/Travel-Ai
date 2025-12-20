@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:triptide/core/common/loader.dart';
 
+import '../../../core/extensions/context_l10n.dart';
 import '../provider/auth_providers.dart';
 
-
 class SigninPage extends ConsumerStatefulWidget {
-  SigninPage({Key? key}) : super(key: key);
+  const SigninPage({super.key});
 
   @override
   ConsumerState<SigninPage> createState() => _SigninPageState();
@@ -18,10 +17,8 @@ class _SigninPageState extends ConsumerState<SigninPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  IconData iconPassword = CupertinoIcons.eye_fill;
-  bool obscurePassword = true;
-  String? _errorMsg;
 
+  bool obscurePassword = true;
 
   @override
   void dispose() {
@@ -33,11 +30,14 @@ class _SigninPageState extends ConsumerState<SigninPage> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateNotifierProvider);
+    final theme = Theme.of(context);
+    final l10n = context.l10n;
+
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Form(
             key: _formKey,
             child:
@@ -47,145 +47,102 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Sign in.',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              fontSize: 34,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                        Text(
+                          l10n.sign_in_title,
+                          style: theme.textTheme.displaySmall,
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Please enter all the information to sign in.',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
+                        const SizedBox(height: 4),
+                        Text(
+                          l10n.sign_in_subtitle,
+                          style: theme.textTheme.bodyMedium,
                         ),
-                        const SizedBox(height: 25),
-                        Text('Email', style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.normal),),
+
+                        const SizedBox(height: 24),
+
+                        /// Email
+                        Text(
+                          l10n.email_label,
+                          style: theme.textTheme.labelLarge,
+                        ),
                         const SizedBox(height: 6),
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
-                            hintText: 'Enter Email',
-                            labelStyle: TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                                width: 2,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Colors.black, // Red when focused
-                                width: 2,
-                              ),
-                            ),
+                            hintText: l10n.email_hint,
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Email is required';
+                              return l10n.email_required;
                             }
                             if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
-                              return 'Enter a valid email';
+                              return l10n.email_invalid;
                             }
                             return null;
                           },
                         ),
+
                         const SizedBox(height: 16),
-                        Text('Password', style: TextStyle(fontSize: 15, color: Colors.black),),
+
+                        /// Password
+                        Text(
+                          l10n.password_label,
+                          style: theme.textTheme.labelLarge,
+                        ),
                         const SizedBox(height: 6),
                         TextFormField(
                           controller: passwordController,
                           obscureText: obscurePassword,
                           decoration: InputDecoration(
-                            hintText: 'Enter Password',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                                width: 2,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Colors.black, // Red when focused
-                                width: 2,
-                              ),
-                            ),
+                            hintText: l10n.password_hint,
                             suffixIcon: IconButton(
+                              icon: Icon(
+                                obscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
                               onPressed: () {
                                 setState(() {
                                   obscurePassword = !obscurePassword;
                                 });
                               },
-                              icon:
-                                  obscurePassword
-                                      ? Icon(CupertinoIcons.eye_slash_fill)
-                                      : Icon(CupertinoIcons.eye_fill),
                             ),
                           ),
                           validator: (value) {
                             if (value == null || value.length < 6) {
-                              return 'Password must be at least 6 characters';
+                              return l10n.password_invalid;
                             }
                             return null;
                           },
                         ),
-                        SizedBox(height: 25),
+
+                        const SizedBox(height: 24),
+
+                        /// Sign in button
                         SizedBox(
                           height: 55,
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () async {
-                              await ref
-                                  .read(authStateNotifierProvider.notifier)
-                                  .signIn(
-                                    emailController.text.trim(),
-                                    passwordController.text.trim(),
-                                  );
+                              if (_formKey.currentState!.validate()) {
+                                await ref
+                                    .read(authStateNotifierProvider.notifier)
+                                    .signIn(
+                                      emailController.text.trim(),
+                                      passwordController.text.trim(),
+                                    );
+                              }
                             },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: Text(
-                              'Sign in',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            child: Text(l10n.sign_in_button),
                           ),
                         ),
-                        SizedBox(height: 5),
+
+                        const SizedBox(height: 8),
+
                         Align(
-                          alignment: Alignment.bottomCenter,
+                          alignment: Alignment.center,
                           child: TextButton(
                             onPressed: () => context.go('/signup'),
-                            child: Text(
-                              'Don\'t have an account? Sign up!',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
+                            child: Text(l10n.no_account_signup),
                           ),
                         ),
                       ],
