@@ -51,6 +51,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_account_signup => 'Don\'t have an account? Sign up!';
 
   @override
+  String get sign_up_title => 'Sign up.';
+
+  @override
+  String get sign_up_subtitle => 'Please enter all the information to sign up.';
+
+  @override
+  String get sign_up_button => 'Sign up';
+
+  @override
+  String get already_have_account => 'Already have an account? Sign in!';
+
+  @override
   String get cancel => 'Cancel';
 
   @override

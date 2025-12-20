@@ -14,6 +14,17 @@ class TripFilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    final bgColor = isSelected ? cs.primary : cs.surface;
+    final borderColor = isSelected ? cs.primary : cs.outline;
+    final textColor = isSelected ? cs.onPrimary : cs.onSurface;
+    final shadowColor =
+        isSelected
+            ? cs.primary.withOpacity(0.3)
+            : theme.shadowColor.withOpacity(0.08);
+
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -21,36 +32,22 @@ class TripFilterChip extends StatelessWidget {
         curve: Curves.easeInOut,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF6366F1) : Colors.white,
+          color: bgColor,
           borderRadius: BorderRadius.circular(22),
-          border: Border.all(
-            color:
-                isSelected ? const Color(0xFF6366F1) : const Color(0xFFE2E8F0),
-            width: 1.5,
-          ),
-          boxShadow:
-              isSelected
-                  ? [
-                    BoxShadow(
-                      color: const Color(0xFF6366F1).withOpacity(0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                  : [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+          border: Border.all(color: borderColor, width: 1.5),
+          boxShadow: [
+            BoxShadow(
+              color: shadowColor,
+              blurRadius: isSelected ? 12 : 8,
+              offset: Offset(0, isSelected ? 4 : 2),
+            ),
+          ],
         ),
         child: Text(
           label,
-          style: TextStyle(
-            fontSize: 14,
+          style: theme.textTheme.labelMedium?.copyWith(
             fontWeight: FontWeight.w600,
-            color: isSelected ? Colors.white : const Color(0xFF64748B),
+            color: textColor,
             letterSpacing: 0.3,
           ),
         ),

@@ -59,7 +59,6 @@ class _SigninPageState extends ConsumerState<SigninPage> {
 
                         const SizedBox(height: 24),
 
-                        /// Email
                         Text(
                           l10n.email_label,
                           style: theme.textTheme.labelLarge,
@@ -83,7 +82,6 @@ class _SigninPageState extends ConsumerState<SigninPage> {
 
                         const SizedBox(height: 16),
 
-                        /// Password
                         Text(
                           l10n.password_label,
                           style: theme.textTheme.labelLarge,
@@ -117,7 +115,6 @@ class _SigninPageState extends ConsumerState<SigninPage> {
 
                         const SizedBox(height: 24),
 
-                        /// Sign in button
                         SizedBox(
                           height: 55,
                           width: double.infinity,

@@ -51,6 +51,18 @@ class AppLocalizationsHi extends AppLocalizations {
   String get no_account_signup => 'खाता नहीं है? साइन अप करें!';
 
   @override
+  String get sign_up_title => 'साइन अप करें';
+
+  @override
+  String get sign_up_subtitle => 'साइन अप करने के लिए जानकारी दर्ज करें।';
+
+  @override
+  String get sign_up_button => 'साइन अप';
+
+  @override
+  String get already_have_account => 'पहले से खाता है? साइन इन करें!';
+
+  @override
   String get cancel => 'रद्द करें';
 
   @override

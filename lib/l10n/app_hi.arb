@@ -19,6 +19,12 @@
   "sign_in_button": "साइन इन",
   "no_account_signup": "खाता नहीं है? साइन अप करें!",
 
+  "sign_up_title": "साइन अप करें",
+  "sign_up_subtitle": "साइन अप करने के लिए जानकारी दर्ज करें।",
+
+  "sign_up_button": "साइन अप",
+  "already_have_account": "पहले से खाता है? साइन इन करें!",
+
   "cancel": "रद्द करें",
   "save": "सहेजें",
   "delete": "हटाएं",
@@ -302,5 +308,7 @@
   "food_vegetarian": "शाकाहारी",
   "food_vegan": "वीगन",
   "food_fast_food": "फास्ट फूड",
-  "food_fine_dining": "प्रीमियम डाइनिंग"
+  "food_fine_dining": "प्रीमियम डाइनिंग",
+
+
 }

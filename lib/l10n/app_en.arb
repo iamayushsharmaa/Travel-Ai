@@ -19,6 +19,12 @@
   "sign_in_button": "Sign in",
   "no_account_signup": "Don't have an account? Sign up!",
 
+  "sign_up_title": "Sign up.",
+  "sign_up_subtitle": "Please enter all the information to sign up.",
+
+  "sign_up_button": "Sign up",
+  "already_have_account": "Already have an account? Sign in!",
+
   "cancel": "Cancel",
   "save": "Save",
   "delete": "Delete",
@@ -311,4 +317,5 @@
   "food_vegan": "Vegan",
   "food_fast_food": "Fast Food",
   "food_fine_dining": "Fine Dining"
+
 }

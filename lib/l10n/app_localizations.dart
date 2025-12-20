@@ -179,6 +179,30 @@ abstract class AppLocalizations {
   /// **'Don\'t have an account? Sign up!'**
   String get no_account_signup;
 
+  /// No description provided for @sign_up_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up.'**
+  String get sign_up_title;
+
+  /// No description provided for @sign_up_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter all the information to sign up.'**
+  String get sign_up_subtitle;
+
+  /// No description provided for @sign_up_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up'**
+  String get sign_up_button;
+
+  /// No description provided for @already_have_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in!'**
+  String get already_have_account;
+
   /// No description provided for @cancel.
   ///
   /// In en, this message translates to:

@@ -6,6 +6,7 @@ import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/enums/trip_filter.dart';
 import 'package:triptide/features/history/screen/widgets/trip_filter_chip.dart';
 
+import '../../../core/extensions/context_l10n.dart';
 import '../../../shared/widgets/trip_card.dart';
 import '../provider/trip_history_provider.dart';
 
@@ -21,16 +22,17 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
   Widget build(BuildContext context) {
     final selectedFilter = ref.watch(tripHistoryNotifierProvider);
     final tripsAsync = ref.watch(historyTripsProvider);
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FD),
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
-          _buildSliverAppBar(),
+          _buildSliverAppBar(context),
           SliverToBoxAdapter(
             child: Column(
               children: [
-                _buildFilterSection(selectedFilter),
+                _buildFilterSection(context, selectedFilter),
                 const SizedBox(height: 8),
               ],
             ),
@@ -41,53 +43,47 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
     );
   }
 
-  Widget _buildSliverAppBar() {
+  Widget _buildSliverAppBar(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final l10n = context.l10n;
+
     return SliverAppBar(
       floating: true,
       snap: true,
-      backgroundColor: const Color(0xFFF8F9FD),
+      backgroundColor: cs.background,
       elevation: 0,
       expandedHeight: 100,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFFF8F9FD), Color(0xFFEEF2FF)],
+              colors: [cs.background, cs.primary.withOpacity(0.05)],
             ),
           ),
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6366F1).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.history_rounded,
-                          color: Color(0xFF6366F1),
-                          size: 24,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      const Text(
-                        'Travel History',
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF1E293B),
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                    ],
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: cs.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      Icons.history_rounded,
+                      color: cs.primary,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    l10n.travelHistory,
+                    style: theme.textTheme.headlineLarge,
                   ),
                 ],
               ),
@@ -98,23 +94,20 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
     );
   }
 
-  Widget _buildFilterSection(TripFilter selectedFilter) {
-    return Container(
+  // ---------------- FILTER SECTION ----------------
+
+  Widget _buildFilterSection(BuildContext context, TripFilter selectedFilter) {
+    final theme = Theme.of(context);
+    final l10n = context.l10n;
+
+    return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: Text(
-              'Filter by',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF64748B),
-                letterSpacing: 0.5,
-              ),
-            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Text(l10n.filterBy, style: theme.textTheme.labelMedium),
           ),
           const SizedBox(height: 12),
           SizedBox(
@@ -126,10 +119,9 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
               separatorBuilder: (_, __) => const SizedBox(width: 10),
               itemBuilder: (context, index) {
                 final filter = TripFilter.values[index];
-                final isSelected = filter == selectedFilter;
                 return TripFilterChip(
                   label: filter.label,
-                  isSelected: isSelected,
+                  isSelected: filter == selectedFilter,
                   onTap: () {
                     ref
                         .read(tripHistoryNotifierProvider.notifier)
@@ -143,6 +135,8 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
       ),
     );
   }
+
+  // ---------------- TRIPS LIST ----------------
 
   Widget _buildTripsList(AsyncValue tripsAsync) {
     return tripsAsync.when(
@@ -178,7 +172,13 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
     );
   }
 
+  // ---------------- EMPTY STATE ----------------
+
   Widget _buildEmptyState() {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final l10n = context.l10n;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -186,29 +186,19 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
           Container(
             padding: const EdgeInsets.all(32),
             decoration: BoxDecoration(
-              color: const Color(0xFF6366F1).withOpacity(0.08),
+              color: cs.primary.withOpacity(0.08),
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.explore_off_rounded,
               size: 64,
-              color: const Color(0xFF6366F1).withOpacity(0.6),
+              color: cs.primary.withOpacity(0.6),
             ),
           ),
           const SizedBox(height: 24),
-          const Text(
-            'No trips yet',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF1E293B),
-            ),
-          ),
+          Text(l10n.noTripsYet, style: theme.textTheme.headlineMedium),
           const SizedBox(height: 8),
-          const Text(
-            'Your travel history will appear here',
-            style: TextStyle(fontSize: 15, color: Color(0xFF64748B)),
-          ),
+          Text(l10n.noTripsMessage, style: theme.textTheme.bodyMedium),
         ],
       ),
     );
