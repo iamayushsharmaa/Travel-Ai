@@ -5,7 +5,7 @@ import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/extensions/context_l10n.dart';
 import 'package:triptide/features/trip/screen/widgets/month_widget.dart';
 
-import '../../../core/common/error_text.dart';
+import '../../../core/common/app_error_state.dart';
 import '../../../core/extensions/context_theme.dart';
 import '../../../shared/widgets/trip_view.dart';
 import '../provider/user_trips_provider.dart';

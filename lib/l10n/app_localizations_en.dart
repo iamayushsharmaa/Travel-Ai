@@ -845,9 +845,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get food_fine_dining => 'Fine Dining';
 
   @override
-  String get search_error => 'Something went wrong';
-
-  @override
   String get search_trips_hint => 'Search trips';
 
   @override

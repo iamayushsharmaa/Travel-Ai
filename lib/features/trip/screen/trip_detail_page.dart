@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triptide/core/common/app_error_state.dart';
+import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/features/trip/screen/widgets/accomodation_section.dart';
 import 'package:triptide/features/trip/screen/widgets/budget_card.dart';
 import 'package:triptide/features/trip/screen/widgets/map_section.dart';
@@ -13,6 +15,8 @@ import 'package:triptide/features/trip/screen/widgets/trip_timeline.dart';
 import 'package:triptide/features/trip/screen/widgets/weather_section.dart';
 
 import '../../../core/extensions/context_l10n.dart';
+import '../../../core/extensions/context_snackbar.dart';
+import '../../../core/extensions/context_theme.dart';
 import '../provider/user_trips_provider.dart';
 
 class TripDetailPage extends ConsumerWidget {
@@ -25,17 +29,26 @@ class TripDetailPage extends ConsumerWidget {
     final tripAsync = ref.watch(tripByIdProvider(travelId));
 
     return tripAsync.when(
-      data: (trip) {
-        return _buildTripContent(context, ref, trip);
-      },
-      error: (error, stackTrace) => _buildErrorState(context, error),
-      loading: () => _buildLoadingState(context),
+      data: (trip) => _buildTripContent(context, ref, trip),
+      error:
+          (error, _) => AppErrorState(
+            title: context.l10n.somethingWentWrong,
+            message: error.toString(),
+            showIcon: true,
+            onRetry: () => ref.invalidate(tripByIdProvider(travelId)),
+          ),
+      loading:
+          () => Loader(
+            withScaffold: true,
+            title: context.l10n.loading,
+            onBack: () => context.pop(),
+          ),
     );
   }
 
   Widget _buildTripContent(BuildContext context, WidgetRef ref, dynamic trip) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: context.colors.background,
       appBar: _buildAppBar(context, ref, trip),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -46,7 +59,7 @@ class TripDetailPage extends ConsumerWidget {
               TripHeroImage(images: trip.images, destination: trip.destination),
 
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -69,8 +82,7 @@ class TripDetailPage extends ConsumerWidget {
 
                   const SizedBox(height: 32),
 
-                  if (trip.accommodationSuggestions != null &&
-                      trip.accommodationSuggestions.isNotEmpty)
+                  if (trip.accommodationSuggestions?.isNotEmpty == true)
                     AccommodationSection(
                       suggestions: trip.accommodationSuggestions,
                     ),
@@ -84,18 +96,17 @@ class TripDetailPage extends ConsumerWidget {
 
                   WeatherSection(
                     destination: trip.destination,
-                    latitude: trip.destinationLat ?? 0.0,
-                    longitude: trip.destinationLng ?? 0.0,
+                    latitude: trip.destinationLat ?? 0,
+                    longitude: trip.destinationLng ?? 0,
                   ),
 
                   const SizedBox(height: 24),
 
-                  // Map
                   MapSection(
-                    currentLat: trip.currentLat ?? 0.0,
-                    currentLng: trip.currentLng ?? 0.0,
-                    destinationLat: trip.destinationLat ?? 0.0,
-                    destinationLng: trip.destinationLng ?? 0.0,
+                    currentLat: trip.currentLat ?? 0,
+                    currentLng: trip.currentLng ?? 0,
+                    destinationLat: trip.destinationLat ?? 0,
+                    destinationLng: trip.destinationLng ?? 0,
                     destinationName: trip.destination,
                   ),
 
@@ -119,45 +130,41 @@ class TripDetailPage extends ConsumerWidget {
     dynamic trip,
   ) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: context.colors.surface,
       elevation: 0,
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      systemOverlayStyle:
+          context.isDark
+              ? SystemUiOverlayStyle.light
+              : SystemUiOverlayStyle.dark,
+      centerTitle: true,
       leading: IconButton(
         icon: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
+            color: context.colors.surfaceVariant,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios_new,
             size: 18,
-            color: Colors.black87,
+            color: context.colors.onSurface,
           ),
         ),
         onPressed: () => context.pop(),
       ),
-      title: Text(
-        trip.destination,
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: Colors.black87,
-        ),
-      ),
-      centerTitle: true,
+      title: Text(trip.destination, style: context.text.titleLarge),
       actions: [
         IconButton(
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.red.shade50,
+              color: context.colors.error.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(
               Icons.delete_outline,
               size: 20,
-              color: Colors.red.shade400,
+              color: context.colors.error,
             ),
           ),
           onPressed: () => _showDeleteDialog(context, ref, trip),
@@ -166,7 +173,7 @@ class TripDetailPage extends ConsumerWidget {
       ],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
-        child: Container(color: Colors.grey.shade200, height: 1),
+        child: Divider(height: 1),
       ),
     );
   }
@@ -179,51 +186,29 @@ class TripDetailPage extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder:
-          (context) => AlertDialog(
+          (_) => AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
-            title: Text(
-              context.l10n.deleteTrip,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
+            title: Text(context.l10n.deleteTrip),
             content: Text(
-              '${context.l10n.deleteConfirmation} ${trip.destination}? ${context.l10n.actionUndone}',
-              style: TextStyle(
-                fontSize: 15,
-                color: Colors.grey.shade700,
-                height: 1.4,
-              ),
+              '${context.l10n.deleteConfirmation} ${trip.destination}. '
+              '${context.l10n.actionUndone}',
+              style: context.text.bodyMedium,
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text(
-                  context.l10n.cancel,
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                child: Text(context.l10n.cancel),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
                 style: TextButton.styleFrom(
-                  backgroundColor: Colors.red.shade50,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                  backgroundColor: context.colors.error.withOpacity(0.1),
                 ),
                 child: Text(
                   context.l10n.delete,
-                  style: TextStyle(
-                    color: Colors.red.shade700,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(color: context.colors.error),
                 ),
               ),
             ],
@@ -240,141 +225,11 @@ class TripDetailPage extends ConsumerWidget {
       await ref.read(deleteTripProvider(travelId).future);
 
       if (!context.mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(context.l10n.deleteSuccess),
-          backgroundColor: Colors.green.shade400,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          margin: const EdgeInsets.all(16),
-        ),
-      );
-
+      context.showSuccessSnack(context.l10n.deleteSuccess);
       context.pop();
-    } catch (e) {
+    } catch (_) {
       if (!context.mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(context.l10n.failedDeleteTrip),
-          backgroundColor: Colors.red.shade400,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          margin: const EdgeInsets.all(16),
-        ),
-      );
+      context.showErrorSnack(context.l10n.failedDeleteTrip);
     }
-  }
-
-  Widget _buildEmptyState(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
-          onPressed: () => context.pop(),
-        ),
-        title: Text(
-          context.l10n.tripDetail,
-          style: TextStyle(color: Colors.black87),
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.travel_explore_outlined,
-              size: 80,
-              color: Colors.grey.shade300,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              context.l10n.noTripFound,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade600,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              context.l10n.tripMayHaveBeenDeleted,
-              style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildErrorState(BuildContext context, Object error) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
-          onPressed: () => context.pop(),
-        ),
-        title: Text(
-          context.l10n.error,
-          style: TextStyle(color: Colors.black87),
-        ),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.error_outline, size: 80, color: Colors.red.shade300),
-              const SizedBox(height: 16),
-              Text(
-                context.l10n.somethingWentWrong,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey.shade700,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                error.toString(),
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoadingState(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
-          onPressed: () => context.pop(),
-        ),
-        title: Text(
-          context.l10n.loading,
-          style: TextStyle(color: Colors.black87),
-        ),
-      ),
-      body: const Center(child: CircularProgressIndicator()),
-    );
   }
 }

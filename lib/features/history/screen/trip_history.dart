@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:triptide/core/common/empty_state.dart';
-import 'package:triptide/core/common/error_text.dart';
+import 'package:triptide/core/common/app_error_state.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/enums/trip_filter.dart';
 import 'package:triptide/features/history/screen/widgets/trip_filter_chip.dart';

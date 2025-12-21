@@ -318,7 +318,6 @@
   "food_fast_food": "Fast Food",
   "food_fine_dining": "Fine Dining",
 
-  "search_error": "Something went wrong",
   "search_trips_hint": "Search trips",
   "search_initial_message": "Start typing to search your trips",
   "search_no_results": "No trips found for \"{query}\"",
@@ -329,4 +328,6 @@
       }
     }
   }
+
+
 }

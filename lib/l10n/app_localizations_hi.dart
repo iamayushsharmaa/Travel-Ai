@@ -845,9 +845,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get food_fine_dining => 'प्रीमियम डाइनिंग';
 
   @override
-  String get search_error => 'कुछ गलत हो गया';
-
-  @override
   String get search_trips_hint => 'यात्रा खोजें';
 
   @override

@@ -1763,12 +1763,6 @@ abstract class AppLocalizations {
   /// **'Fine Dining'**
   String get food_fine_dining;
 
-  /// No description provided for @search_error.
-  ///
-  /// In en, this message translates to:
-  /// **'Something went wrong'**
-  String get search_error;
-
   /// No description provided for @search_trips_hint.
   ///
   /// In en, this message translates to:

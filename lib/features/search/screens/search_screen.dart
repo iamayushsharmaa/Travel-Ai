@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:triptide/core/common/error_text.dart';
+import 'package:triptide/core/common/app_error_state.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/features/search/screens/widgets/app_bar.dart';
 import 'package:triptide/features/search/screens/widgets/initial_state.dart';
