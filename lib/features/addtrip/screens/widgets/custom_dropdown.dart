@@ -72,7 +72,6 @@ class _CustomDropdownState extends State<CustomDropdown> {
           decoration: InputDecoration(
             hintText: '${context.l10n.select} ${widget.label.toLowerCase()}',
 
-            // ONLY dynamic things here 👇
             prefixIcon: Icon(
               widget.icon,
               color: _isFocused ? cs.primary : theme.iconTheme.color,
@@ -80,7 +79,6 @@ class _CustomDropdownState extends State<CustomDropdown> {
           ),
 
           dropdownColor: cs.surface,
-
           icon: Icon(
             Icons.keyboard_arrow_down,
             color: _isFocused ? cs.primary : theme.iconTheme.color,

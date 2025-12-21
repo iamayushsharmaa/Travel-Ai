@@ -30,7 +30,7 @@ class OnBoardingPage extends ConsumerWidget {
                     const Spacer(flex: 2),
                     const SignInButton(),
                     ContinueWithEmailButton(
-                      onPressed: () => context.go('/signin'),
+                      onPressed: () => context.goNamed('signIn'),
                     ),
                     const SizedBox(height: 10),
                   ],

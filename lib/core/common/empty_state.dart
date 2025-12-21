@@ -1,43 +1,57 @@
 import 'package:flutter/material.dart';
 
+import '../extensions/context_theme.dart';
+
 class EmptyState extends StatelessWidget {
   final IconData icon;
   final String title;
   final String? subtitle;
+  final Widget? action;
 
   const EmptyState({
     super.key,
     required this.icon,
     required this.title,
     this.subtitle,
+    this.action,
   });
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 64, color: Colors.grey.shade300),
+            Icon(
+              icon,
+              size: 64,
+              color: context.colors.onSurface.withOpacity(0.3),
+            ),
             const SizedBox(height: 16),
+
             Text(
               title,
-              style: TextStyle(
-                fontSize: 16,
+              textAlign: TextAlign.center,
+              style: context.text.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
-                color: Colors.grey.shade600,
+                color: context.colors.onSurface.withOpacity(0.7),
               ),
             ),
+
             if (subtitle != null) ...[
               const SizedBox(height: 6),
               Text(
                 subtitle!,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
+                style: context.text.bodyMedium?.copyWith(
+                  color: context.colors.onSurface.withOpacity(0.5),
+                ),
               ),
             ],
+
+            if (action != null) ...[const SizedBox(height: 20), action!],
           ],
         ),
       ),

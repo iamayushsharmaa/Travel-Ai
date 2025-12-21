@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:triptide/core/common/app_error_state.dart';
-import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/features/trip/screen/widgets/accomodation_section.dart';
 import 'package:triptide/features/trip/screen/widgets/budget_card.dart';
 import 'package:triptide/features/trip/screen/widgets/map_section.dart';
@@ -16,6 +14,7 @@ import 'package:triptide/features/trip/screen/widgets/trip_timeline.dart';
 import 'package:triptide/features/trip/screen/widgets/weather_section.dart';
 
 import '../../../core/common/app_dialog.dart';
+import '../../../core/common/async_view.dart';
 import '../../../core/enums/trip_status.dart';
 import '../../../core/extensions/context_l10n.dart';
 import '../../../core/extensions/context_snackbar.dart';
@@ -31,21 +30,9 @@ class TripDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final tripAsync = ref.watch(tripByIdProvider(travelId));
 
-    return tripAsync.when(
-      data: (trip) => _buildTripContent(context, ref, trip),
-      error:
-          (error, _) => AppErrorState(
-            title: context.l10n.somethingWentWrong,
-            message: error.toString(),
-            showIcon: true,
-            onRetry: () => ref.invalidate(tripByIdProvider(travelId)),
-          ),
-      loading:
-          () => Loader(
-            withScaffold: true,
-            title: context.l10n.loading,
-            onBack: () => context.pop(),
-          ),
+    return AsyncView(
+      value: tripAsync,
+      builder: (trip) => _buildTripContent(context, ref, trip),
     );
   }
 

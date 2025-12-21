@@ -12,21 +12,27 @@ class AppSnackBar {
   }) {
     final cs = context.colors;
 
-    Color backgroundColor;
-    IconData icon;
+    late Color backgroundColor;
+    late Color foregroundColor;
+    late IconData icon;
 
     switch (type) {
       case SnackType.success:
         backgroundColor = cs.primary;
+        foregroundColor = cs.onPrimary;
         icon = Icons.check_circle_outline;
         break;
+
       case SnackType.error:
         backgroundColor = cs.error;
+        foregroundColor = cs.onError;
         icon = Icons.error_outline;
         break;
+
       case SnackType.info:
       default:
-        backgroundColor = cs.surface;
+        backgroundColor = cs.surfaceVariant;
+        foregroundColor = cs.onSurfaceVariant;
         icon = Icons.info_outline;
     }
 
@@ -42,13 +48,13 @@ class AppSnackBar {
           ),
           content: Row(
             children: [
-              Icon(icon, color: cs.onPrimary),
+              Icon(icon, color: foregroundColor),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   message,
                   style: context.text.bodyMedium?.copyWith(
-                    color: cs.onPrimary,
+                    color: foregroundColor,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triptide/core/common/async_view.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/extensions/context_l10n.dart';
 import 'package:triptide/features/trip/screen/widgets/month_widget.dart';
 
 import '../../../core/common/app_error_state.dart';
+import '../../../core/common/empty_state.dart';
 import '../../../core/extensions/context_theme.dart';
 import '../../../shared/widgets/trip_view.dart';
 import '../provider/user_trips_provider.dart';
@@ -52,11 +54,6 @@ class _HomePageState extends ConsumerState<HomePage> {
           icon: Icons.search,
           onTap: () => context.pushNamed('search'),
         ),
-        // _AppBarAction(
-        //   icon: Icons.person,
-        //   onTap: () => context.pushNamed('profile'),
-        //   isLast: true,
-        // ),
       ],
     );
   }
@@ -73,12 +70,9 @@ class _HomePageState extends ConsumerState<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 8),
-            monthCountAsync.when(
-              data: (count) => MonthWidget(count.thisMonth, count.lastMonth),
-              error:
-                  (error, stackTrace) =>
-                      AppErrorState(message: error.toString()),
-              loading: () => const Loader(),
+            AsyncView(
+              value: monthCountAsync,
+              builder: (count) => MonthWidget(count.thisMonth, count.lastMonth),
             ),
             const SizedBox(height: 20),
             Text(context.l10n.yourTrips, style: theme.textTheme.displaySmall),
@@ -88,20 +82,30 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  Widget _buildTripsList(BuildContext context, AsyncValue usersTrip) {
+  Widget _buildTripsList(
+    BuildContext context,
+    AsyncValue<List<dynamic>> usersTrip,
+  ) {
     return usersTrip.when(
-      data: (data) {
-        if (data.isEmpty) {
-          return _buildEmptyState(context);
+      loading: () => const SliverToBoxAdapter(child: Center(child: Loader())),
+      error:
+          (e, _) =>
+              SliverToBoxAdapter(child: AppErrorState(message: e.toString())),
+      data: (trips) {
+        if (trips.isEmpty) {
+          return SliverToBoxAdapter(
+            child: EmptyState(
+              title: context.l10n.noTripsYet,
+              icon: Icons.travel_explore_outlined,
+            ),
+          );
         }
+
         return SliverList(
-          delegate: SliverChildBuilderDelegate(childCount: data.length, (
-            context,
-            index,
-          ) {
-            final trip = data[index];
+          delegate: SliverChildBuilderDelegate((context, index) {
+            final trip = trips[index];
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TripView(
                 trip: trip,
                 onTripClicked:
@@ -111,14 +115,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
               ),
             );
-          }),
+          }, childCount: trips.length),
         );
       },
-      error:
-          (error, stackTrace) => SliverToBoxAdapter(
-            child: Center(child: AppErrorState(message: error.toString())),
-          ),
-      loading: () => const SliverToBoxAdapter(child: Center(child: Loader())),
     );
   }
 

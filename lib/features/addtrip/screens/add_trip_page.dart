@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/features/addtrip/screens/widgets/date_budget_step.dart';
 import 'package:triptide/features/addtrip/screens/widgets/destination_step.dart';
+import 'package:triptide/features/addtrip/screens/widgets/navigation_button.dart';
 import 'package:triptide/features/addtrip/screens/widgets/personal_preference_step.dart';
+import 'package:triptide/features/addtrip/screens/widgets/stepper_header.dart';
 import 'package:triptide/features/addtrip/screens/widgets/travel_preference_step.dart';
 
+import '../../../core/common/app_snackbar.dart';
 import '../../../core/enums/budget_type.dart';
 import '../../../core/enums/currency.dart';
 import '../../../core/enums/trip_type.dart';
 import '../../../core/extensions/context_l10n.dart';
+import '../../../core/extensions/context_theme.dart';
 import '../models/TripPlanRequest.dart';
 import '../providers/travel_provider.dart';
 
@@ -81,26 +86,32 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
   String _getValidationMessage() {
     switch (_currentStep) {
       case 0:
-        if (_destinationController.text.isEmpty)
+        if (_destinationController.text.isEmpty) {
           return context.l10n.validationEnterDestination;
-        if (_selectedTripType == null)
+        }
+        if (_selectedTripType == null) {
           return context.l10n.validationSelectTripType;
+        }
         return '';
       case 1:
         if (_startDate == null) return context.l10n.validationSelectStartDate;
         if (_endDate == null) return context.l10n.validationSelectEndDate;
-        if (_budgetController.text.isEmpty)
+        if (_budgetController.text.isEmpty) {
           return context.l10n.validationEnterBudget;
+        }
         return '';
       case 2:
-        if (_selectedInterests.isEmpty)
+        if (_selectedInterests.isEmpty) {
           return context.l10n.validationSelectInterest;
-        if (_selectedCompanion.isEmpty)
+        }
+        if (_selectedCompanion.isEmpty) {
           return context.l10n.validationSelectCompanion;
+        }
         return '';
       case 3:
-        if (_accommodation.isEmpty)
+        if (_accommodation.isEmpty) {
           return context.l10n.validationSelectAccommodation;
+        }
         if (_transport.isEmpty) return context.l10n.validationSelectTransport;
         if (_pace.isEmpty) return context.l10n.validationSelectPace;
         if (_food.isEmpty) return context.l10n.validationSelectFood;
@@ -114,7 +125,11 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
     FocusScope.of(context).unfocus();
 
     if (!_isCurrentStepValid()) {
-      _showValidationError();
+      AppSnackBar.show(
+        context,
+        message: context.l10n.failedCreateTrip,
+        type: SnackType.error,
+      );
       return;
     }
 
@@ -140,18 +155,6 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
         curve: Curves.easeInOut,
       );
     }
-  }
-
-  void _showValidationError() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(_getValidationMessage()),
-        backgroundColor: Colors.red.shade400,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        margin: const EdgeInsets.all(16),
-      ),
-    );
   }
 
   Future<void> _submitTrip() async {
@@ -191,16 +194,10 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${context.l10n.failedCreateTrip}: $e'),
-            backgroundColor: Colors.red.shade400,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin: const EdgeInsets.all(16),
-          ),
+        AppSnackBar.show(
+          context,
+          message: context.l10n.failedCreateTrip,
+          type: SnackType.error,
         );
       }
     } finally {
@@ -214,111 +211,48 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
     final progress = (_currentStep + 1) / _totalSteps;
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      appBar: _buildAppBar(),
-      body: isLoading ? _buildLoadingState() : _buildContent(progress),
+      backgroundColor: context.colors.background,
+      appBar: _buildAppBar(context),
+      body:
+          isLoading
+              ? Loader(
+                withScaffold: false,
+                title: context.l10n.creatingPerfectTrip,
+              )
+              : _buildContent(context, progress),
     );
   }
 
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    final cs = context.colors;
+
     return AppBar(
       elevation: 0,
-      backgroundColor: Colors.white,
-      surfaceTintColor: Colors.white,
+      backgroundColor: cs.surface,
+      surfaceTintColor: cs.surface,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.black87),
+        icon: Icon(Icons.arrow_back, color: cs.onSurface),
         onPressed: () => Navigator.of(context).pop(),
       ),
-      title: Text(
-        context.l10n.planYourTrip,
-        style: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w600,
-          color: Colors.black87,
-        ),
-      ),
+      title: Text(context.l10n.planYourTrip, style: context.text.titleLarge),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
-        child: Container(color: Colors.grey.shade200, height: 1),
+        child: Divider(height: 1, color: cs.outlineVariant),
       ),
     );
   }
 
-  Widget _buildLoadingState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator(),
-          const SizedBox(height: 24),
-          Text(
-            context.l10n.creatingPerfectTrip,
-            style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContent(double progress) {
+  Widget _buildContent(BuildContext context, double progress) {
     return SafeArea(
       child: Column(
         children: [
-          _buildProgressIndicator(progress),
-          _buildStepIndicator(),
+          StepperHeader(
+            progress: progress,
+            stepText: context.l10n.stepOf(_currentStep + 1, _totalSteps),
+            stepTitle: _getStepTitle(),
+          ),
           Expanded(child: _buildPageView()),
-          _buildNavigationButtons(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProgressIndicator(double progress) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      color: Colors.white,
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 8,
-              backgroundColor: Colors.grey.shade200,
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                Color(0xFF2196F3),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStepIndicator() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      color: Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            context.l10n.stepOf(_currentStep + 1, _totalSteps),
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey.shade600,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            '• ${_getStepTitle()}',
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF2196F3),
-            ),
-          ),
+          _buildNavigationButtons(context),
         ],
       ),
     );
@@ -398,14 +332,16 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
     );
   }
 
-  Widget _buildNavigationButtons() {
+  Widget _buildNavigationButtons(BuildContext context) {
+    final cs = context.colors;
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: cs.shadow.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -417,7 +353,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
           children: [
             if (_currentStep > 0) ...[
               Expanded(
-                child: _NavigationButton(
+                child: NavigationButton(
                   label: context.l10n.back,
                   onPressed: _previousStep,
                   isSecondary: true,
@@ -426,65 +362,18 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
               const SizedBox(width: 16),
             ],
             Expanded(
-              flex: _currentStep == 0 ? 1 : 1,
-              child: _NavigationButton(
+              child: NavigationButton(
                 label:
                     _currentStep == _totalSteps - 1
                         ? context.l10n.createTrip
                         : context.l10n.next,
-                onPressed: _nextStep,
                 icon:
                     _currentStep == _totalSteps - 1
                         ? Icons.check
                         : Icons.arrow_forward,
+                onPressed: _nextStep,
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _NavigationButton extends StatelessWidget {
-  final String label;
-  final VoidCallback onPressed;
-  final bool isSecondary;
-  final IconData? icon;
-
-  const _NavigationButton({
-    required this.label,
-    required this.onPressed,
-    this.isSecondary = false,
-    this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 52,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          backgroundColor:
-              isSecondary ? Colors.grey.shade100 : const Color(0xFF2196F3),
-          foregroundColor: isSecondary ? Colors.black87 : Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              label,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
-            if (icon != null) ...[
-              const SizedBox(width: 8),
-              Icon(icon, size: 20),
-            ],
           ],
         ),
       ),

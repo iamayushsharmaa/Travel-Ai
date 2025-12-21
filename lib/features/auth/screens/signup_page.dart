@@ -136,7 +136,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         Align(
                           alignment: Alignment.center,
                           child: TextButton(
-                            onPressed: () => context.go('/signin'),
+                            onPressed: () => context.goNamed('signIn'),
                             child: Text(l10n.already_have_account),
                           ),
                         ),
