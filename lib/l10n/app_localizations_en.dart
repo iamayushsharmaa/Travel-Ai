@@ -843,4 +843,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get food_fine_dining => 'Fine Dining';
+
+  @override
+  String get search_error => 'Something went wrong';
+
+  @override
+  String get search_trips_hint => 'Search trips';
+
+  @override
+  String get search_initial_message => 'Start typing to search your trips';
+
+  @override
+  String search_no_results(String query) {
+    return 'No trips found for \"$query\"';
+  }
 }

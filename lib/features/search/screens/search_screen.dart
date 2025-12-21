@@ -9,6 +9,7 @@ import 'package:triptide/features/search/screens/widgets/app_bar.dart';
 import 'package:triptide/features/search/screens/widgets/initial_state.dart';
 
 import '../../../core/common/empty_state.dart';
+import '../../../core/extensions/context_l10n.dart';
 import '../../../shared/widgets/trip_view.dart';
 import '../providers/search_provider.dart';
 
@@ -62,6 +63,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final searchResult = ref.watch(searchTripProvider(_currentQuery));
+    final l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
@@ -71,7 +73,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         ),
         title: AppSearchBar(
           controller: _searchController,
-          hintText: 'Search trips',
+          hintText: l10n.search_trips_hint,
           onClear: _onClearSearch,
         ),
       ),
@@ -83,20 +85,21 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   Widget _buildSearchBody(AsyncValue searchResult) {
-    // Show initial state when no search query
+    final l10n = context.l10n;
+
+    // Initial state
     if (_currentQuery.isEmpty) {
-      return const SearchInitialState(
-        message: 'Start typing to search your trips',
+      return SearchInitialState(
+        message: l10n.search_initial_message,
         icon: Icons.travel_explore_rounded,
       );
     }
 
-    // Handle async states
     return searchResult.when(
       data: (trips) {
         if (trips.isEmpty) {
           return EmptyState(
-            title: 'No trips found for "$_currentQuery"',
+            title: l10n.search_no_results(_currentQuery),
             icon: Icons.search_off_rounded,
           );
         }
@@ -104,7 +107,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       },
       loading: () => const Loader(),
       error:
-          (error, stackTrace) => AppErrorState(
+          (error, _) => AppErrorState(
             message: error.toString(),
             onRetry: () => ref.invalidate(searchTripProvider),
           ),

@@ -843,4 +843,18 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get food_fine_dining => 'प्रीमियम डाइनिंग';
+
+  @override
+  String get search_error => 'कुछ गलत हो गया';
+
+  @override
+  String get search_trips_hint => 'यात्रा खोजें';
+
+  @override
+  String get search_initial_message => 'अपनी यात्राओं को खोजने के लिए टाइप करना शुरू करें';
+
+  @override
+  String search_no_results(String query) {
+    return '\"$query\" के लिए कोई यात्रा नहीं मिली';
+  }
 }

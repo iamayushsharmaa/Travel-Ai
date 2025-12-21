@@ -1762,6 +1762,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fine Dining'**
   String get food_fine_dining;
+
+  /// No description provided for @search_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get search_error;
+
+  /// No description provided for @search_trips_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search trips'**
+  String get search_trips_hint;
+
+  /// No description provided for @search_initial_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Start typing to search your trips'**
+  String get search_initial_message;
+
+  /// No description provided for @search_no_results.
+  ///
+  /// In en, this message translates to:
+  /// **'No trips found for \"{query}\"'**
+  String search_no_results(String query);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

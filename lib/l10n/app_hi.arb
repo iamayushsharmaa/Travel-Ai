@@ -310,7 +310,16 @@
   "food_fast_food": "फास्ट फूड",
   "food_fine_dining": "प्रीमियम डाइनिंग",
 
+  "search_error": "कुछ गलत हो गया",
   "search_trips_hint": "यात्रा खोजें",
-  "search_error": "कुछ गलत हो गया"
+  "search_initial_message": "अपनी यात्राओं को खोजने के लिए टाइप करना शुरू करें",
+  "search_no_results": "\"{query}\" के लिए कोई यात्रा नहीं मिली",
+  "@search_no_results": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  }
 
 }
