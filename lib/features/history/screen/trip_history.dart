@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:triptide/core/common/empty_state.dart';
 import 'package:triptide/core/common/app_error_state.dart';
+import 'package:triptide/core/common/empty_state.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/enums/trip_filter.dart';
+import 'package:triptide/core/extensions/context_theme.dart';
 import 'package:triptide/features/history/screen/widgets/trip_filter_chip.dart';
 
 import '../../../core/extensions/context_l10n.dart';
@@ -23,10 +24,9 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
   Widget build(BuildContext context) {
     final selectedFilter = ref.watch(tripHistoryNotifierProvider);
     final tripsAsync = ref.watch(historyTripsProvider);
-    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: context.theme.scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           _buildSliverAppBar(context),
@@ -45,8 +45,7 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
   }
 
   Widget _buildSliverAppBar(BuildContext context) {
-    final theme = Theme.of(context);
-    final cs = theme.colorScheme;
+    final cs = context.theme.colorScheme;
     final l10n = context.l10n;
 
     return SliverAppBar(
@@ -82,10 +81,7 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  Text(
-                    l10n.travelHistory,
-                    style: theme.textTheme.headlineLarge,
-                  ),
+                  Text(l10n.travelHistory, style: context.text.headlineLarge),
                 ],
               ),
             ),
