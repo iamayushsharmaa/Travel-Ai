@@ -75,7 +75,9 @@ class _HomePageState extends ConsumerState<HomePage> {
             const SizedBox(height: 8),
             monthCountAsync.when(
               data: (count) => MonthWidget(count.thisMonth, count.lastMonth),
-              error: (error, stackTrace) => ErrorText(error: error.toString()),
+              error:
+                  (error, stackTrace) =>
+                      AppErrorState(message: error.toString()),
               loading: () => const Loader(),
             ),
             const SizedBox(height: 20),
@@ -114,7 +116,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       },
       error:
           (error, stackTrace) => SliverToBoxAdapter(
-            child: Center(child: ErrorText(error: error.toString())),
+            child: Center(child: AppErrorState(message: error.toString())),
           ),
       loading: () => const SliverToBoxAdapter(child: Center(child: Loader())),
     );

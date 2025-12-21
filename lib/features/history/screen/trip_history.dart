@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triptide/core/common/empty_state.dart';
 import 'package:triptide/core/common/error_text.dart';
 import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/core/enums/trip_filter.dart';
@@ -94,8 +95,6 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
     );
   }
 
-  // ---------------- FILTER SECTION ----------------
-
   Widget _buildFilterSection(BuildContext context, TripFilter selectedFilter) {
     final theme = Theme.of(context);
     final l10n = context.l10n;
@@ -136,17 +135,22 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
     );
   }
 
-  // ---------------- TRIPS LIST ----------------
-
   Widget _buildTripsList(AsyncValue tripsAsync) {
     return tripsAsync.when(
       loading: () => const SliverFillRemaining(child: Loader()),
       error:
-          (error, _) =>
-              SliverFillRemaining(child: ErrorText(error: error.toString())),
+          (error, _) => SliverFillRemaining(
+            child: AppErrorState(message: error.toString()),
+          ),
       data: (trips) {
         if (trips.isEmpty) {
-          return SliverFillRemaining(child: _buildEmptyState());
+          return SliverFillRemaining(
+            child: EmptyState(
+              icon: Icons.explore_off_rounded,
+              title: context.l10n.noTripsYet,
+              subtitle: context.l10n.noTripsMessage,
+            ),
+          );
         }
 
         return SliverPadding(
@@ -169,38 +173,6 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
           ),
         );
       },
-    );
-  }
-
-  // ---------------- EMPTY STATE ----------------
-
-  Widget _buildEmptyState() {
-    final theme = Theme.of(context);
-    final cs = theme.colorScheme;
-    final l10n = context.l10n;
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(32),
-            decoration: BoxDecoration(
-              color: cs.primary.withOpacity(0.08),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.explore_off_rounded,
-              size: 64,
-              color: cs.primary.withOpacity(0.6),
-            ),
-          ),
-          const SizedBox(height: 24),
-          Text(l10n.noTripsYet, style: theme.textTheme.headlineMedium),
-          const SizedBox(height: 8),
-          Text(l10n.noTripsMessage, style: theme.textTheme.bodyMedium),
-        ],
-      ),
     );
   }
 }

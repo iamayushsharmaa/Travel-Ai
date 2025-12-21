@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/extensions/context_l10n.dart';
-import 'empty_state.dart';
+import '../../../../core/common/empty_state.dart';
 
 class TripTimeline extends StatelessWidget {
   final List<dynamic> dailyPlans;

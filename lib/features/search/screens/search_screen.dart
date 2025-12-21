@@ -3,7 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:triptide/core/common/error_text.dart';
+import 'package:triptide/core/common/loader.dart';
+import 'package:triptide/features/search/screens/widgets/app_bar.dart';
+import 'package:triptide/features/search/screens/widgets/initial_state.dart';
 
+import '../../../core/common/empty_state.dart';
 import '../../../shared/widgets/trip_view.dart';
 import '../providers/search_provider.dart';
 
@@ -15,86 +20,104 @@ class SearchScreen extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
-  final TextEditingController _controller = TextEditingController();
-  Timer? _debounce;
-  String _query = "";
+  final TextEditingController _searchController = TextEditingController();
+  Timer? _debounceTimer;
+  String _currentQuery = '';
 
-  void _onSearchChanged(String value) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-
-    _debounce = Timer(const Duration(milliseconds: 400), () {
-      setState(() => _query = value.trim().toLowerCase());
-      ref.invalidate(searchTripProvider);
-    });
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchTextChanged);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
-    _debounce?.cancel();
+    _searchController.removeListener(_onSearchTextChanged);
+    _searchController.dispose();
+    _debounceTimer?.cancel();
     super.dispose();
+  }
+
+  void _onSearchTextChanged() {
+    _debounceTimer?.cancel();
+
+    _debounceTimer = Timer(const Duration(milliseconds: 400), () {
+      final query = _searchController.text.trim().toLowerCase();
+      if (_currentQuery != query) {
+        setState(() => _currentQuery = query);
+        ref.invalidate(searchTripProvider);
+      }
+    });
+  }
+
+  void _onClearSearch() {
+    setState(() => _currentQuery = '');
+    ref.invalidate(searchTripProvider);
+  }
+
+  void _onTripTap(dynamic trip) {
+    context.pushNamed('trip', pathParameters: {'travelId': trip.travelId});
   }
 
   @override
   Widget build(BuildContext context) {
-    final result = ref.watch(searchTripProvider(_query));
+    final searchResult = ref.watch(searchTripProvider(_currentQuery));
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade100,
-        elevation: 0.5,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: TextField(
-            controller: _controller,
-            onChanged: _onSearchChanged,
-            decoration: InputDecoration(
-              hintText: 'Search trips',
-              filled: true,
-              fillColor: Colors.white,
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: BorderSide.none,
-              ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 0),
-            ),
-          ),
+        title: AppSearchBar(
+          controller: _searchController,
+          hintText: 'Search trips',
+          onClear: _onClearSearch,
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-        child: Column(
-          children: [
-            Expanded(
-              child: result.when(
-                data:
-                    (items) => ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        final trip = items[index];
-                        return TripView(
-                          trip: trip,
-                          onTripClicked:
-                              (trip) => context.pushNamed(
-                                'trip',
-                                pathParameters: {'travelId': trip.travelId},
-                              ),
-                        );
-                      },
-                    ),
-                loading: () => Center(child: CircularProgressIndicator()),
-                error: (e, _) => Text("Error: $e"),
-              ),
-            ),
-          ],
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: _buildSearchBody(searchResult),
       ),
+    );
+  }
+
+  Widget _buildSearchBody(AsyncValue searchResult) {
+    // Show initial state when no search query
+    if (_currentQuery.isEmpty) {
+      return const SearchInitialState(
+        message: 'Start typing to search your trips',
+        icon: Icons.travel_explore_rounded,
+      );
+    }
+
+    // Handle async states
+    return searchResult.when(
+      data: (trips) {
+        if (trips.isEmpty) {
+          return EmptyState(
+            title: 'No trips found for "$_currentQuery"',
+            icon: Icons.search_off_rounded,
+          );
+        }
+        return _buildTripList(trips);
+      },
+      loading: () => const Loader(),
+      error:
+          (error, stackTrace) => AppErrorState(
+            message: error.toString(),
+            onRetry: () => ref.invalidate(searchTripProvider),
+          ),
+    );
+  }
+
+  Widget _buildTripList(List trips) {
+    return ListView.builder(
+      itemCount: trips.length,
+      itemBuilder: (context, index) {
+        final trip = trips[index];
+        return TripView(trip: trip, onTripClicked: _onTripTap);
+      },
     );
   }
 }
