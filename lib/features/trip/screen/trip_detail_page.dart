@@ -7,6 +7,7 @@ import 'package:triptide/core/common/loader.dart';
 import 'package:triptide/features/trip/screen/widgets/accomodation_section.dart';
 import 'package:triptide/features/trip/screen/widgets/budget_card.dart';
 import 'package:triptide/features/trip/screen/widgets/map_section.dart';
+import 'package:triptide/features/trip/screen/widgets/mark_visited_button.dart';
 import 'package:triptide/features/trip/screen/widgets/overview_card.dart';
 import 'package:triptide/features/trip/screen/widgets/section_header.dart';
 import 'package:triptide/features/trip/screen/widgets/transport_section.dart';
@@ -14,6 +15,8 @@ import 'package:triptide/features/trip/screen/widgets/trip_hero_image.dart';
 import 'package:triptide/features/trip/screen/widgets/trip_timeline.dart';
 import 'package:triptide/features/trip/screen/widgets/weather_section.dart';
 
+import '../../../core/common/app_dialog.dart';
+import '../../../core/enums/trip_status.dart';
 import '../../../core/extensions/context_l10n.dart';
 import '../../../core/extensions/context_snackbar.dart';
 import '../../../core/extensions/context_theme.dart';
@@ -113,6 +116,25 @@ class TripDetailPage extends ConsumerWidget {
                   const SizedBox(height: 24),
 
                   BudgetCard(budget: trip.budget?.toString() ?? '0'),
+                  const SizedBox(height: 24),
+
+                  MarkVisitedButton(
+                    isVisited: trip.status == TripStatus.visited,
+                    onPressed: () async {
+                      try {
+                        await ref
+                            .read(tripStatusNotifierProvider.notifier)
+                            .markAsVisited(travelId);
+
+                        if (!context.mounted) return;
+                        context.showSuccessSnack(context.l10n.mark_as_visited);
+                        ref.invalidate(tripByIdProvider(travelId));
+                      } catch (_) {
+                        if (!context.mounted) return;
+                        context.showErrorSnack(context.l10n.somethingWentWrong);
+                      }
+                    },
+                  ),
 
                   const SizedBox(height: 32),
                 ],
@@ -183,36 +205,13 @@ class TripDetailPage extends ConsumerWidget {
     WidgetRef ref,
     dynamic trip,
   ) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder:
-          (_) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            title: Text(context.l10n.deleteTrip),
-            content: Text(
-              '${context.l10n.deleteConfirmation} ${trip.destination}. '
-              '${context.l10n.actionUndone}',
-              style: context.text.bodyMedium,
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text(context.l10n.cancel),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                style: TextButton.styleFrom(
-                  backgroundColor: context.colors.error.withOpacity(0.1),
-                ),
-                child: Text(
-                  context.l10n.delete,
-                  style: TextStyle(color: context.colors.error),
-                ),
-              ),
-            ],
-          ),
+    final confirmed = await AppDialog.confirm(
+      context,
+      title: context.l10n.deleteTrip,
+      message: context.l10n.deleteConfirmation,
+      confirmText: context.l10n.delete,
+      cancelText: context.l10n.cancel,
+      destructive: true,
     );
 
     if (confirmed == true && context.mounted) {

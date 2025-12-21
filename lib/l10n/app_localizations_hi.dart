@@ -854,4 +854,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String search_no_results(String query) {
     return '\"$query\" के लिए कोई यात्रा नहीं मिली';
   }
+
+  @override
+  String get mark_as_visited => 'देखी गई यात्रा के रूप में चिह्नित करें';
+
+  @override
+  String get visited => 'देखा गया';
+
+  @override
+  String get planned => 'योजना बनाई गई';
 }

@@ -327,7 +327,11 @@
         "type": "String"
       }
     }
-  }
+  },
+  "mark_as_visited": "Mark as visited",
+
+  "visited": "Visited",
+  "planned": "Planned"
 
 
 }

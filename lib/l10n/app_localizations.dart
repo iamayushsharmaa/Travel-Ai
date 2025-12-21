@@ -1780,6 +1780,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No trips found for \"{query}\"'**
   String search_no_results(String query);
+
+  /// No description provided for @mark_as_visited.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as visited'**
+  String get mark_as_visited;
+
+  /// No description provided for @visited.
+  ///
+  /// In en, this message translates to:
+  /// **'Visited'**
+  String get visited;
+
+  /// No description provided for @planned.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned'**
+  String get planned;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

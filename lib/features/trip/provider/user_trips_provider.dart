@@ -1,12 +1,23 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../core/enums/trip_filter.dart';
+import '../../../core/enums/trip_status.dart';
 import '../../../shared/models/travel_db_model.dart';
 import '../../auth/provider/auth_providers.dart';
 import '../model/month_this_count.dart';
 import '../repository/user_trips_repository.dart';
 
 part 'user_trips_provider.g.dart';
+
+@riverpod
+class TripStatusNotifier extends _$TripStatusNotifier {
+  @override
+  void build() {}
+
+  Future<void> markAsVisited(String travelId) async {
+    final repo = ref.read(userTripsRepositoryProvider);
+    await repo.updateStatus(travelId, TripStatus.visited);
+  }
+}
 
 @riverpod
 Stream<List<TravelDbModel>> userTrips(UserTripsRef ref) {
@@ -24,7 +35,6 @@ Future<TravelDbModel> tripById(TripByIdRef ref, String travelId) async {
 
   return result.fold((f) => throw Exception(f.message), (trip) => trip);
 }
-
 
 @riverpod
 Future<void> deleteTrip(DeleteTripRef ref, String travelId) async {

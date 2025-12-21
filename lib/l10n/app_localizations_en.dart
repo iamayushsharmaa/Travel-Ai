@@ -854,4 +854,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String search_no_results(String query) {
     return 'No trips found for \"$query\"';
   }
+
+  @override
+  String get mark_as_visited => 'Mark as visited';
+
+  @override
+  String get visited => 'Visited';
+
+  @override
+  String get planned => 'Planned';
 }

@@ -8,6 +8,8 @@ import 'package:triptide/features/settings/screens/widgets/settings_section.dart
 import 'package:triptide/features/settings/screens/widgets/settings_tile.dart';
 import 'package:triptide/features/settings/screens/widgets/theme_mode_tile.dart';
 
+import '../../../core/common/app_dialog.dart';
+import '../../../core/common/async_view.dart';
 import '../../auth/provider/auth_providers.dart';
 import '../provider/settings_provider.dart';
 
@@ -48,10 +50,9 @@ class SettingsScreen extends ConsumerWidget {
                 SettingsSection(
                   title: context.l10n.preferences,
                   children: [
-                    themeAsync.when(
-                      loading: () => const SizedBox(),
-                      error: (_, __) => const SizedBox(),
-                      data: (themeMode) {
+                    AsyncView<ThemeMode>(
+                      value: themeAsync,
+                      builder: (themeMode) {
                         final isDark = themeMode == ThemeMode.dark;
 
                         return ThemeModeTile(
@@ -65,10 +66,9 @@ class SettingsScreen extends ConsumerWidget {
                       },
                     ),
                     const SizedBox(height: 12),
-                    localeAsync.when(
-                      loading: () => const SizedBox(),
-                      error: (_, __) => const SizedBox(),
-                      data: (locale) {
+                    AsyncView<Locale>(
+                      value: localeAsync,
+                      builder: (locale) {
                         return LanguageSelectorTile(
                           currentLocale: locale,
                           onLanguageSelected: (newLocale) {
@@ -223,107 +223,18 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context, WidgetRef ref) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            backgroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            contentPadding: const EdgeInsets.all(24),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFEF4444).withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.logout_rounded,
-                    color: Color(0xFFEF4444),
-                    size: 32,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  context.l10n.logOut,
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF1E293B),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  context.l10n.logOutConfirmation,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Color(0xFF64748B),
-                    height: 1.4,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          backgroundColor: const Color(0xFFF1F5F9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          context.l10n.cancel,
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF64748B),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Use existing auth provider's signOut method
-                          ref
-                              .read(authStateNotifierProvider.notifier)
-                              .signOut();
-                          Navigator.pop(context);
-                          // Navigation is handled in your auth provider
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          backgroundColor: const Color(0xFFEF4444),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          context.l10n.logOut,
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+  Future<void> _showLogoutDialog(BuildContext context, WidgetRef ref) async {
+    final confirmed = await AppDialog.destructive(
+      context,
+      icon: Icons.logout_rounded,
+      title: context.l10n.logOut,
+      message: context.l10n.logOutConfirmation,
+      confirmText: context.l10n.logOut,
+      cancelText: context.l10n.cancel,
     );
+
+    if (confirmed == true) {
+      ref.read(authStateNotifierProvider.notifier).signOut();
+    }
   }
 }
