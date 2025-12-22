@@ -13,6 +13,11 @@ class TravelDbModel extends Equatable {
   final String userId;
   @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
   final DateTime createdAt;
+  @JsonKey(
+    fromJson: _dateTimeFromTimestampNullable,
+    toJson: _dateTimeToTimestampNullable,
+  )
+  final DateTime? updatedAt;
   final String destination;
   final String destinationLowerCase;
   final String? currentLocation;
@@ -36,6 +41,8 @@ class TravelDbModel extends Equatable {
   final List<String> additionalTips;
   final String? budget;
   final bool isFavorite;
+  final String language;
+  final bool generatedByAi;
 
   @JsonKey(fromJson: _tripStatusFromJson, toJson: _tripStatusToJson)
   final TripStatus status;
@@ -73,6 +80,9 @@ class TravelDbModel extends Equatable {
     this.isFavorite = false,
     required this.status,
     this.visitedAt,
+    this.updatedAt,
+    required this.language,
+    required this.generatedByAi,
   });
 
   factory TravelDbModel.fromJson(Map<String, dynamic> json) {
@@ -110,6 +120,7 @@ class TravelDbModel extends Equatable {
     travelId,
     userId,
     createdAt,
+    updatedAt,
     destination,
     destinationLowerCase,
     currentLocation,
@@ -133,6 +144,8 @@ class TravelDbModel extends Equatable {
     isFavorite,
     status,
     visitedAt,
+    language,
+    generatedByAi,
   ];
 
   static TripStatus _tripStatusFromJson(String? value) =>

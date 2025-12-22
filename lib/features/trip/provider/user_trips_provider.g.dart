@@ -6,26 +6,8 @@ part of 'user_trips_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userTripsHash() => r'fa00e67bedf17ac79e3b1566cf82f750a4b06ce9';
-
-/// See also [userTrips].
-@ProviderFor(userTrips)
-final userTripsProvider =
-    AutoDisposeStreamProvider<List<TravelDbModel>>.internal(
-      userTrips,
-      name: r'userTripsProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$userTripsHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserTripsRef = AutoDisposeStreamProviderRef<List<TravelDbModel>>;
-String _$tripByIdHash() => r'9da27e6e8387120ee64e41ce655e1b302fe42944';
+String _$regenerateTripInCurrentLanguageHash() =>
+    r'a17cd6662ddf48c844e67409209437bf2bfc2b4c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -47,6 +29,153 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [regenerateTripInCurrentLanguage].
+@ProviderFor(regenerateTripInCurrentLanguage)
+const regenerateTripInCurrentLanguageProvider =
+    RegenerateTripInCurrentLanguageFamily();
+
+/// See also [regenerateTripInCurrentLanguage].
+class RegenerateTripInCurrentLanguageFamily extends Family<AsyncValue<void>> {
+  /// See also [regenerateTripInCurrentLanguage].
+  const RegenerateTripInCurrentLanguageFamily();
+
+  /// See also [regenerateTripInCurrentLanguage].
+  RegenerateTripInCurrentLanguageProvider call(String travelId) {
+    return RegenerateTripInCurrentLanguageProvider(travelId);
+  }
+
+  @override
+  RegenerateTripInCurrentLanguageProvider getProviderOverride(
+    covariant RegenerateTripInCurrentLanguageProvider provider,
+  ) {
+    return call(provider.travelId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'regenerateTripInCurrentLanguageProvider';
+}
+
+/// See also [regenerateTripInCurrentLanguage].
+class RegenerateTripInCurrentLanguageProvider
+    extends AutoDisposeFutureProvider<void> {
+  /// See also [regenerateTripInCurrentLanguage].
+  RegenerateTripInCurrentLanguageProvider(String travelId)
+    : this._internal(
+        (ref) => regenerateTripInCurrentLanguage(
+          ref as RegenerateTripInCurrentLanguageRef,
+          travelId,
+        ),
+        from: regenerateTripInCurrentLanguageProvider,
+        name: r'regenerateTripInCurrentLanguageProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$regenerateTripInCurrentLanguageHash,
+        dependencies: RegenerateTripInCurrentLanguageFamily._dependencies,
+        allTransitiveDependencies:
+            RegenerateTripInCurrentLanguageFamily._allTransitiveDependencies,
+        travelId: travelId,
+      );
+
+  RegenerateTripInCurrentLanguageProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.travelId,
+  }) : super.internal();
+
+  final String travelId;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(RegenerateTripInCurrentLanguageRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: RegenerateTripInCurrentLanguageProvider._internal(
+        (ref) => create(ref as RegenerateTripInCurrentLanguageRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        travelId: travelId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _RegenerateTripInCurrentLanguageProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RegenerateTripInCurrentLanguageProvider &&
+        other.travelId == travelId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, travelId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin RegenerateTripInCurrentLanguageRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `travelId` of this provider.
+  String get travelId;
+}
+
+class _RegenerateTripInCurrentLanguageProviderElement
+    extends AutoDisposeFutureProviderElement<void>
+    with RegenerateTripInCurrentLanguageRef {
+  _RegenerateTripInCurrentLanguageProviderElement(super.provider);
+
+  @override
+  String get travelId =>
+      (origin as RegenerateTripInCurrentLanguageProvider).travelId;
+}
+
+String _$userTripsHash() => r'fa00e67bedf17ac79e3b1566cf82f750a4b06ce9';
+
+/// See also [userTrips].
+@ProviderFor(userTrips)
+final userTripsProvider =
+    AutoDisposeStreamProvider<List<TravelDbModel>>.internal(
+      userTrips,
+      name: r'userTripsProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$userTripsHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef UserTripsRef = AutoDisposeStreamProviderRef<List<TravelDbModel>>;
+String _$tripByIdHash() => r'9da27e6e8387120ee64e41ce655e1b302fe42944';
 
 /// See also [tripById].
 @ProviderFor(tripById)
@@ -303,7 +432,7 @@ final monthTripCountProvider =
 // ignore: unused_element
 typedef MonthTripCountRef = AutoDisposeProviderRef<AsyncValue<MonthTripCount>>;
 String _$tripStatusNotifierHash() =>
-    r'2189409489687d552f71c9452c9b28ae3cb3c928';
+    r'd1e90b415a85a112d44ae9af5ae8ff26ee8a6499';
 
 /// See also [TripStatusNotifier].
 @ProviderFor(TripStatusNotifier)

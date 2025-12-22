@@ -4,9 +4,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:triptide/core/constant/firebase_constant.dart';
 import 'package:triptide/core/failure.dart';
 import 'package:triptide/features/addtrip/mapper/travel_model_mapper.dart';
-import 'package:triptide/shared/models/travel_db_model.dart';
 import 'package:triptide/features/addtrip/repository/api_service.dart';
 import 'package:triptide/features/auth/provider/auth_providers.dart';
+import 'package:triptide/shared/models/travel_db_model.dart';
 
 part 'travel_repository.g.dart';
 
@@ -35,6 +35,7 @@ class TravelRepository {
     required String prompt,
     required String userId,
     required String travelId,
+    required String language,
   }) async {
     try {
       final aiTrip = await _apiService.getGeminiComplete(prompt);
@@ -43,6 +44,7 @@ class TravelRepository {
         ai: aiTrip,
         userId: userId,
         travelId: travelId,
+        language: language,
       );
 
       await _trips.doc(travelId).set(trip.toMap());

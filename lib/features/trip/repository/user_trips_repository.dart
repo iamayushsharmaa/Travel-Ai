@@ -8,22 +8,47 @@ import '../../../core/enums/trip_filter.dart';
 import '../../../core/enums/trip_status.dart';
 import '../../../core/failure.dart';
 import '../../../shared/models/travel_db_model.dart';
+import '../../addtrip/repository/api_service.dart';
 
 part 'user_trips_repository.g.dart';
 
 @riverpod
 UserTripsRepository userTripsRepository(UserTripsRepositoryRef ref) {
-  return UserTripsRepository(firestore: ref.read(firebaseFirestoreProvider));
+  return UserTripsRepository(
+    firestore: ref.read(firebaseFirestoreProvider),
+    apiService: ref.read(geminiApiServiceProvider),
+  );
 }
 
 class UserTripsRepository {
   final FirebaseFirestore _firestore;
+  final GeminiApiService _apiService;
 
-  UserTripsRepository({required FirebaseFirestore firestore})
-    : _firestore = firestore;
+  UserTripsRepository({
+    required FirebaseFirestore firestore,
+    required GeminiApiService apiService,
+  }) : _firestore = firestore,
+       _apiService = apiService;
 
   CollectionReference<Map<String, dynamic>> get _trips =>
       _firestore.collection(FirebaseConstant.trips);
+
+  Future<void> replaceAiTripContent({
+    required String travelId,
+    required String prompt,
+    required String language,
+  }) async {
+    final aiTrip = await _apiService.getGeminiComplete(prompt);
+
+    final updatedTripJson = {
+      ...aiTrip.toJson(),
+      'language': language,
+      'generatedByAi': true,
+      'updatedAt': Timestamp.now(),
+    };
+
+    await _trips.doc(travelId).update(updatedTripJson);
+  }
 
   Stream<List<TravelDbModel>> getUserTrips(String userId) {
     return _trips

@@ -1,8 +1,10 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/enums/trip_status.dart';
+import '../../../core/utilities/build_ai_prompt.dart';
 import '../../../shared/models/travel_db_model.dart';
 import '../../auth/provider/auth_providers.dart';
+import '../../settings/provider/settings_provider.dart';
 import '../model/month_this_count.dart';
 import '../repository/user_trips_repository.dart';
 
@@ -17,6 +19,29 @@ class TripStatusNotifier extends _$TripStatusNotifier {
     final repo = ref.read(userTripsRepositoryProvider);
     await repo.updateStatus(travelId, TripStatus.visited);
   }
+}
+
+@riverpod
+Future<void> regenerateTripInCurrentLanguage(
+  RegenerateTripInCurrentLanguageRef ref,
+  String travelId,
+) async {
+  final repo = ref.watch(userTripsRepositoryProvider);
+  final tripResult = await ref.read(tripByIdProvider(travelId).future);
+
+  final locale = await ref.read(languageNotifierProvider.future);
+  final languageCode = locale.languageCode;
+
+  final prompt = BuildAiPrompt.buildTripRegenerationPrompt(
+    trip: tripResult,
+    languageCode: languageCode,
+  );
+
+  await repo.replaceAiTripContent(
+    travelId: travelId,
+    prompt: prompt,
+    language: languageCode,
+  );
 }
 
 @riverpod

@@ -61,6 +61,11 @@ TravelDbModel _$TravelDbModelFromJson(
   visitedAt: TravelDbModel._dateTimeFromTimestampNullable(
     json['visitedAt'] as Timestamp?,
   ),
+  updatedAt: TravelDbModel._dateTimeFromTimestampNullable(
+    json['updatedAt'] as Timestamp?,
+  ),
+  language: json['language'] as String,
+  generatedByAi: json['generatedByAi'] as bool,
 );
 
 Map<String, dynamic> _$TravelDbModelToJson(
@@ -69,6 +74,7 @@ Map<String, dynamic> _$TravelDbModelToJson(
   'travelId': instance.travelId,
   'userId': instance.userId,
   'createdAt': TravelDbModel._dateTimeToTimestamp(instance.createdAt),
+  'updatedAt': TravelDbModel._dateTimeToTimestampNullable(instance.updatedAt),
   'destination': instance.destination,
   'destinationLowerCase': instance.destinationLowerCase,
   'currentLocation': instance.currentLocation,
@@ -91,6 +97,8 @@ Map<String, dynamic> _$TravelDbModelToJson(
   'additionalTips': instance.additionalTips,
   'budget': instance.budget,
   'isFavorite': instance.isFavorite,
+  'language': instance.language,
+  'generatedByAi': instance.generatedByAi,
   'status': TravelDbModel._tripStatusToJson(instance.status),
   'visitedAt': TravelDbModel._dateTimeToTimestampNullable(instance.visitedAt),
 };
