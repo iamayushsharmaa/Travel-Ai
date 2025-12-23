@@ -863,4 +863,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get planned => 'Planned';
+
+  @override
+  String get tripDifferentLanguageTitle => 'Trip language mismatch';
+
+  @override
+  String tripDifferentLanguageMessage(Object newLang, Object oldLang) {
+    return 'This trip was generated in $oldLang. Would you like to regenerate it in $newLang?';
+  }
+
+  @override
+  String get regenerate => 'Regenerate';
+
+  @override
+  String get keepOriginal => 'Keep original';
 }

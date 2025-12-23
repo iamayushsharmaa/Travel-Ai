@@ -331,7 +331,13 @@
   "mark_as_visited": "Mark as visited",
 
   "visited": "Visited",
-  "planned": "Planned"
+  "planned": "Planned",
+
+  "tripDifferentLanguageTitle": "Trip language mismatch",
+  "tripDifferentLanguageMessage":
+  "This trip was generated in {oldLang}. Would you like to regenerate it in {newLang}?",
+  "regenerate": "Regenerate",
+  "keepOriginal": "Keep original"
 
 
 }

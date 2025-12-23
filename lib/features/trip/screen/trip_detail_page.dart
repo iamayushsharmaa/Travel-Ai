@@ -12,6 +12,7 @@ import 'package:triptide/features/trip/screen/widgets/transport_section.dart';
 import 'package:triptide/features/trip/screen/widgets/trip_hero_image.dart';
 import 'package:triptide/features/trip/screen/widgets/trip_timeline.dart';
 import 'package:triptide/features/trip/screen/widgets/weather_section.dart';
+import 'package:triptide/shared/models/travel_db_model.dart';
 
 import '../../../core/common/app_dialog.dart';
 import '../../../core/common/async_view.dart';
@@ -19,21 +20,58 @@ import '../../../core/enums/trip_status.dart';
 import '../../../core/extensions/context_l10n.dart';
 import '../../../core/extensions/context_snackbar.dart';
 import '../../../core/extensions/context_theme.dart';
+import '../../settings/provider/settings_provider.dart';
 import '../provider/user_trips_provider.dart';
 
-class TripDetailPage extends ConsumerWidget {
+class TripDetailPage extends ConsumerStatefulWidget {
   final String travelId;
 
   const TripDetailPage({super.key, required this.travelId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tripAsync = ref.watch(tripByIdProvider(travelId));
+  ConsumerState<TripDetailPage> createState() => _TripDetailPageState();
+}
+
+class _TripDetailPageState extends ConsumerState<TripDetailPage> {
+  bool _languageDialogShown = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final tripAsync = ref.watch(tripByIdProvider(widget.travelId));
 
     return AsyncView(
       value: tripAsync,
-      builder: (trip) => _buildTripContent(context, ref, trip),
+      builder: (trip) {
+        _checkAndShowLanguageDialog(trip);
+        return _buildTripContent(context, ref, trip);
+      },
     );
+  }
+
+  void _checkAndShowLanguageDialog(TravelDbModel trip) async {
+    if (_languageDialogShown) return;
+
+    final locale = await ref.read(languageNotifierProvider.future);
+    final currentLang = locale.languageCode;
+
+    if (trip.language == currentLang) return;
+
+    _languageDialogShown = true;
+
+    final shouldRegenerate = await AppDialog.confirm(
+      context,
+      title: context.l10n.tripDifferentLanguageTitle,
+      message: context.l10n.tripDifferentLanguageMessage(
+        trip.language.toUpperCase(),
+        currentLang.toUpperCase(),
+      ),
+      confirmText: context.l10n.regenerate,
+      cancelText: context.l10n.keepOriginal,
+    );
+
+    if (shouldRegenerate == true && mounted) {
+      ref.read(regenerateTripInCurrentLanguageProvider(widget.travelId));
+    }
   }
 
   Widget _buildTripContent(BuildContext context, WidgetRef ref, dynamic trip) {
@@ -111,11 +149,11 @@ class TripDetailPage extends ConsumerWidget {
                       try {
                         await ref
                             .read(tripStatusNotifierProvider.notifier)
-                            .markAsVisited(travelId);
+                            .markAsVisited(widget.travelId);
 
                         if (!context.mounted) return;
                         context.showSuccessSnack(context.l10n.mark_as_visited);
-                        ref.invalidate(tripByIdProvider(travelId));
+                        ref.invalidate(tripByIdProvider(widget.travelId));
                       } catch (_) {
                         if (!context.mounted) return;
                         context.showErrorSnack(context.l10n.somethingWentWrong);
@@ -208,7 +246,7 @@ class TripDetailPage extends ConsumerWidget {
 
   Future<void> _deleteTrip(BuildContext context, WidgetRef ref) async {
     try {
-      await ref.read(deleteTripProvider(travelId).future);
+      await ref.read(deleteTripProvider(widget.travelId).future);
 
       if (!context.mounted) return;
       context.showSuccessSnack(context.l10n.deleteSuccess);

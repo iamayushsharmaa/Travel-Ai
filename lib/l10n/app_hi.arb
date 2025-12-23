@@ -324,5 +324,11 @@
   "mark_as_visited": "देखी गई यात्रा के रूप में चिह्नित करें",
 
   "visited": "देखा गया",
-  "planned": "योजना बनाई गई"
+  "planned": "योजना बनाई गई",
+
+  "tripDifferentLanguageTitle": "भाषा मेल नहीं खा रही",
+  "tripDifferentLanguageMessage":
+  "यह यात्रा {oldLang} में बनाई गई थी। क्या आप इसे {newLang} में फिर से बनाना चाहते हैं?",
+  "regenerate": "फिर से बनाएं",
+  "keepOriginal": "जैसा है रखें"
 }

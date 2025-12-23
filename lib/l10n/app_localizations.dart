@@ -1798,6 +1798,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Planned'**
   String get planned;
+
+  /// No description provided for @tripDifferentLanguageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip language mismatch'**
+  String get tripDifferentLanguageTitle;
+
+  /// No description provided for @tripDifferentLanguageMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This trip was generated in {oldLang}. Would you like to regenerate it in {newLang}?'**
+  String tripDifferentLanguageMessage(Object newLang, Object oldLang);
+
+  /// No description provided for @regenerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerate'**
+  String get regenerate;
+
+  /// No description provided for @keepOriginal.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep original'**
+  String get keepOriginal;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -863,4 +863,18 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get planned => 'योजना बनाई गई';
+
+  @override
+  String get tripDifferentLanguageTitle => 'भाषा मेल नहीं खा रही';
+
+  @override
+  String tripDifferentLanguageMessage(Object newLang, Object oldLang) {
+    return 'यह यात्रा $oldLang में बनाई गई थी। क्या आप इसे $newLang में फिर से बनाना चाहते हैं?';
+  }
+
+  @override
+  String get regenerate => 'फिर से बनाएं';
+
+  @override
+  String get keepOriginal => 'जैसा है रखें';
 }
