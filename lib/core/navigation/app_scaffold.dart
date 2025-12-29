@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../routing/app_routes.dart';
+
 class AppScaffold extends StatelessWidget {
   final Widget child;
 
   const AppScaffold({super.key, required this.child});
 
-  static const _navItems = ['/home', '/history', '/profile'];
+  static const _navItems = [
+    AppRoutes.home,
+    AppRoutes.history,
+    AppRoutes.settings,
+  ];
 
   int _calculateSelectedIndex(BuildContext context) {
     final location =
@@ -31,7 +37,7 @@ class AppScaffold extends StatelessWidget {
         elevation: 4,
         child: const Icon(Icons.add, size: 28),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
       bottomNavigationBar: NavigationBar(
         backgroundColor: Colors.white,

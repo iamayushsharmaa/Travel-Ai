@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:triptide/features/addtrip/models/travel_gemini_response.dart';
 
@@ -89,6 +90,11 @@ class TravelDbModel extends Equatable {
     try {
       return _$TravelDbModelFromJson({
         ...json,
+
+        'travelId': json['travelId'] ?? '',
+        'userId': json['userId'] ?? '',
+
+        'language': json['language'] ?? 'en',
         'destination': json['destination'] ?? '',
         'destinationLowerCase':
             json['destinationLowerCase'] ??
@@ -102,13 +108,15 @@ class TravelDbModel extends Equatable {
         'destinationLat': (json['destinationLat'] as num?)?.toDouble() ?? 0.0,
         'destinationLng': (json['destinationLng'] as num?)?.toDouble() ?? 0.0,
         'images':
-            (json['images'] as List<dynamic>?)
-                ?.map((e) => e.toString())
-                .toList() ??
-            [],
+            (json['images'] as List?)?.map((e) => e.toString()).toList() ?? [],
+
+        'isFavorite': json['isFavorite'] ?? false,
+        'generatedByAi': json['generatedByAi'] ?? false,
+        'status': json['status'] ?? TripStatus.planned.name,
       });
-    } catch (e) {
-      print('Error parsing TravelDbModel: $e');
+    } catch (e, s) {
+      debugPrint('TravelDbModel parse error: $e');
+      debugPrintStack(stackTrace: s);
       rethrow;
     }
   }

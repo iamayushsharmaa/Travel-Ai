@@ -47,7 +47,11 @@ class TravelRepository {
         language: language,
       );
 
-      await _trips.doc(travelId).set(trip.toMap());
+      await _trips.doc(travelId).set({
+        ...trip.toMap(),
+        'travelId': travelId,
+        'userId': userId,
+      });
 
       return Right(trip);
     } on FirebaseException catch (e) {
