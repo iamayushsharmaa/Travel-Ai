@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/extensions/context_l10n.dart';
+
 class MonthWidget extends StatelessWidget {
   final int thisMonthTrips;
   final int lastMonthTrips;
@@ -12,7 +14,7 @@ class MonthWidget extends StatelessWidget {
       height: 200,
       width: double.infinity,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [Color(0xFFe0f7fa), Color(0xFFffffff)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -23,7 +25,7 @@ class MonthWidget extends StatelessWidget {
             color: Colors.teal.withOpacity(0.15),
             spreadRadius: 2,
             blurRadius: 8,
-            offset: Offset(0, 4),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -32,9 +34,9 @@ class MonthWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Trips Summary',
-              style: TextStyle(
+            Text(
+              context.l10n.tripsSummary,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
@@ -46,19 +48,26 @@ class MonthWidget extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.calendar_month, color: Colors.teal, size: 28),
+                    const Icon(
+                      Icons.calendar_month,
+                      color: Colors.teal,
+                      size: 28,
+                    ),
                     const SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'This month',
-                          style: TextStyle(fontSize: 16, color: Colors.black87),
+                          context.l10n.thisMonth,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black87,
+                          ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
-                          "$thisMonthTrips trips",
-                          style: TextStyle(
+                          '$thisMonthTrips ${context.l10n.trips}',
+                          style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.teal,
@@ -68,25 +77,28 @@ class MonthWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                Icon(Icons.trending_up, color: Colors.green, size: 30),
+                const Icon(Icons.trending_up, color: Colors.green, size: 30),
               ],
             ),
             const SizedBox(height: 20),
             Row(
               children: [
-                Icon(Icons.history, color: Colors.orange, size: 28),
+                const Icon(Icons.history, color: Colors.orange, size: 28),
                 const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Last month',
-                      style: TextStyle(fontSize: 16, color: Colors.black87),
+                      context.l10n.lastMonth,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
+                      ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
-                      '$lastMonthTrips trips',
-                      style: TextStyle(
+                      '$lastMonthTrips ${context.l10n.trips}',
+                      style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: Colors.orange,

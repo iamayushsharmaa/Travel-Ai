@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:triptide/core/extensions/context_l10n.dart';
 
+import '../../../../core/extensions/context_theme.dart';
 import '../../../../core/l10n/app_language.dart';
 
 class LanguageSelectorTile extends StatelessWidget {
@@ -20,6 +21,9 @@ class LanguageSelectorTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final text = context.text;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -32,12 +36,12 @@ class LanguageSelectorTile extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF6366F1).withOpacity(0.1),
+                  color: colors.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.language_rounded,
-                  color: Color(0xFF6366F1),
+                  color: colors.primary,
                   size: 22,
                 ),
               ),
@@ -48,20 +52,15 @@ class LanguageSelectorTile extends StatelessWidget {
                   children: [
                     Text(
                       context.l10n.language,
-                      style: TextStyle(
-                        fontSize: 16,
+                      style: text.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF1E293B),
-                        letterSpacing: -0.2,
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Text(
                       context.l10n.languageDescription,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF64748B),
+                      style: text.bodySmall?.copyWith(
+                        color: colors.onSurface.withOpacity(0.7),
                       ),
                     ),
                   ],
@@ -71,17 +70,16 @@ class LanguageSelectorTile extends StatelessWidget {
                 children: [
                   Text(
                     _currentLanguage.label,
-                    style: const TextStyle(
-                      fontSize: 14,
+                    style: text.labelLarge?.copyWith(
+                      color: colors.primary,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF6366F1),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 16,
-                    color: Colors.grey.shade400,
+                    color: colors.onSurface.withOpacity(0.4),
                   ),
                 ],
               ),
@@ -92,7 +90,12 @@ class LanguageSelectorTile extends StatelessWidget {
     );
   }
 
+  // ---------------------------------------------------------------------------
+
   void _showLanguageBottomSheet(BuildContext context) {
+    final colors = context.colors;
+    final text = context.text;
+
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -102,9 +105,11 @@ class LanguageSelectorTile extends StatelessWidget {
             constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height * 0.7,
             ),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            decoration: BoxDecoration(
+              color: colors.surface,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -114,7 +119,7 @@ class LanguageSelectorTile extends StatelessWidget {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
+                    color: colors.onSurface.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -125,11 +130,8 @@ class LanguageSelectorTile extends StatelessWidget {
                     children: [
                       Text(
                         context.l10n.selectLanguage,
-                        style: TextStyle(
-                          fontSize: 22,
+                        style: text.headlineMedium?.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF1E293B),
-                          letterSpacing: -0.3,
                         ),
                       ),
                     ],
@@ -164,18 +166,14 @@ class LanguageSelectorTile extends StatelessWidget {
                             decoration: BoxDecoration(
                               color:
                                   isSelected
-                                      ? const Color(
-                                        0xFF6366F1,
-                                      ).withOpacity(0.08)
+                                      ? colors.primary.withOpacity(0.08)
                                       : Colors.transparent,
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
                                 color:
                                     isSelected
-                                        ? const Color(
-                                          0xFF6366F1,
-                                        ).withOpacity(0.3)
-                                        : Colors.grey.shade200,
+                                        ? colors.primary.withOpacity(0.3)
+                                        : colors.onSurface.withOpacity(0.12),
                                 width: 1.5,
                               ),
                             ),
@@ -189,31 +187,29 @@ class LanguageSelectorTile extends StatelessWidget {
                                 Expanded(
                                   child: Text(
                                     lang.label,
-                                    style: TextStyle(
-                                      fontSize: 16,
+                                    style: text.titleMedium?.copyWith(
                                       fontWeight:
                                           isSelected
                                               ? FontWeight.w700
                                               : FontWeight.w600,
                                       color:
                                           isSelected
-                                              ? const Color(0xFF6366F1)
-                                              : const Color(0xFF1E293B),
-                                      letterSpacing: -0.2,
+                                              ? colors.primary
+                                              : colors.onSurface,
                                     ),
                                   ),
                                 ),
                                 if (isSelected)
                                   Container(
                                     padding: const EdgeInsets.all(4),
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFF6366F1),
+                                    decoration: BoxDecoration(
+                                      color: colors.primary,
                                       shape: BoxShape.circle,
                                     ),
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.check,
                                       size: 16,
-                                      color: Colors.white,
+                                      color: colors.onPrimary,
                                     ),
                                   ),
                               ],

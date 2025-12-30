@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:triptide/core/extensions/context_l10n.dart';
 
+import '../../../../core/extensions/context_theme.dart';
+
 class ThemeModeTile extends StatelessWidget {
   final bool isDarkMode;
   final VoidCallback onToggle;
@@ -13,6 +15,9 @@ class ThemeModeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final text = context.text;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
@@ -20,13 +25,13 @@ class ThemeModeTile extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: const Color(0xFF6366F1).withOpacity(0.1),
+              color: colors.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
               isDarkMode ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
-              color: const Color(0xFF6366F1),
-              size: 22,
+              color: colors.primary,
+              size: 20,
             ),
           ),
           const SizedBox(width: 14),
@@ -36,20 +41,17 @@ class ThemeModeTile extends StatelessWidget {
               children: [
                 Text(
                   context.l10n.themeMode,
-                  style: TextStyle(
-                    fontSize: 16,
+                  style: text.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF1E293B),
-                    letterSpacing: -0.2,
+                    color: colors.onSurface,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   context.l10n.themeModeDescription,
-                  style: TextStyle(
-                    fontSize: 13,
+                  style: text.bodySmall?.copyWith(
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF64748B),
+                    color: colors.onSurface.withOpacity(0.6),
                   ),
                 ),
               ],
@@ -70,6 +72,8 @@ class _ThemeSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return GestureDetector(
       onTap: onToggle,
       child: AnimatedContainer(
@@ -82,24 +86,17 @@ class _ThemeSwitch extends StatelessWidget {
           gradient: LinearGradient(
             colors:
                 isDarkMode
-                    ? [const Color(0xFF1E293B), const Color(0xFF334155)]
-                    : [const Color(0xFF6366F1), const Color(0xFF8B5CF6)],
+                    ? [
+                      colors.onSurface.withOpacity(0.9),
+                      colors.onSurface.withOpacity(0.7),
+                    ]
+                    : [colors.primary, colors.primary.withOpacity(0.85)],
           ),
-          boxShadow: [
-            BoxShadow(
-              color: (isDarkMode
-                      ? const Color(0xFF1E293B)
-                      : const Color(0xFF6366F1))
-                  .withOpacity(0.3),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
-            ),
-          ],
         ),
         child: Stack(
           children: [
             AnimatedPositioned(
-              duration: const Duration(milliseconds: 250),
+              duration: const Duration(milliseconds: 500),
               curve: Curves.easeInOut,
               left: isDarkMode ? 26 : 2,
               top: 2,
@@ -107,7 +104,7 @@ class _ThemeSwitch extends StatelessWidget {
                 width: 28,
                 height: 28,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: colors.surface,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
@@ -120,10 +117,7 @@ class _ThemeSwitch extends StatelessWidget {
                 child: Icon(
                   isDarkMode ? Icons.nightlight_round : Icons.wb_sunny_rounded,
                   size: 14,
-                  color:
-                      isDarkMode
-                          ? const Color(0xFF1E293B)
-                          : const Color(0xFF6366F1),
+                  color: isDarkMode ? colors.onSurface : colors.primary,
                 ),
               ),
             ),

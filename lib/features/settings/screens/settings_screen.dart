@@ -10,6 +10,7 @@ import 'package:triptide/features/settings/screens/widgets/theme_mode_tile.dart'
 
 import '../../../core/common/app_dialog.dart';
 import '../../../core/common/async_view.dart';
+import '../../../core/extensions/context_theme.dart';
 import '../../auth/provider/auth_providers.dart';
 import '../provider/settings_provider.dart';
 
@@ -21,18 +22,17 @@ class SettingsScreen extends ConsumerWidget {
     final user = ref.watch(userInfoProvider);
     final localeAsync = ref.watch(languageNotifierProvider);
     final themeAsync = ref.watch(themeModeNotifierProvider);
+    final colors = context.colors;
 
     if (user == null) {
-      return const Scaffold(
-        backgroundColor: Color(0xFFF8F9FD),
-        body: Center(
-          child: CircularProgressIndicator(color: Color(0xFF6366F1)),
-        ),
+      return Scaffold(
+        backgroundColor: colors.background,
+        body: Center(child: CircularProgressIndicator(color: colors.primary)),
       );
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FD),
+      backgroundColor: colors.background,
       body: CustomScrollView(
         slivers: [
           _buildSliverAppBar(context),
@@ -40,23 +40,24 @@ class SettingsScreen extends ConsumerWidget {
             child: Column(
               children: [
                 const SizedBox(height: 8),
+
                 SettingsHeader(
-                  name: user.name ?? 'User',
+                  name: user.name ?? context.l10n.user,
                   email: user.email,
                   photoUrl: user.profilePic,
                   onEditPressed: () => _showEditProfileSheet(context, ref),
                 ),
+
                 const SizedBox(height: 24),
+
                 SettingsSection(
                   title: context.l10n.preferences,
                   children: [
                     AsyncView<ThemeMode>(
                       value: themeAsync,
                       builder: (themeMode) {
-                        final isDark = themeMode == ThemeMode.dark;
-
                         return ThemeModeTile(
-                          isDarkMode: isDark,
+                          isDarkMode: themeMode == ThemeMode.dark,
                           onToggle: () {
                             ref
                                 .read(themeModeNotifierProvider.notifier)
@@ -81,7 +82,9 @@ class SettingsScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 24),
+
                 SettingsSection(
                   title: context.l10n.account,
                   children: [
@@ -89,22 +92,20 @@ class SettingsScreen extends ConsumerWidget {
                       icon: Icons.lock_outline_rounded,
                       title: context.l10n.privacySecurity,
                       subtitle: context.l10n.privacySecurityDescription,
-                      onTap: () {
-                        // Navigate to privacy settings
-                      },
+                      onTap: () {},
                     ),
                     const SizedBox(height: 12),
                     SettingsTile(
                       icon: Icons.notifications_outlined,
                       title: context.l10n.notifications,
                       subtitle: context.l10n.notificationsDescription,
-                      onTap: () {
-                        // Navigate to notification settings
-                      },
+                      onTap: () {},
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 24),
+
                 SettingsSection(
                   title: context.l10n.support,
                   children: [
@@ -112,22 +113,20 @@ class SettingsScreen extends ConsumerWidget {
                       icon: Icons.help_outline_rounded,
                       title: context.l10n.helpSupport,
                       subtitle: context.l10n.helpSupportDescription,
-                      onTap: () {
-                        // Navigate to help
-                      },
+                      onTap: () {},
                     ),
                     const SizedBox(height: 12),
                     SettingsTile(
                       icon: Icons.info_outline_rounded,
                       title: context.l10n.about,
                       subtitle: context.l10n.aboutDescription,
-                      onTap: () {
-                        // Show about dialog
-                      },
+                      onTap: () {},
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 24),
+
                 SettingsSection(
                   title: context.l10n.actions,
                   children: [
@@ -135,12 +134,13 @@ class SettingsScreen extends ConsumerWidget {
                       icon: Icons.logout_rounded,
                       title: context.l10n.logOut,
                       subtitle: context.l10n.logOutDescription,
-                      iconColor: const Color(0xFFEF4444),
-                      titleColor: const Color(0xFFEF4444),
+                      iconColor: colors.error,
+                      titleColor: colors.error,
                       onTap: () => _showLogoutDialog(context, ref),
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 32),
               ],
             ),
@@ -151,19 +151,22 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   Widget _buildSliverAppBar(BuildContext context) {
+    final colors = context.colors;
+    final text = context.text;
+
     return SliverAppBar(
       floating: true,
       snap: true,
-      backgroundColor: const Color(0xFFF8F9FD),
+      backgroundColor: colors.background,
       elevation: 0,
       expandedHeight: 80,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFFF8F9FD), Color(0xFFEEF2FF)],
+              colors: [colors.background, colors.primary.withOpacity(0.08)],
             ),
           ),
           child: SafeArea(
@@ -174,23 +177,20 @@ class SettingsScreen extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF6366F1).withOpacity(0.1),
+                      color: colors.primary.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.settings_rounded,
-                      color: Color(0xFF6366F1),
+                      color: colors.primary,
                       size: 24,
                     ),
                   ),
                   const SizedBox(width: 12),
                   Text(
                     context.l10n.settings,
-                    style: TextStyle(
-                      fontSize: 28,
+                    style: text.displaySmall?.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF1E293B),
-                      letterSpacing: -0.5,
                     ),
                   ),
                 ],

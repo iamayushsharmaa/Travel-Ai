@@ -877,4 +877,13 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get keepOriginal => 'जैसा है रखें';
+
+  @override
+  String get filterAll => 'सभी';
+
+  @override
+  String get filterFavorite => 'पसंदीदा';
+
+  @override
+  String get tripsSummary => 'यात्रा सारांश';
 }

@@ -1822,6 +1822,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Keep original'**
   String get keepOriginal;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// No description provided for @filterFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite'**
+  String get filterFavorite;
+
+  /// No description provided for @tripsSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Trips Summary'**
+  String get tripsSummary;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

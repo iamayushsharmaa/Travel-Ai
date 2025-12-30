@@ -235,10 +235,6 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
         onPressed: () => Navigator.of(context).pop(),
       ),
       title: Text(context.l10n.planYourTrip, style: context.text.titleLarge),
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1),
-        child: Divider(height: 1, color: cs.outlineVariant),
-      ),
     );
   }
 

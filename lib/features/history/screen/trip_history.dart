@@ -115,7 +115,7 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
               itemBuilder: (context, index) {
                 final filter = TripFilter.values[index];
                 return TripFilterChip(
-                  label: filter.label,
+                  label: filter.label(context),
                   isSelected: filter == selectedFilter,
                   onTap: () {
                     ref

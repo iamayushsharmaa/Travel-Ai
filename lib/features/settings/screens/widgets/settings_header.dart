@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/extensions/context_theme.dart';
+
 class SettingsHeader extends StatelessWidget {
   final String name;
   final String email;
@@ -16,19 +18,22 @@ class SettingsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final text = context.text;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+          colors: [colors.primary, colors.primary.withOpacity(0.85)],
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF6366F1).withOpacity(0.3),
+            color: colors.primary.withOpacity(0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -36,21 +41,23 @@ class SettingsHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _buildAvatar(),
+          _buildAvatar(context),
           const SizedBox(width: 16),
-          Expanded(child: _buildUserInfo()),
-          _buildEditButton(),
+          Expanded(child: _buildUserInfo(context)),
+          _buildEditButton(context),
         ],
       ),
     );
   }
 
-  Widget _buildAvatar() {
+  Widget _buildAvatar(BuildContext context) {
+    final colors = context.colors;
+
     return Container(
       width: 70,
       height: 70,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colors.surface,
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
@@ -66,22 +73,25 @@ class SettingsHeader extends StatelessWidget {
                 child: Image.network(
                   photoUrl!,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => _buildAvatarPlaceholder(),
+                  errorBuilder:
+                      (_, __, ___) => _buildAvatarPlaceholder(context),
                 ),
               )
-              : _buildAvatarPlaceholder(),
+              : _buildAvatarPlaceholder(context),
     );
   }
 
-  Widget _buildAvatarPlaceholder() {
+  Widget _buildAvatarPlaceholder(BuildContext context) {
+    final colors = context.colors;
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color(0xFF6366F1).withOpacity(0.2),
-            const Color(0xFF8B5CF6).withOpacity(0.2),
+            colors.primary.withOpacity(0.2),
+            colors.primary.withOpacity(0.35),
           ],
         ),
         shape: BoxShape.circle,
@@ -89,17 +99,19 @@ class SettingsHeader extends StatelessWidget {
       child: Center(
         child: Text(
           name.isNotEmpty ? name[0].toUpperCase() : '?',
-          style: const TextStyle(
-            fontSize: 28,
+          style: context.text.headlineMedium?.copyWith(
+            color: colors.primary,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF6366F1),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildUserInfo() {
+  Widget _buildUserInfo(BuildContext context) {
+    final text = context.text;
+    final colors = context.colors;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -107,11 +119,9 @@ class SettingsHeader extends StatelessWidget {
           name,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            fontSize: 20,
+          style: text.titleLarge?.copyWith(
             fontWeight: FontWeight.w700,
-            color: Colors.white,
-            letterSpacing: -0.3,
+            color: colors.onPrimary,
           ),
         ),
         const SizedBox(height: 4),
@@ -119,28 +129,31 @@ class SettingsHeader extends StatelessWidget {
           email,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 14,
+          style: text.bodySmall?.copyWith(
+            color: colors.onPrimary.withOpacity(0.9),
             fontWeight: FontWeight.w500,
-            color: Colors.white.withOpacity(0.9),
-            letterSpacing: 0.2,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildEditButton() {
+  Widget _buildEditButton(BuildContext context) {
+    final colors = context.colors;
+
     return GestureDetector(
       onTap: onEditPressed,
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
+          color: colors.onPrimary.withOpacity(0.2),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
+          border: Border.all(
+            color: colors.onPrimary.withOpacity(0.3),
+            width: 1,
+          ),
         ),
-        child: const Icon(Icons.edit_rounded, color: Colors.white, size: 20),
+        child: Icon(Icons.edit_rounded, color: colors.onPrimary, size: 20),
       ),
     );
   }

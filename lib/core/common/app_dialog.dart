@@ -13,8 +13,9 @@ class AppDialog {
   }) {
     return showDialog<bool>(
       context: context,
+      useRootNavigator: true,
       builder:
-          (_) => AlertDialog(
+          (dialogContext) => AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -22,11 +23,19 @@ class AppDialog {
             content: Text(message, style: context.text.bodyMedium),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context, false),
+                onPressed:
+                    () => Navigator.of(
+                      dialogContext,
+                      rootNavigator: true,
+                    ).pop(false),
                 child: Text(cancelText),
               ),
               TextButton(
-                onPressed: () => Navigator.pop(context, true),
+                onPressed:
+                    () => Navigator.of(
+                      dialogContext,
+                      rootNavigator: true,
+                    ).pop(true),
                 style:
                     destructive
                         ? TextButton.styleFrom(
@@ -61,8 +70,9 @@ class AppDialog {
   }) {
     return showDialog<bool>(
       context: context,
+      useRootNavigator: true,
       builder:
-          (_) => AlertDialog(
+          (dialogContext) => AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
@@ -70,7 +80,6 @@ class AppDialog {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Icon badge
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -80,8 +89,6 @@ class AppDialog {
                   child: Icon(icon, size: 32, color: context.colors.error),
                 ),
                 const SizedBox(height: 20),
-
-                // Title
                 Text(
                   title,
                   style: context.text.headlineSmall?.copyWith(
@@ -89,10 +96,7 @@ class AppDialog {
                   ),
                   textAlign: TextAlign.center,
                 ),
-
                 const SizedBox(height: 8),
-
-                // Message
                 Text(
                   message,
                   textAlign: TextAlign.center,
@@ -101,15 +105,16 @@ class AppDialog {
                     height: 1.4,
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
-                // Actions
                 Row(
                   children: [
                     Expanded(
                       child: TextButton(
-                        onPressed: () => Navigator.pop(context, false),
+                        onPressed:
+                            () => Navigator.of(
+                              dialogContext,
+                              rootNavigator: true,
+                            ).pop(false),
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           backgroundColor: context.colors.surfaceVariant,
@@ -128,7 +133,11 @@ class AppDialog {
                     const SizedBox(width: 12),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () => Navigator.pop(context, true),
+                        onPressed:
+                            () => Navigator.of(
+                              dialogContext,
+                              rootNavigator: true,
+                            ).pop(true),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           backgroundColor: context.colors.error,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/extensions/context_l10n.dart';
+import '../../../../core/extensions/context_theme.dart';
 
 class EditProfileBottomSheet extends StatefulWidget {
   final String currentName;
@@ -39,13 +40,18 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: colors.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
+        bottom: MediaQuery
+            .of(context)
+            .viewInsets
+            .bottom,
       ),
       child: SingleChildScrollView(
         child: Padding(
@@ -99,35 +105,32 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final colors = context.colors;
+    final text = context.text;
+
     return Row(
       children: [
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: const Color(0xFF6366F1).withOpacity(0.1),
+            color: colors.primary.withOpacity(0.12),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: const Icon(
-            Icons.edit_rounded,
-            color: Color(0xFF6366F1),
-            size: 24,
-          ),
+          child: Icon(Icons.edit_rounded, color: colors.primary, size: 24),
         ),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
             context.l10n.editProfile,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF1E293B),
-              letterSpacing: -0.3,
-            ),
+            style: text.headlineMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
         IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.close_rounded, color: Colors.grey.shade600),
+          icon: Icon(
+            Icons.close_rounded,
+            color: colors.onSurface.withOpacity(0.6),
+          ),
         ),
       ],
     );
@@ -141,15 +144,17 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
     TextInputType? keyboardType,
     String? Function(String?)? validator,
   }) {
+    final colors = context.colors;
+    final text = context.text;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 14,
+          style: text.labelMedium?.copyWith(
+            color: colors.onSurface.withOpacity(0.7),
             fontWeight: FontWeight.w600,
-            color: Color(0xFF64748B),
           ),
         ),
         const SizedBox(height: 8),
@@ -158,9 +163,9 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
           keyboardType: keyboardType,
           validator: validator,
           decoration: InputDecoration(
-            prefixIcon: Icon(icon, color: const Color(0xFF6366F1)),
+            prefixIcon: Icon(icon, color: colors.primary),
             filled: true,
-            fillColor: const Color(0xFFF8F9FD),
+            fillColor: colors.surface,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: BorderSide.none,
@@ -196,8 +201,11 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
       widget.onSave(nameController.text, emailController.text);
       Navigator.pop(context);
 
+      final colors = context.colors;
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: colors.primary,
           content: Row(
             children: [
               const Icon(Icons.check_circle, color: Colors.white),
@@ -205,7 +213,6 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               Text(context.l10n.profileUpdated),
             ],
           ),
-          backgroundColor: const Color(0xFF10B981),
         ),
       );
     }

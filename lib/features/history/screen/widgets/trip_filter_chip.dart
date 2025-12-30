@@ -20,10 +20,6 @@ class TripFilterChip extends StatelessWidget {
     final bgColor = isSelected ? cs.primary : cs.surface;
     final borderColor = isSelected ? cs.primary : cs.outline;
     final textColor = isSelected ? cs.onPrimary : cs.onSurface;
-    final shadowColor =
-        isSelected
-            ? cs.primary.withOpacity(0.3)
-            : theme.shadowColor.withOpacity(0.08);
 
     return GestureDetector(
       onTap: onTap,
@@ -35,13 +31,7 @@ class TripFilterChip extends StatelessWidget {
           color: bgColor,
           borderRadius: BorderRadius.circular(22),
           border: Border.all(color: borderColor, width: 1.5),
-          boxShadow: [
-            BoxShadow(
-              color: shadowColor,
-              blurRadius: isSelected ? 12 : 8,
-              offset: Offset(0, isSelected ? 4 : 2),
-            ),
-          ],
+          boxShadow: [],
         ),
         child: Text(
           label,

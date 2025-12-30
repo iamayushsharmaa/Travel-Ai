@@ -877,4 +877,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get keepOriginal => 'Keep original';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterFavorite => 'Favorite';
+
+  @override
+  String get tripsSummary => 'Trips Summary';
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/extensions/context_theme.dart';
+
 class SettingsTile extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -22,6 +24,12 @@ class SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final text = context.text;
+
+    final resolvedIconColor = iconColor ?? colors.primary;
+    final resolvedTitleColor = titleColor ?? colors.onSurface;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -34,14 +42,12 @@ class SettingsTile extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: (iconColor ?? const Color(0xFF6366F1)).withOpacity(
-                    0.1,
-                  ),
+                  color: resolvedIconColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   icon,
-                  color: iconColor ?? const Color(0xFF6366F1),
+                  color: resolvedIconColor,
                   size: 22,
                 ),
               ),
@@ -52,20 +58,17 @@ class SettingsTile extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
-                        fontSize: 16,
+                      style: text.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: titleColor ?? const Color(0xFF1E293B),
-                        letterSpacing: -0.2,
+                        color: resolvedTitleColor,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       subtitle,
-                      style: const TextStyle(
-                        fontSize: 13,
+                      style: text.bodySmall?.copyWith(
+                        color: colors.onSurface.withOpacity(0.6),
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFF64748B),
                       ),
                     ),
                   ],
@@ -75,7 +78,7 @@ class SettingsTile extends StatelessWidget {
                   Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 16,
-                    color: Colors.grey.shade400,
+                    color: colors.onSurface.withOpacity(0.4),
                   ),
             ],
           ),
