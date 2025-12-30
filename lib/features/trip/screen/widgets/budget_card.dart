@@ -18,13 +18,13 @@ class BudgetCard extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF4CAF50).withOpacity(0.3),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: const Color(0xFF4CAF50).withOpacity(0.3),
+        //     blurRadius: 15,
+        //     offset: const Offset(0, 5),
+        //   ),
+        // ],
       ),
       child: Row(
         children: [

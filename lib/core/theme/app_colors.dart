@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../enums/trip_type.dart';
+
 class AppColors {
   AppColors._();
 
@@ -84,27 +86,24 @@ class AppColors {
     Color(0xFF66BB6A),
   ];
 
-  static Color getTripTypeColor(String type) {
-    switch (type.toLowerCase()) {
-      case 'business':
+  static Color getTripTypeColor(TripType type) {
+    switch (type) {
+      case TripType.business:
         return business;
-      case 'leisure':
-      case 'relaxation':
+      case TripType.relaxation:
         return leisure;
-      case 'adventure':
+      case TripType.adventure:
         return adventure;
-      case 'cultural':
+      case TripType.cultural:
         return cultural;
-      case 'romantic':
+      case TripType.romantic:
         return romantic;
-      case 'family':
+      case TripType.family:
         return family;
-      default:
-        return primary;
     }
   }
 
-  static List<Color> getTripTypeGradient(String type) {
+  static List<Color> getTripTypeGradient(TripType type) {
     final baseColor = getTripTypeColor(type);
     return [baseColor, baseColor.withOpacity(0.7)];
   }

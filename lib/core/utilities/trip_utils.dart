@@ -2,22 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../enums/trip_type.dart';
 
-IconData getTripTypeIcon(String type) {
-  switch (type.toLowerCase()) {
-    case 'business':
+IconData getTripTypeIcon(TripType type) {
+  switch (type) {
+    case TripType.business:
       return Icons.business_center_outlined;
-    case 'leisure':
-    case 'relaxation':
+    case TripType.relaxation:
       return Icons.spa_outlined;
-    case 'adventure':
+    case TripType.adventure:
       return Icons.hiking_outlined;
-    case 'cultural':
+    case TripType.cultural:
       return Icons.museum_outlined;
-    case 'romantic':
+    case TripType.romantic:
       return Icons.favorite_outline;
-    case 'family':
+    case TripType.family:
       return Icons.family_restroom_outlined;
-    default:
-      return Icons.explore_outlined;
   }
 }

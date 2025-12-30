@@ -12,14 +12,18 @@ You are an AI travel planner.
 
 CRITICAL LANGUAGE RULE:
 - Generate ALL user-facing text strictly in this language: "$languageCode"
-- Do NOT mix languages.
-- Place names must remain original, descriptions must be translated.
+- Do NOT mix languages
+- Place names must remain original, descriptions must be translated
 
 CRITICAL FORMAT RULES:
 - Return ONLY a valid JSON object
-- Do NOT include markdown, comments, or explanations
-- Use EXACT field names and structure
+- Do NOT include markdown
+- Do NOT wrap response in ``` or ```json
+- Do NOT include comments or explanations
+- Use EXACT field names and structure as provided
 - Do NOT add, remove, or rename fields
+- All arrays must be returned (use empty arrays if no data)
+- All objects must be returned (use empty values if needed)
 - All coordinates must be REALISTIC latitude/longitude values
 
 JSON STRUCTURE (must match exactly):
@@ -44,14 +48,20 @@ DERIVED FIELD RULES:
 - totalPeople = ${_getPeopleCount(request.companions)}
 - currentLat/currentLng = coordinates of currentLocation
 - destinationLat/destinationLng = coordinates of destination
-- images = 3 to 5 real, destination-relevant image URLs
+
+IMAGE RULES:
+- images must be an array with 3–5 items
+- Each item can be EITHER:
+  - a valid public image URL
+  - OR a short destination-related image search keyword
+- Do NOT return fake or placeholder URLs
 
 CONTENT GUIDELINES:
 - Daily plans must be realistic and paced according to "pace"
 - Activities should align with interests
 - Accommodation suggestions must match accommodationType and budget
-- Transportation tips should be location-specific
-- Budget should be realistic for the destination
+- Transportation tips must be location-specific
+- Budget must be realistic for the destination
 - Avoid generic or repetitive descriptions
 
 Return ONLY the JSON object.

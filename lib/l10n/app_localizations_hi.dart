@@ -886,4 +886,22 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get tripsSummary => 'यात्रा सारांश';
+
+  @override
+  String get tripTypeAdventure => 'रोमांचक';
+
+  @override
+  String get tripTypeRelaxation => 'आराम';
+
+  @override
+  String get tripTypeCultural => 'सांस्कृतिक';
+
+  @override
+  String get tripTypeBusiness => 'व्यावसायिक';
+
+  @override
+  String get tripTypeRomantic => 'रोमांटिक';
+
+  @override
+  String get tripTypeFamily => 'परिवार';
 }

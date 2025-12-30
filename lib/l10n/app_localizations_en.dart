@@ -886,4 +886,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tripsSummary => 'Trips Summary';
+
+  @override
+  String get tripTypeAdventure => 'Adventure';
+
+  @override
+  String get tripTypeRelaxation => 'Relaxation';
+
+  @override
+  String get tripTypeCultural => 'Cultural';
+
+  @override
+  String get tripTypeBusiness => 'Business';
+
+  @override
+  String get tripTypeRomantic => 'Romantic';
+
+  @override
+  String get tripTypeFamily => 'Family';
 }

@@ -63,8 +63,8 @@ class DestinationStep extends StatelessWidget {
             children:
                 TripType.values.map((type) {
                   return SelectableChip(
-                    label: type.label,
-                    icon: getTripTypeIcon(type.label),
+                    label: type.label(context),
+                    icon: getTripTypeIcon(type),
                     isSelected: selectedTripType == type,
                     onTap: () => onTripTypeChanged(type),
                   );

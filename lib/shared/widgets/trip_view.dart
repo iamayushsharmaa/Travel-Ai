@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:triptide/core/theme/app_colors.dart';
 
+import '../../core/enums/trip_type.dart';
 import '../models/travel_db_model.dart';
 
 class TripView extends StatelessWidget {
@@ -162,7 +163,9 @@ class _TripTypeTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tripTypeColor = AppColors.getTripTypeColor(tripType);
+    final tripTypeEnum = TripType.fromString(tripType);
+
+    final tripTypeColor = AppColors.getTripTypeColor(tripTypeEnum);
 
     return Align(
       alignment: Alignment.bottomLeft,

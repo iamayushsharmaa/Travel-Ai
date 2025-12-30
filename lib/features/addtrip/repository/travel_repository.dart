@@ -51,6 +51,7 @@ class TravelRepository {
         ...trip.toMap(),
         'travelId': travelId,
         'userId': userId,
+        'language': language,
       });
 
       return Right(trip);

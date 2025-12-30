@@ -28,7 +28,7 @@ class TravelGeminiResponse extends Equatable {
   final List<String> additionalTips;
   final String budget;
 
-  TravelGeminiResponse({
+  const TravelGeminiResponse({
     required this.destination,
     required this.currentLocation,
     required this.destinationLat,

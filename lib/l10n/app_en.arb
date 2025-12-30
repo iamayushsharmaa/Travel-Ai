@@ -315,5 +315,12 @@
   "filterAll": "All",
   "filterFavorite": "Favorite",
 
-  "tripsSummary": "Trips Summary"
+  "tripsSummary": "Trips Summary",
+
+  "tripTypeAdventure": "Adventure",
+  "tripTypeRelaxation": "Relaxation",
+  "tripTypeCultural": "Cultural",
+  "tripTypeBusiness": "Business",
+  "tripTypeRomantic": "Romantic",
+  "tripTypeFamily": "Family"
 }

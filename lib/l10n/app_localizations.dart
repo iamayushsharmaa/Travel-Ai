@@ -1840,6 +1840,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Trips Summary'**
   String get tripsSummary;
+
+  /// No description provided for @tripTypeAdventure.
+  ///
+  /// In en, this message translates to:
+  /// **'Adventure'**
+  String get tripTypeAdventure;
+
+  /// No description provided for @tripTypeRelaxation.
+  ///
+  /// In en, this message translates to:
+  /// **'Relaxation'**
+  String get tripTypeRelaxation;
+
+  /// No description provided for @tripTypeCultural.
+  ///
+  /// In en, this message translates to:
+  /// **'Cultural'**
+  String get tripTypeCultural;
+
+  /// No description provided for @tripTypeBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get tripTypeBusiness;
+
+  /// No description provided for @tripTypeRomantic.
+  ///
+  /// In en, this message translates to:
+  /// **'Romantic'**
+  String get tripTypeRomantic;
+
+  /// No description provided for @tripTypeFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get tripTypeFamily;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

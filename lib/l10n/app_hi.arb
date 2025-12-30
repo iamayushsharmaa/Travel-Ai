@@ -335,5 +335,12 @@
   "filterAll": "सभी",
   "filterFavorite": "पसंदीदा",
 
-  "tripsSummary": "यात्रा सारांश"
+  "tripsSummary": "यात्रा सारांश",
+
+  "tripTypeAdventure": "रोमांचक",
+  "tripTypeRelaxation": "आराम",
+  "tripTypeCultural": "सांस्कृतिक",
+  "tripTypeBusiness": "व्यावसायिक",
+  "tripTypeRomantic": "रोमांटिक",
+  "tripTypeFamily": "परिवार"
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:triptide/core/common/loader.dart';
+import 'package:triptide/features/addtrip/screens/trip_creation_data.dart';
 import 'package:triptide/features/addtrip/screens/widgets/date_budget_step.dart';
 import 'package:triptide/features/addtrip/screens/widgets/destination_step.dart';
 import 'package:triptide/features/addtrip/screens/widgets/navigation_button.dart';
@@ -11,11 +12,11 @@ import 'package:triptide/features/addtrip/screens/widgets/stepper_header.dart';
 import 'package:triptide/features/addtrip/screens/widgets/travel_preference_step.dart';
 
 import '../../../core/common/app_snackbar.dart';
-import '../../../core/enums/budget_type.dart';
-import '../../../core/enums/currency.dart';
-import '../../../core/enums/trip_type.dart';
+import '../../../core/enums/trip_step.dart';
 import '../../../core/extensions/context_l10n.dart';
 import '../../../core/extensions/context_theme.dart';
+import '../../../core/utilities/trip_step_titiles.dart';
+import '../../../core/utilities/trip_step_validator.dart';
 import '../models/TripPlanRequest.dart';
 import '../providers/travel_provider.dart';
 
@@ -27,104 +28,26 @@ class AddTripPage extends ConsumerStatefulWidget {
 }
 
 class _AddTripPageState extends ConsumerState<AddTripPage> {
-  final PageController _pageController = PageController();
-  final _formKey = GlobalKey<FormState>();
+  final _pageController = PageController();
+  final _data = TripCreationData();
 
-  final _currentLocationController = TextEditingController();
-  final _destinationController = TextEditingController();
-  final _startDateController = TextEditingController();
-  final _endDateController = TextEditingController();
-  final _budgetController = TextEditingController();
+  TripStep _currentStep = TripStep.destination;
 
-  int _currentStep = 0;
-  static const int _totalSteps = 4;
-
-  DateTime? _startDate;
-  DateTime? _endDate;
-  TripType? _selectedTripType;
-  Currency _selectedCurrency = Currency.usd;
-  BudgetType _selectedBudgetType = BudgetType.total;
-  List<String> _selectedInterests = [];
-  String _selectedCompanion = '';
-  String _accommodation = '';
-  String _transport = '';
-  String _pace = '';
-  String _food = '';
+  static final int _totalSteps = TripStep.values.length;
 
   @override
   void dispose() {
     _pageController.dispose();
-    _currentLocationController.dispose();
-    _destinationController.dispose();
-    _startDateController.dispose();
-    _endDateController.dispose();
-    _budgetController.dispose();
+    _data.dispose();
     super.dispose();
-  }
-
-  bool _isCurrentStepValid() {
-    switch (_currentStep) {
-      case 0:
-        return _destinationController.text.isNotEmpty &&
-            _selectedTripType != null;
-      case 1:
-        return _startDate != null &&
-            _endDate != null &&
-            _budgetController.text.isNotEmpty;
-      case 2:
-        return _selectedInterests.isNotEmpty && _selectedCompanion.isNotEmpty;
-      case 3:
-        return _accommodation.isNotEmpty &&
-            _transport.isNotEmpty &&
-            _pace.isNotEmpty &&
-            _food.isNotEmpty;
-      default:
-        return false;
-    }
-  }
-
-  String _getValidationMessage() {
-    switch (_currentStep) {
-      case 0:
-        if (_destinationController.text.isEmpty) {
-          return context.l10n.validationEnterDestination;
-        }
-        if (_selectedTripType == null) {
-          return context.l10n.validationSelectTripType;
-        }
-        return '';
-      case 1:
-        if (_startDate == null) return context.l10n.validationSelectStartDate;
-        if (_endDate == null) return context.l10n.validationSelectEndDate;
-        if (_budgetController.text.isEmpty) {
-          return context.l10n.validationEnterBudget;
-        }
-        return '';
-      case 2:
-        if (_selectedInterests.isEmpty) {
-          return context.l10n.validationSelectInterest;
-        }
-        if (_selectedCompanion.isEmpty) {
-          return context.l10n.validationSelectCompanion;
-        }
-        return '';
-      case 3:
-        if (_accommodation.isEmpty) {
-          return context.l10n.validationSelectAccommodation;
-        }
-        if (_transport.isEmpty) return context.l10n.validationSelectTransport;
-        if (_pace.isEmpty) return context.l10n.validationSelectPace;
-        if (_food.isEmpty) return context.l10n.validationSelectFood;
-        return '';
-      default:
-        return context.l10n.validationCompleteAll;
-    }
   }
 
   void _nextStep() {
     FocusScope.of(context).unfocus();
 
-    if (!_isCurrentStepValid()) {
+    final isValid = TripStepValidator.isValid(step: _currentStep, data: _data);
+
+    if (!isValid) {
       AppSnackBar.show(
         context,
         message: context.l10n.failedCreateTrip,
@@ -133,10 +56,13 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
       return;
     }
 
-    if (_currentStep < _totalSteps - 1) {
-      setState(() => _currentStep++);
+    if (_currentStep.index < _totalSteps - 1) {
+      setState(() {
+        _currentStep = TripStep.values[_currentStep.index + 1];
+      });
+
       _pageController.animateToPage(
-        _currentStep,
+        _currentStep.index,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -146,43 +72,45 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
   }
 
   void _previousStep() {
-    FocusScope.of(context).unfocus();
-    if (_currentStep > 0) {
-      setState(() => _currentStep--);
-      _pageController.animateToPage(
-        _currentStep,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
+    if (_currentStep.index == 0) return;
+
+    setState(() {
+      _currentStep = TripStep.values[_currentStep.index - 1];
+    });
+
+    _pageController.animateToPage(
+      _currentStep.index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   Future<void> _submitTrip() async {
-    final loadingNotifier = ref.read(submitLoadingProvider.notifier);
-    loadingNotifier.setLoading(true);
+    final loading = ref.read(submitLoadingProvider.notifier);
+    loading.setLoading(true);
 
     try {
-      final budgetRaw = _budgetController.text.replaceAll(',', '');
-      final budget = double.tryParse(budgetRaw) ?? 0.0;
+      final budget =
+          double.tryParse(_data.budget.text.replaceAll(',', '')) ?? 0.0;
 
-      final tripPlanRequest = TripPlanRequest(
-        currentLocation: _currentLocationController.text.trim(),
-        destination: _destinationController.text.trim(),
-        startDate: _startDate!,
-        endDate: _endDate!,
-        tripType: _selectedTripType.toString(),
+      final request = TripPlanRequest(
+        currentLocation: _data.currentLocation.text.trim(),
+        destination: _data.destination.text.trim(),
+        startDate: _data.startDate!,
+        endDate: _data.endDate!,
+        tripType: _data.tripType.toString(),
         budget: budget,
-        budgetType: _selectedBudgetType.toString(),
-        interests: _selectedInterests,
-        companions: _selectedCompanion,
-        accommodationType: _accommodation,
-        transportPreferences: _transport,
-        pace: _pace,
-        food: _food,
+        budgetType: _data.budgetType.toString(),
+        interests: _data.interests,
+        companions: _data.companion,
+        accommodationType: _data.accommodation,
+        transportPreferences: _data.transport,
+        pace: _data.pace,
+        food: _data.food,
       );
 
       final travelId = await ref.read(
-        generateAndStoreTripProvider(tripPlanRequest).future,
+        generateAndStoreTripProvider(request).future,
       );
 
       if (mounted) {
@@ -192,81 +120,57 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
           extra: {'fromCreation': true},
         );
       }
-    } catch (e) {
-      if (mounted) {
-        AppSnackBar.show(
-          context,
-          message: context.l10n.failedCreateTrip,
-          type: SnackType.error,
-        );
-      }
     } finally {
-      loadingNotifier.setLoading(false);
+      loading.setLoading(false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(submitLoadingProvider);
-    final progress = (_currentStep + 1) / _totalSteps;
+    final progress = (_currentStep.index + 1) / _totalSteps;
+    final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
       backgroundColor: context.colors.background,
-      appBar: _buildAppBar(context),
+      appBar: AppBar(
+        backgroundColor: context.colors.surface,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
+        title: Text(context.l10n.planYourTrip),
+      ),
       body:
           isLoading
               ? Loader(
                 withScaffold: false,
                 title: context.l10n.creatingPerfectTrip,
               )
-              : _buildContent(context, progress),
+              : SafeArea(
+                child: Column(
+                  children: [
+                    StepperHeader(
+                      progress: progress,
+                      stepText: context.l10n.stepOf(
+                        _currentStep.index + 1,
+                        _totalSteps,
+                      ),
+                      stepTitle: TripStepTitles.title(context, _currentStep),
+                    ),
+                    Expanded(child: _buildPageView()),
+
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child:
+                          keyboardOpen
+                              ? const SizedBox.shrink()
+                              : _buildNavigationButtons(),
+                    ),
+                  ],
+                ),
+              ),
     );
-  }
-
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    final cs = context.colors;
-
-    return AppBar(
-      elevation: 0,
-      backgroundColor: cs.surface,
-      surfaceTintColor: cs.surface,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: cs.onSurface),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
-      title: Text(context.l10n.planYourTrip, style: context.text.titleLarge),
-    );
-  }
-
-  Widget _buildContent(BuildContext context, double progress) {
-    return SafeArea(
-      child: Column(
-        children: [
-          StepperHeader(
-            progress: progress,
-            stepText: context.l10n.stepOf(_currentStep + 1, _totalSteps),
-            stepTitle: _getStepTitle(),
-          ),
-          Expanded(child: _buildPageView()),
-          _buildNavigationButtons(context),
-        ],
-      ),
-    );
-  }
-
-  String _getStepTitle() {
-    switch (_currentStep) {
-      case 0:
-        return context.l10n.destination;
-      case 1:
-        return context.l10n.datesAndBudget;
-      case 2:
-        return context.l10n.preferences;
-      case 3:
-        return context.l10n.travelDetails;
-      default:
-        return '';
-    }
   }
 
   Widget _buildPageView() {
@@ -275,60 +179,56 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
       physics: const NeverScrollableScrollPhysics(),
       children: [
         DestinationStep(
-          currentLocationController: _currentLocationController,
-          destinationController: _destinationController,
-          selectedTripType: _selectedTripType,
-          onTripTypeChanged: (type) => setState(() => _selectedTripType = type),
+          currentLocationController: _data.currentLocation,
+          destinationController: _data.destination,
+          selectedTripType: _data.tripType,
+          onTripTypeChanged: (v) => setState(() => _data.tripType = v),
         ),
         DateBudgetStep(
-          startDateController: _startDateController,
-          endDateController: _endDateController,
-          budgetController: _budgetController,
-          startDate: _startDate,
-          endDate: _endDate,
-          selectedCurrency: _selectedCurrency,
-          selectedBudgetType: _selectedBudgetType,
-          onCurrencyChanged:
-              (currency) => setState(() => _selectedCurrency = currency),
-          onBudgetTypeChanged:
-              (type) => setState(() => _selectedBudgetType = type),
-          onStartDateChanged: (date) {
+          startDateController: _data.startDateText,
+          endDateController: _data.endDateText,
+          budgetController: _data.budget,
+          startDate: _data.startDate,
+          endDate: _data.endDate,
+          selectedCurrency: _data.currency,
+          selectedBudgetType: _data.budgetType,
+          onCurrencyChanged: (v) => setState(() => _data.currency = v),
+          onBudgetTypeChanged: (v) => setState(() => _data.budgetType = v),
+          onStartDateChanged: (d) {
             setState(() {
-              _startDate = date;
-              _startDateController.text = DateFormat.yMMMd().format(date);
+              _data.startDate = d;
+              _data.startDateText.text = DateFormat.yMMMd().format(d);
             });
           },
-          onEndDateChanged: (date) {
+          onEndDateChanged: (d) {
             setState(() {
-              _endDate = date;
-              _endDateController.text = DateFormat.yMMMd().format(date);
+              _data.endDate = d;
+              _data.endDateText.text = DateFormat.yMMMd().format(d);
             });
           },
         ),
         PersonalPreferencesStep(
-          selectedInterests: _selectedInterests,
-          selectedCompanion: _selectedCompanion,
-          onInterestsChanged:
-              (interests) => setState(() => _selectedInterests = interests),
-          onCompanionChanged:
-              (companion) => setState(() => _selectedCompanion = companion),
+          selectedInterests: _data.interests,
+          selectedCompanion: _data.companion,
+          onInterestsChanged: (v) => setState(() => _data.interests = v),
+          onCompanionChanged: (v) => setState(() => _data.companion = v),
         ),
         TravelPreferencesStep(
-          accommodation: _accommodation,
-          transport: _transport,
-          pace: _pace,
-          food: _food,
+          accommodation: _data.accommodation,
+          transport: _data.transport,
+          pace: _data.pace,
+          food: _data.food,
           onAccommodationChanged:
-              (value) => setState(() => _accommodation = value),
-          onTransportChanged: (value) => setState(() => _transport = value),
-          onPaceChanged: (value) => setState(() => _pace = value),
-          onFoodChanged: (value) => setState(() => _food = value),
+              (v) => setState(() => _data.accommodation = v),
+          onTransportChanged: (v) => setState(() => _data.transport = v),
+          onPaceChanged: (v) => setState(() => _data.pace = v),
+          onFoodChanged: (v) => setState(() => _data.food = v),
         ),
       ],
     );
   }
 
-  Widget _buildNavigationButtons(BuildContext context) {
+  Widget _buildNavigationButtons() {
     final cs = context.colors;
 
     return Container(
@@ -347,7 +247,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
         top: false,
         child: Row(
           children: [
-            if (_currentStep > 0) ...[
+            if (_currentStep.index > 0) ...[
               Expanded(
                 child: NavigationButton(
                   label: context.l10n.back,
@@ -360,11 +260,11 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
             Expanded(
               child: NavigationButton(
                 label:
-                    _currentStep == _totalSteps - 1
+                    _currentStep.index == _totalSteps - 1
                         ? context.l10n.createTrip
                         : context.l10n.next,
                 icon:
-                    _currentStep == _totalSteps - 1
+                    _currentStep.index == _totalSteps - 1
                         ? Icons.check
                         : Icons.arrow_forward,
                 onPressed: _nextStep,
