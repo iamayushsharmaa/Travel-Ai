@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptide/core/extensions/context_theme.dart';
 
 class SectionHeader extends StatelessWidget {
   final IconData icon;
@@ -28,10 +29,9 @@ class SectionHeader extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: const TextStyle(
-              fontSize: 20,
+            style: context.text.headlineSmall?.copyWith(
               fontWeight: FontWeight.w700,
-              color: Colors.black87,
+              color: context.colors.onSurface,
             ),
           ),
         ),

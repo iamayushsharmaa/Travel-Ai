@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:triptide/core/extensions/context_l10n.dart';
 import 'package:triptide/features/weather/entity/weather_entity.dart';
@@ -80,8 +78,9 @@ class WeatherCard extends StatelessWidget {
         color: Colors.green,
       ),
       WeatherMetricData(
-        label: context.l10n.tempMin,         value: '${w.tempMin}${context.l10n.celsius}',
-      icon: Icons.arrow_downward,
+        label: context.l10n.tempMin,
+        value: '${w.tempMin}${context.l10n.celsius}',
+        icon: Icons.arrow_downward,
         color: Colors.blueAccent,
       ),
       WeatherMetricData(

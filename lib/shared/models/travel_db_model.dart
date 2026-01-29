@@ -5,6 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:triptide/features/addtrip/models/travel_gemini_response.dart';
 
 import '../../core/enums/trip_status.dart';
+import '../../core/enums/trip_type.dart';
 
 part 'travel_db_model.g.dart';
 
@@ -31,7 +32,8 @@ class TravelDbModel extends Equatable {
   @JsonKey(fromJson: _dateTimeFromString, toJson: _dateTimeToString)
   final DateTime endDate;
   final String? overview;
-  final String? tripType;
+  @JsonKey(fromJson: TripType.fromString, toJson: _tripTypeToJson)
+  final TripType tripType;
   final int totalDays;
   final int totalPeople;
   final List<String> images;
@@ -68,7 +70,7 @@ class TravelDbModel extends Equatable {
     required this.startDate,
     required this.endDate,
     this.overview,
-    this.tripType,
+    required this.tripType,
     this.images = const [],
     required this.totalDays,
     required this.totalPeople,
@@ -101,7 +103,7 @@ class TravelDbModel extends Equatable {
             (json['destination'] as String? ?? '').toLowerCase(),
         'currentLocation': json['currentLocation'] ?? '',
         'overview': json['overview'] ?? '',
-        'tripType': json['tripType'] ?? '',
+        'tripType': json['tripType'] ?? TripType.adventure.name,
         'budget': json['budget'] ?? '',
         'currentLat': (json['currentLat'] as num?)?.toDouble() ?? 0.0,
         'currentLng': (json['currentLng'] as num?)?.toDouble() ?? 0.0,
@@ -177,4 +179,6 @@ class TravelDbModel extends Equatable {
 
   static Timestamp? _dateTimeToTimestampNullable(DateTime? date) =>
       date != null ? Timestamp.fromDate(date) : null;
+
+  static String _tripTypeToJson(TripType value) => value.name;
 }

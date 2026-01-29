@@ -36,7 +36,7 @@ class TripView extends StatelessWidget {
           children: [
             _buildTripImage(),
             const SizedBox(width: 14),
-            Expanded(child: _buildTripDetails(theme)),
+            Expanded(child: _buildTripDetails(theme, context)),
           ],
         ),
       ),
@@ -55,7 +55,7 @@ class TripView extends StatelessWidget {
     );
   }
 
-  Widget _buildTripDetails(ThemeData theme) {
+  Widget _buildTripDetails(ThemeData theme, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -69,7 +69,7 @@ class TripView extends StatelessWidget {
         const SizedBox(height: 12),
         _TripBudget(budget: trip.budget),
         const Spacer(),
-        _TripTypeTag(tripType: trip.tripType ?? ''),
+        _TripTypeTag(tripType: trip.tripType.label(context)),
       ],
     );
   }

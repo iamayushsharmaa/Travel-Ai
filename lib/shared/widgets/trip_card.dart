@@ -36,7 +36,7 @@ class TripCard extends StatelessWidget {
           child: Row(
             children: [
               _buildImageSection(),
-              Expanded(child: _buildContentSection()),
+              Expanded(child: _buildContentSection(context)),
             ],
           ),
         ),
@@ -108,7 +108,7 @@ class TripCard extends StatelessWidget {
     );
   }
 
-  Widget _buildContentSection() {
+  Widget _buildContentSection(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -188,7 +188,7 @@ class TripCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          _buildTripTypeChip(),
+          _buildTripTypeChip(context),
         ],
       ),
     );
@@ -228,7 +228,7 @@ class TripCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTripTypeChip() {
+  Widget _buildTripTypeChip(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
@@ -252,7 +252,7 @@ class TripCard extends StatelessWidget {
           ),
           const SizedBox(width: 6),
           Text(
-            trip.tripType ?? 'Adventure',
+            trip.tripType.label(context),
             style: const TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w600,

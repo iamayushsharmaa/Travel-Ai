@@ -21,7 +21,6 @@ class TripMapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Use your existing TripMap widget here
     return Container(
       height: height,
       decoration: BoxDecoration(

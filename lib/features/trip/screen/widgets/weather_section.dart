@@ -4,6 +4,7 @@ import 'package:triptide/core/extensions/context_l10n.dart';
 import 'package:triptide/features/trip/screen/widgets/section_header.dart';
 
 import '../../../../core/utilities/weather_utils.dart';
+import '../../../weather/entity/weather_entity.dart';
 import '../../../weather/provider/weather_provider.dart';
 
 class WeatherSection extends ConsumerWidget {
@@ -52,7 +53,7 @@ class WeatherSection extends ConsumerWidget {
 
 class WeatherCard extends StatelessWidget {
   final String destination;
-  final dynamic weather;
+  final WeatherEntity weather;
 
   const WeatherCard({
     super.key,
@@ -105,7 +106,7 @@ class WeatherCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${weather?.temperature ?? '--'}°C',
+                    '${weather.temperature.toStringAsFixed(1)}°C',
                     style: const TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.w700,
@@ -113,13 +114,13 @@ class WeatherCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    weather?.condition ?? context.l10n.loading,
+                    weather.description,
                     style: const TextStyle(fontSize: 16, color: Colors.white70),
                   ),
                 ],
               ),
               Icon(
-                getWeatherIcon(weather?.condition ?? ''),
+                getWeatherIcon(weather.description),
                 size: 80,
                 color: Colors.white.withOpacity(0.9),
               ),
@@ -132,17 +133,12 @@ class WeatherCard extends StatelessWidget {
               _buildWeatherDetail(
                 Icons.water_drop_outlined,
                 context.l10n.humidity,
-                '${weather?.humidity ?? '--'}%',
+                '${weather.humidity}%',
               ),
               _buildWeatherDetail(
                 Icons.air,
                 context.l10n.wind,
-                '${weather?.windSpeed ?? '--'} ${context.l10n.kmh}',
-              ),
-              _buildWeatherDetail(
-                Icons.visibility_outlined,
-                context.l10n.visibility,
-                '${weather?.visibility ?? '--'} ${context.l10n.km}',
+                '${weather.windSpeed} ${context.l10n.kmh}',
               ),
             ],
           ),

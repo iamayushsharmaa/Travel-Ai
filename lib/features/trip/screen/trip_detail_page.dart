@@ -122,11 +122,13 @@ class _TripDetailPageState extends ConsumerState<TripDetailPage> {
 
                   const SizedBox(height: 24),
 
-                  WeatherSection(
-                    destination: trip.destination,
-                    latitude: trip.destinationLat ?? 0,
-                    longitude: trip.destinationLng ?? 0,
-                  ),
+                  if (trip.destinationLat != null &&
+                      trip.destinationLng != null)
+                    WeatherSection(
+                      destination: trip.destination,
+                      latitude: trip.destinationLat!,
+                      longitude: trip.destinationLng!,
+                    ),
 
                   const SizedBox(height: 24),
 

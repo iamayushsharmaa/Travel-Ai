@@ -24,7 +24,7 @@ TravelDbModel _$TravelDbModelFromJson(
   startDate: TravelDbModel._dateTimeFromString(json['startDate'] as String?),
   endDate: TravelDbModel._dateTimeFromString(json['endDate'] as String?),
   overview: json['overview'] as String?,
-  tripType: json['tripType'] as String?,
+  tripType: TripType.fromString(json['tripType'] as String?),
   images:
       (json['images'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const [],
@@ -85,7 +85,7 @@ Map<String, dynamic> _$TravelDbModelToJson(
   'startDate': TravelDbModel._dateTimeToString(instance.startDate),
   'endDate': TravelDbModel._dateTimeToString(instance.endDate),
   'overview': instance.overview,
-  'tripType': instance.tripType,
+  'tripType': TravelDbModel._tripTypeToJson(instance.tripType),
   'totalDays': instance.totalDays,
   'totalPeople': instance.totalPeople,
   'images': instance.images,
