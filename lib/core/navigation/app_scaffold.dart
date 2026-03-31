@@ -23,6 +23,8 @@ class AppScaffold extends StatelessWidget {
     return index < 0 ? 0 : index;
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     final selectedIndex = _calculateSelectedIndex(context);
@@ -58,6 +60,7 @@ class AppScaffold extends StatelessWidget {
         shape: const CircleBorder(),
         child: const Icon(Icons.add, size: 30),
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
       bottomNavigationBar: BottomAppBar(
