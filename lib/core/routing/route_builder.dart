@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:triptide/core/common/custom_transition.dart';
 
 import '../../features/addtrip/screens/add_trip_page.dart';
 import '../../features/auth/screens/onboarding_page.dart';
@@ -23,12 +24,16 @@ class RouteBuilders {
       GoRoute(
         path: AppRoutes.signIn,
         name: RouteNames.signIn,
-        builder: (_, __) => SigninPage(),
+        pageBuilder: (_, state) {
+          return AppTransition.slideFade(state: state, child: SigninPage());
+        },
       ),
       GoRoute(
         path: AppRoutes.signUp,
         name: RouteNames.signUp,
-        builder: (_, __) => SignUpPage(),
+        pageBuilder: (_, state) {
+          return AppTransition.slideFade(state: state, child: SignUpPage());
+        },
       ),
 
       ShellRoute(
@@ -57,7 +62,12 @@ class RouteBuilders {
       GoRoute(
         path: AppRoutes.planTrip,
         name: RouteNames.planTrip,
-        builder: (_, __) => const AddTripPage(),
+        pageBuilder: (_, state) {
+          return AppTransition.slideFade(
+            state: state,
+            child: const AddTripPage(),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.tripDetail,
@@ -70,7 +80,12 @@ class RouteBuilders {
       GoRoute(
         path: AppRoutes.search,
         name: RouteNames.search,
-        builder: (_, __) => const SearchScreen(),
+        pageBuilder: (_, state) {
+          return AppTransition.slideFade(
+            state: state,
+            child: const SearchScreen(),
+          );
+        },
       ),
     ];
   }

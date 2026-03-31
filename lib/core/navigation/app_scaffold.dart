@@ -31,7 +31,25 @@ class AppScaffold extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colors.background,
-      body: child,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        child: KeyedSubtree(
+          key: ValueKey(GoRouterState.of(context).uri.toString()),
+          child: child,
+        ),
+        transitionBuilder: (child, animation) {
+          return FadeTransition(
+            opacity: animation,
+            child: SlideTransition(
+              position: Tween(
+                begin: const Offset(0.05, 0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            ),
+          );
+        },
+      ),
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
