@@ -13,6 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -39,5 +45,5 @@ jobs:
         with:
           appId: 1:128130442746:android:332a2de901a1e5dc953043
           token: ${{ secrets.FIREBASE_TOKEN }}
-          groups: testers
+          groups: ayushs9468@gmail.com
           file: build/app/outputs/flutter-apk/app-release.apk
