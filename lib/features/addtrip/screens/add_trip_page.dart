@@ -11,6 +11,7 @@ import 'package:triptide/features/addtrip/screens/widgets/personal_preference_st
 import 'package:triptide/features/addtrip/screens/widgets/stepper_header.dart';
 import 'package:triptide/features/addtrip/screens/widgets/travel_preference_step.dart';
 
+import '../../../core/animations/animated_step_wrapper.dart';
 import '../../../core/common/app_snackbar.dart';
 import '../../../core/enums/trip_step.dart';
 import '../../../core/extensions/context_l10n.dart';
@@ -63,8 +64,8 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
 
       _pageController.animateToPage(
         _currentStep.index,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 450),
+        curve: Curves.easeOutCubic,
       );
     } else {
       _submitTrip();
@@ -80,8 +81,8 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
 
     _pageController.animateToPage(
       _currentStep.index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 450),
+      curve: Curves.easeOutCubic,
     );
   }
 
@@ -174,57 +175,62 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
   }
 
   Widget _buildPageView() {
-    return PageView(
-      controller: _pageController,
-      physics: const NeverScrollableScrollPhysics(),
-      children: [
-        DestinationStep(
-          currentLocationController: _data.currentLocation,
-          destinationController: _data.destination,
-          selectedTripType: _data.tripType,
-          onTripTypeChanged: (v) => setState(() => _data.tripType = v),
-        ),
-        DateBudgetStep(
-          startDateController: _data.startDateText,
-          endDateController: _data.endDateText,
-          budgetController: _data.budget,
-          startDate: _data.startDate,
-          endDate: _data.endDate,
-          selectedCurrency: _data.currency,
-          selectedBudgetType: _data.budgetType,
-          onCurrencyChanged: (v) => setState(() => _data.currency = v),
-          onBudgetTypeChanged: (v) => setState(() => _data.budgetType = v),
-          onStartDateChanged: (d) {
-            setState(() {
-              _data.startDate = d;
-              _data.startDateText.text = DateFormat.yMMMd().format(d);
-            });
-          },
-          onEndDateChanged: (d) {
-            setState(() {
-              _data.endDate = d;
-              _data.endDateText.text = DateFormat.yMMMd().format(d);
-            });
-          },
-        ),
-        PersonalPreferencesStep(
-          selectedInterests: _data.interests,
-          selectedCompanion: _data.companion,
-          onInterestsChanged: (v) => setState(() => _data.interests = v),
-          onCompanionChanged: (v) => setState(() => _data.companion = v),
-        ),
-        TravelPreferencesStep(
-          accommodation: _data.accommodation,
-          transport: _data.transport,
-          pace: _data.pace,
-          food: _data.food,
-          onAccommodationChanged:
-              (v) => setState(() => _data.accommodation = v),
-          onTransportChanged: (v) => setState(() => _data.transport = v),
-          onPaceChanged: (v) => setState(() => _data.pace = v),
-          onFoodChanged: (v) => setState(() => _data.food = v),
-        ),
-      ],
+    final pages = [
+      DestinationStep(
+        currentLocationController: _data.currentLocation,
+        destinationController: _data.destination,
+        selectedTripType: _data.tripType,
+        onTripTypeChanged: (v) => setState(() => _data.tripType = v),
+      ),
+      DateBudgetStep(
+        startDateController: _data.startDateText,
+        endDateController: _data.endDateText,
+        budgetController: _data.budget,
+        startDate: _data.startDate,
+        endDate: _data.endDate,
+        selectedCurrency: _data.currency,
+        selectedBudgetType: _data.budgetType,
+        onCurrencyChanged: (v) => setState(() => _data.currency = v),
+        onBudgetTypeChanged: (v) => setState(() => _data.budgetType = v),
+        onStartDateChanged: (d) {
+          setState(() {
+            _data.startDate = d;
+            _data.startDateText.text = DateFormat.yMMMd().format(d);
+          });
+        },
+        onEndDateChanged: (d) {
+          setState(() {
+            _data.endDate = d;
+            _data.endDateText.text = DateFormat.yMMMd().format(d);
+          });
+        },
+      ),
+      PersonalPreferencesStep(
+        selectedInterests: _data.interests,
+        selectedCompanion: _data.companion,
+        onInterestsChanged: (v) => setState(() => _data.interests = v),
+        onCompanionChanged: (v) => setState(() => _data.companion = v),
+      ),
+      TravelPreferencesStep(
+        accommodation: _data.accommodation,
+        transport: _data.transport,
+        pace: _data.pace,
+        food: _data.food,
+        onAccommodationChanged: (v) => setState(() => _data.accommodation = v),
+        onTransportChanged: (v) => setState(() => _data.transport = v),
+        onPaceChanged: (v) => setState(() => _data.pace = v),
+        onFoodChanged: (v) => setState(() => _data.food = v),
+      ),
+    ];
+
+    return Stack(
+      children: List.generate(pages.length, (index) {
+        return AnimatedStepWrapper(
+          index: index,
+          currentIndex: _currentStep.index,
+          child: pages[index],
+        );
+      }),
     );
   }
 
