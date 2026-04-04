@@ -8,6 +8,7 @@ import '../../../core/enums/trip_filter.dart';
 import '../../../core/enums/trip_status.dart';
 import '../../../core/failure.dart';
 import '../../../shared/models/travel_db_model.dart';
+import '../../addtrip/mapper/travel_model_mapper.dart';
 import '../../addtrip/repository/api_service.dart';
 
 part 'user_trips_repository.g.dart';
@@ -33,30 +34,119 @@ class UserTripsRepository {
   CollectionReference<Map<String, dynamic>> get _trips =>
       _firestore.collection(FirebaseConstant.trips);
 
+  Future<Either<Failure, TravelDbModel>> generateTripAndStore({
+    required String prompt,
+    required String userId,
+    required String travelId,
+    required String language,
+  }) async {
+    try {
+      final aiTrip = await _apiService.getGeminiComplete(prompt);
+
+      final trip = TravelDbMapper.fromGemini(
+        ai: aiTrip,
+        userId: userId,
+        travelId: travelId,
+        language: language,
+      );
+
+      final data = {
+        ...trip.toMap(),
+        'travelId': travelId,
+        'userId': userId,
+        'language': language,
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+        'status': TripStatus.planned.name,
+        'generatedByAi': true,
+      };
+
+      await _trips.doc(travelId).set(data);
+
+      return Right(trip);
+    } on FirebaseException catch (e) {
+      return Left(Failure('Firestore error: ${e.message ?? e.code}'));
+    } catch (e) {
+      return Left(Failure('Failed to generate trip: $e'));
+    }
+  }
+
   Future<void> replaceAiTripContent({
     required String travelId,
     required String prompt,
     required String language,
   }) async {
-    final aiTrip = await _apiService.getGeminiComplete(prompt);
+    try {
+      final aiTrip = await _apiService.getGeminiComplete(prompt);
 
-    final updatedTripJson = {
-      ...aiTrip.toJson(),
-      'language': language,
-      'generatedByAi': true,
-      'updatedAt': Timestamp.now(),
-    };
+      final updatedData = {
+        ...aiTrip.toJson(),
+        'language': language,
+        'generatedByAi': true,
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
 
-    await _trips.doc(travelId).update(updatedTripJson);
+      await _trips.doc(travelId).update(updatedData);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Stream<Either<Failure, TravelDbModel>> getTripByIdStream(String travelId) {
+    return _trips.doc(travelId).snapshots().map((snapshot) {
+      if (!snapshot.exists) {
+        return Left(Failure('Trip not found'));
+      }
+
+      try {
+        final trip = TravelDbModel.fromJson(snapshot.data()!);
+        return Right(trip);
+      } catch (e) {
+        return Left(Failure('Failed to parse trip data: $e'));
+      }
+    });
+  }
+
+  Future<Either<Failure, TravelDbModel>> getTripById(String travelId) async {
+    try {
+      final doc = await _trips.doc(travelId).get();
+      if (!doc.exists) {
+        return Left(Failure('Trip not found'));
+      }
+      return Right(TravelDbModel.fromJson(doc.data()!));
+    } catch (e) {
+      return Left(Failure('Error fetching trip: $e'));
+    }
   }
 
   Stream<List<TravelDbModel>> getUserTrips(String userId) {
     return _trips
         .where('userId', isEqualTo: userId)
+        .orderBy('createdAt', descending: true) // ← Nice to have
         .snapshots()
         .map(
           (s) => s.docs.map((d) => TravelDbModel.fromJson(d.data())).toList(),
         );
+  }
+
+  Future<void> deleteTrip(String travelId) {
+    return _trips.doc(travelId).delete();
+  }
+
+  Future<void> updateStatus(String travelId, TripStatus status) {
+    return _trips.doc(travelId).update({
+      'status': status.name,
+      if (status == TripStatus.visited)
+        'visitedAt': FieldValue.serverTimestamp(),
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Future<void> toggleFavorite(String travelId, bool isFavorite) {
+    return _trips.doc(travelId).update({
+      'isFavorite': isFavorite,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
   }
 
   Stream<List<TravelDbModel>> getUserTripsByFilter({
@@ -109,32 +199,8 @@ class UserTripsRepository {
             );
         break;
     }
-
     return query.snapshots().map(
       (s) => s.docs.map((d) => TravelDbModel.fromJson(d.data())).toList(),
     );
-  }
-
-  Future<Either<Failure, TravelDbModel>> getTripById(String travelId) async {
-    final doc = await _trips.doc(travelId).get();
-    if (!doc.exists) {
-      return Left(Failure('Trip not found'));
-    }
-    return Right(TravelDbModel.fromJson(doc.data()!));
-  }
-
-  Future<void> deleteTrip(String travelId) {
-    return _trips.doc(travelId).delete();
-  }
-
-  Future<void> updateStatus(String travelId, TripStatus status) {
-    return _trips.doc(travelId).update({
-      'status': status.name,
-      if (status == TripStatus.visited) 'visitedAt': Timestamp.now(),
-    });
-  }
-
-  Future<void> toggleFavorite(String travelId, bool isFavorite) {
-    return _trips.doc(travelId).update({'isFavorite': isFavorite});
   }
 }

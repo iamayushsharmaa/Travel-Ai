@@ -51,7 +51,7 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
     return SliverAppBar(
       floating: true,
       snap: true,
-      backgroundColor: cs.background,
+      backgroundColor: cs.surface,
       elevation: 0,
       expandedHeight: 100,
       flexibleSpace: FlexibleSpaceBar(
@@ -60,7 +60,7 @@ class _TripHistoryState extends ConsumerState<TripHistory> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [cs.background, cs.primary.withOpacity(0.05)],
+              colors: [cs.surface, cs.primary.withOpacity(0.05)],
             ),
           ),
           child: SafeArea(

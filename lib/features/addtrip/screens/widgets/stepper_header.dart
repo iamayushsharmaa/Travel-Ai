@@ -28,7 +28,7 @@ class StepperHeader extends StatelessWidget {
             child: LinearProgressIndicator(
               value: progress,
               minHeight: 8,
-              backgroundColor: cs.surfaceVariant,
+              backgroundColor: cs.surfaceContainerHighest,
               valueColor: AlwaysStoppedAnimation(cs.primary),
             ),
           ),

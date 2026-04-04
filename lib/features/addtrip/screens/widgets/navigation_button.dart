@@ -26,7 +26,7 @@ class NavigationButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          backgroundColor: isSecondary ? cs.surfaceVariant : cs.primary,
+          backgroundColor: isSecondary ? cs.surfaceContainerHighest : cs.primary,
           foregroundColor: isSecondary ? cs.onSurface : cs.onPrimary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),

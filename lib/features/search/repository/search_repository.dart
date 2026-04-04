@@ -41,7 +41,7 @@ class SearchRepository {
       final snapshot = await _trips
           .where('userId', isEqualTo: userId)
           .where('destinationLowerCase', isGreaterThanOrEqualTo: normalizedQuery)
-          .where('destinationLowerCase', isLessThanOrEqualTo: normalizedQuery + '\uf8ff')
+          .where('destinationLowerCase', isLessThanOrEqualTo: '$normalizedQuery\uf8ff')
           .limit(20)
           .get();
 

@@ -55,7 +55,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
 
         DropdownButtonFormField<String>(
           focusNode: _focusNode,
-          value: widget.value.isNotEmpty ? widget.value : null,
+          initialValue: widget.value.isNotEmpty ? widget.value : null,
 
           items:
               widget.options.map((option) {

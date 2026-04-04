@@ -27,7 +27,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     final monthCountAsync = ref.watch(monthTripCountProvider);
 
     return Scaffold(
-      backgroundColor: context.colors.background,
+      backgroundColor: context.colors.surface,
       body: CustomScrollView(
         slivers: [
           _buildAppBar(context, theme),
@@ -42,7 +42,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     return SliverAppBar(
       pinned: true,
       floating: false,
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       elevation: 0.5,
       expandedHeight: 76,
       flexibleSpace: FlexibleSpaceBar(
@@ -53,6 +53,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         _AppBarAction(
           icon: Icons.search,
           onTap: () => context.pushNamed('search'),
+          isLast: false,
         ),
       ],
     );
@@ -148,7 +149,7 @@ class _AppBarAction extends StatelessWidget {
   const _AppBarAction({
     required this.icon,
     required this.onTap,
-    this.isLast = false,
+    required this.isLast,
   });
 
   @override
@@ -160,7 +161,7 @@ class _AppBarAction extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: CircleAvatar(
-          backgroundColor: theme.colorScheme.surfaceVariant,
+          backgroundColor: theme.colorScheme.surfaceContainerHighest,
           child: Icon(icon, color: theme.colorScheme.onSurface),
         ),
       ),

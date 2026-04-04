@@ -52,13 +52,17 @@ class TravelRepository {
         'travelId': travelId,
         'userId': userId,
         'language': language,
+        'createdAt': FieldValue.serverTimestamp(), // ← Recommended
+        'updatedAt': FieldValue.serverTimestamp(),
       });
 
       return Right(trip);
     } on FirebaseException catch (e) {
       return Left(Failure(e.message ?? 'Firestore error'));
+    } on Exception catch (e) {
+      return Left(Failure('Failed to generate trip: $e'));
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(Failure('Unexpected error: $e'));
     }
   }
 }

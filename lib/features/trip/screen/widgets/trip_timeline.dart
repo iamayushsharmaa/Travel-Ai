@@ -189,7 +189,7 @@ class TimelineItem extends StatelessWidget {
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
                 ],
               ],
             ),

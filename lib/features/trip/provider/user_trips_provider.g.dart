@@ -6,8 +6,7 @@ part of 'user_trips_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$regenerateTripInCurrentLanguageHash() =>
-    r'a17cd6662ddf48c844e67409209437bf2bfc2b4c';
+String _$tripByIdHash() => r'2b9434f69dfc012e0664f8041673032a119dc1d0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,6 +28,125 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [tripById].
+@ProviderFor(tripById)
+const tripByIdProvider = TripByIdFamily();
+
+/// See also [tripById].
+class TripByIdFamily extends Family<AsyncValue<TravelDbModel>> {
+  /// See also [tripById].
+  const TripByIdFamily();
+
+  /// See also [tripById].
+  TripByIdProvider call(String travelId) {
+    return TripByIdProvider(travelId);
+  }
+
+  @override
+  TripByIdProvider getProviderOverride(covariant TripByIdProvider provider) {
+    return call(provider.travelId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'tripByIdProvider';
+}
+
+/// See also [tripById].
+class TripByIdProvider extends AutoDisposeStreamProvider<TravelDbModel> {
+  /// See also [tripById].
+  TripByIdProvider(String travelId)
+    : this._internal(
+        (ref) => tripById(ref as TripByIdRef, travelId),
+        from: tripByIdProvider,
+        name: r'tripByIdProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$tripByIdHash,
+        dependencies: TripByIdFamily._dependencies,
+        allTransitiveDependencies: TripByIdFamily._allTransitiveDependencies,
+        travelId: travelId,
+      );
+
+  TripByIdProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.travelId,
+  }) : super.internal();
+
+  final String travelId;
+
+  @override
+  Override overrideWith(
+    Stream<TravelDbModel> Function(TripByIdRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: TripByIdProvider._internal(
+        (ref) => create(ref as TripByIdRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        travelId: travelId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<TravelDbModel> createElement() {
+    return _TripByIdProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TripByIdProvider && other.travelId == travelId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, travelId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin TripByIdRef on AutoDisposeStreamProviderRef<TravelDbModel> {
+  /// The parameter `travelId` of this provider.
+  String get travelId;
+}
+
+class _TripByIdProviderElement
+    extends AutoDisposeStreamProviderElement<TravelDbModel>
+    with TripByIdRef {
+  _TripByIdProviderElement(super.provider);
+
+  @override
+  String get travelId => (origin as TripByIdProvider).travelId;
+}
+
+String _$regenerateTripInCurrentLanguageHash() =>
+    r'823fe2e3ced220b9d60b405b843769b0f1a068cf';
 
 /// See also [regenerateTripInCurrentLanguage].
 @ProviderFor(regenerateTripInCurrentLanguage)
@@ -175,125 +293,7 @@ final userTripsProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserTripsRef = AutoDisposeStreamProviderRef<List<TravelDbModel>>;
-String _$tripByIdHash() => r'9da27e6e8387120ee64e41ce655e1b302fe42944';
-
-/// See also [tripById].
-@ProviderFor(tripById)
-const tripByIdProvider = TripByIdFamily();
-
-/// See also [tripById].
-class TripByIdFamily extends Family<AsyncValue<TravelDbModel>> {
-  /// See also [tripById].
-  const TripByIdFamily();
-
-  /// See also [tripById].
-  TripByIdProvider call(String travelId) {
-    return TripByIdProvider(travelId);
-  }
-
-  @override
-  TripByIdProvider getProviderOverride(covariant TripByIdProvider provider) {
-    return call(provider.travelId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'tripByIdProvider';
-}
-
-/// See also [tripById].
-class TripByIdProvider extends AutoDisposeFutureProvider<TravelDbModel> {
-  /// See also [tripById].
-  TripByIdProvider(String travelId)
-    : this._internal(
-        (ref) => tripById(ref as TripByIdRef, travelId),
-        from: tripByIdProvider,
-        name: r'tripByIdProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$tripByIdHash,
-        dependencies: TripByIdFamily._dependencies,
-        allTransitiveDependencies: TripByIdFamily._allTransitiveDependencies,
-        travelId: travelId,
-      );
-
-  TripByIdProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.travelId,
-  }) : super.internal();
-
-  final String travelId;
-
-  @override
-  Override overrideWith(
-    FutureOr<TravelDbModel> Function(TripByIdRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: TripByIdProvider._internal(
-        (ref) => create(ref as TripByIdRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        travelId: travelId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<TravelDbModel> createElement() {
-    return _TripByIdProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is TripByIdProvider && other.travelId == travelId;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, travelId.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin TripByIdRef on AutoDisposeFutureProviderRef<TravelDbModel> {
-  /// The parameter `travelId` of this provider.
-  String get travelId;
-}
-
-class _TripByIdProviderElement
-    extends AutoDisposeFutureProviderElement<TravelDbModel>
-    with TripByIdRef {
-  _TripByIdProviderElement(super.provider);
-
-  @override
-  String get travelId => (origin as TripByIdProvider).travelId;
-}
-
-String _$deleteTripHash() => r'aa25643738486996ea5874ff4da602f97cd5e9bb';
+String _$deleteTripHash() => r'273d0bba07acdec6ff7801586aba170ce42f4407';
 
 /// See also [deleteTrip].
 @ProviderFor(deleteTrip)
@@ -432,7 +432,7 @@ final monthTripCountProvider =
 // ignore: unused_element
 typedef MonthTripCountRef = AutoDisposeProviderRef<AsyncValue<MonthTripCount>>;
 String _$tripStatusNotifierHash() =>
-    r'd1e90b415a85a112d44ae9af5ae8ff26ee8a6499';
+    r'770640891b5fefbad4fd69e78cf34aefbefa8506';
 
 /// See also [TripStatusNotifier].
 @ProviderFor(TripStatusNotifier)

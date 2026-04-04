@@ -32,7 +32,7 @@ class AppScaffold extends StatelessWidget {
     final l10n = context.l10n;
 
     return Scaffold(
-      backgroundColor: colors.background,
+      backgroundColor: colors.surface,
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: KeyedSubtree(

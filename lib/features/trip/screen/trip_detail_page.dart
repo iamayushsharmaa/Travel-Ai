@@ -15,7 +15,6 @@ import 'package:triptide/features/trip/screen/widgets/weather_section.dart';
 import 'package:triptide/shared/models/travel_db_model.dart';
 
 import '../../../core/common/app_dialog.dart';
-import '../../../core/common/async_view.dart';
 import '../../../core/enums/trip_status.dart';
 import '../../../core/extensions/context_l10n.dart';
 import '../../../core/extensions/context_snackbar.dart';
@@ -39,12 +38,29 @@ class _TripDetailPageState extends ConsumerState<TripDetailPage> {
   Widget build(BuildContext context) {
     final tripAsync = ref.watch(tripByIdProvider(widget.travelId));
 
-    return AsyncView(
-      value: tripAsync,
-      builder: (trip) {
-        _checkAndShowLanguageDialog(trip);
-        return _buildTripContent(context, ref, trip);
-      },
+    return Scaffold(
+      body: tripAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error:
+            (error, stack) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Error loading trip: $error'),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed:
+                        () => ref.invalidate(tripByIdProvider(widget.travelId)),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+        data: (trip) {
+          _checkAndShowLanguageDialog(trip);
+          return _buildTripContent(context, ref, trip);
+        },
+      ),
     );
   }
 
@@ -76,7 +92,7 @@ class _TripDetailPageState extends ConsumerState<TripDetailPage> {
 
   Widget _buildTripContent(BuildContext context, WidgetRef ref, dynamic trip) {
     return Scaffold(
-      backgroundColor: context.colors.background,
+      backgroundColor: context.colors.surface,
       appBar: _buildAppBar(context, ref, trip),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -190,7 +206,7 @@ class _TripDetailPageState extends ConsumerState<TripDetailPage> {
         icon: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: context.colors.surfaceVariant,
+            color: context.colors.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(

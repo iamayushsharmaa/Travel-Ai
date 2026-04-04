@@ -26,13 +26,13 @@ class SettingsScreen extends ConsumerWidget {
 
     if (user == null) {
       return Scaffold(
-        backgroundColor: colors.background,
+        backgroundColor: colors.surface,
         body: Center(child: CircularProgressIndicator(color: colors.primary)),
       );
     }
 
     return Scaffold(
-      backgroundColor: colors.background,
+      backgroundColor: colors.surface,
       body: CustomScrollView(
         slivers: [
           _buildSliverAppBar(context),
@@ -157,7 +157,7 @@ class SettingsScreen extends ConsumerWidget {
     return SliverAppBar(
       floating: true,
       snap: true,
-      backgroundColor: colors.background,
+      backgroundColor: colors.surface,
       elevation: 0,
       expandedHeight: 80,
       flexibleSpace: FlexibleSpaceBar(
@@ -166,7 +166,7 @@ class SettingsScreen extends ConsumerWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [colors.background, colors.primary.withOpacity(0.08)],
+              colors: [colors.surface, colors.primary.withOpacity(0.08)],
             ),
           ),
           child: SafeArea(

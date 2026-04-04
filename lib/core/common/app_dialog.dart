@@ -117,7 +117,7 @@ class AppDialog {
                             ).pop(false),
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          backgroundColor: context.colors.surfaceVariant,
+                          backgroundColor: context.colors.surfaceContainerHighest,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),

@@ -87,8 +87,8 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
   }
 
   Future<void> _submitTrip() async {
-    final loading = ref.read(submitLoadingProvider.notifier);
-    loading.setLoading(true);
+    final loadingNotifier = ref.read(submitLoadingProvider.notifier);
+    loadingNotifier.setLoading(true);
 
     try {
       final budget =
@@ -110,9 +110,14 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
         food: _data.food,
       );
 
+      // Get the travelId
       final travelId = await ref.read(
         generateAndStoreTripProvider(request).future,
       );
+
+      if (!mounted) return;
+
+      await Future.delayed(const Duration(milliseconds: 800));
 
       if (mounted) {
         context.pushReplacementNamed(
@@ -121,8 +126,18 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
           extra: {'fromCreation': true},
         );
       }
+    } catch (e) {
+      if (mounted) {
+        AppSnackBar.show(
+          context,
+          message: 'Failed to create trip: ${e.toString()}',
+          type: SnackType.error,
+        );
+      }
     } finally {
-      loading.setLoading(false);
+      if (mounted) {
+        loadingNotifier.setLoading(false);
+      }
     }
   }
 
@@ -133,7 +148,7 @@ class _AddTripPageState extends ConsumerState<AddTripPage> {
     final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
-      backgroundColor: context.colors.background,
+      backgroundColor: context.colors.surface,
       appBar: AppBar(
         backgroundColor: context.colors.surface,
         leading: IconButton(

@@ -1,4 +1,11 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class Constant {
+  static final API_KEY = dotenv.env['GEMINI_API_KEY'] ?? '';
+  static final BASE_URL = dotenv.env['BASE_URL'] ?? '';
+  static final MODEL = dotenv.env['MODEL'] ?? '';
+
+
   static const jsonResponseExample = '''{
     "destination": "string",
     "currentLocation": "string",

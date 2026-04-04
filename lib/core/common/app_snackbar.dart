@@ -31,7 +31,7 @@ class AppSnackBar {
 
       case SnackType.info:
       default:
-        backgroundColor = cs.surfaceVariant;
+        backgroundColor = cs.surfaceContainerHighest;
         foregroundColor = cs.onSurfaceVariant;
         icon = Icons.info_outline;
     }

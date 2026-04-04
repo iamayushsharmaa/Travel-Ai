@@ -31,19 +31,19 @@ class TripPlanRequest {
 
   Map<String, dynamic> toMap() {
     return {
-      'currentLocation': this.currentLocation,
-      'destination': this.destination,
-      'startDate': this.startDate,
-      'endDate': this.endDate,
-      'tripType': this.tripType,
-      'budget': this.budget,
-      'budgetType': this.budgetType,
-      'interests': this.interests,
-      'companions': this.companions,
-      'accommodationType': this.accommodationType,
-      'transportPreferences': this.transportPreferences,
-      'pace': this.pace,
-      'food': this.food,
+      'currentLocation': currentLocation,
+      'destination': destination,
+      'startDate': startDate,
+      'endDate': endDate,
+      'tripType': tripType,
+      'budget': budget,
+      'budgetType': budgetType,
+      'interests': interests,
+      'companions': companions,
+      'accommodationType': accommodationType,
+      'transportPreferences': transportPreferences,
+      'pace': pace,
+      'food': food,
     };
   }
 
