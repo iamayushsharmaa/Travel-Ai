@@ -10,7 +10,7 @@ import file_picker
 import firebase_auth
 import firebase_core
 import google_sign_in_ios
-import path_provider_macos
+import path_provider_foundation
 import shared_preferences_foundation
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {

@@ -61,6 +61,16 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   equatable: any
+
+dependency_overrides:
+  path_provider: ^2.1.5
+  path_provider_android: ^2.2.12
+  path_provider_foundation: ^2.4.0
+  platform: ^3.1.6
+  jni: ^1.0.0
+  google_maps_flutter_android: ^2.14.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
